@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Graph from './components/graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
+import Weather from './components/weather.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class App extends React.Component {
         <Clock/>
         <Graph />
         <InputBalance/>
+        <Weather/>
       </div>
     )
   }

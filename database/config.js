@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+<<<<<<< HEAD:database/config.js
+=======
+// mongoose.Promise = require('bluebird');
+>>>>>>> Rebase for configuring dotenv in database:database/index.js
 const uri = 'mongodb://localhost/wealthWatch';
 
 mongoose
