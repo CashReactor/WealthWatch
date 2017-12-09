@@ -6,12 +6,18 @@ const passport = require('passport');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
 const { User } = require('../database/models/user.js');
 
 require('dotenv').config();
 
+const morgan = require('morgan'); 
+
 const app = express();
-const morgan = require('morgan');
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');

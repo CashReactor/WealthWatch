@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local');
 const passportJWT = require('passport-jwt');
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
+
 const { _secret } = require('../../config');
 const { User } = require('../../database/models/user');
 
