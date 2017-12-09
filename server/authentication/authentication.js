@@ -58,3 +58,4 @@ passport.use(
 module.exports.localAuth = () => {
   passport.authenticate('local', { session: false });
 };
+
