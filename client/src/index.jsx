@@ -100,6 +100,7 @@ class App extends React.Component {
       token: ''
     });
     window.localStorage.removeItem('wealthwatch_token');
+
   }
 
   render() {
