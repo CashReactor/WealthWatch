@@ -4,11 +4,8 @@ import Graph from './components/graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-<<<<<<< HEAD
 import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
-=======
->>>>>>> Rebase for configuring dotenv in database
 
 class App extends React.Component {
   constructor(props) {
@@ -28,12 +25,8 @@ class App extends React.Component {
         </div>
         <Graph/>
         <InputBalance/>
-<<<<<<< HEAD
         <OneExpense/>
         <RecExpense/>
-=======
-        <Weather/>
->>>>>>> Rebase for configuring dotenv in database
       </div>
     )
   }
