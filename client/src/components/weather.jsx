@@ -28,10 +28,11 @@ class Weather extends React.Component {
         console.log(response.data);
         var weather = response.data;
         scope.setState(weather);
-     }
+      })
+    })
   }
 
-  render() {
+  render(){
     if (this.state.state) {
       return(
         <div className="weather">

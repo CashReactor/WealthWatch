@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 require('dotenv').config();
 
-const morgan = require('morgan'); 
+const morgan = require('morgan');
 
 const app = express();
 app.use(morgan('dev'));
