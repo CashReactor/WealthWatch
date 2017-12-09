@@ -6,6 +6,7 @@ class Clock extends React.Component {
     this.state = {
       time: new Date()
     }
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
@@ -24,9 +25,14 @@ class Clock extends React.Component {
     var hours = this.state.time.getHours();
     var minutes = this.state.time.getMinutes();
     var seconds = this.state.time.getSeconds();
+    if (hours < 10) { hours = '0' + hours; }
+    if (minutes < 10) { minutes = '0' + minutes; }
+    if (seconds < 10) { seconds = '0' + seconds; }
+
     return(
-      <div>
-        D3 graph will go here
+      <div className="clock">
+        Time: {hours}:{minutes}:{seconds}<br></br>
+        Date: {this.state.time.toDateString()}
       </div>
     )
   }
