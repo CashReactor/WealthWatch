@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Graph from './components/Graph.jsx'
+import Graph from './components/graph.jsx';
+import InputBalance from './components/inputBalance.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      budget: 0,
+      budgetInput: false
     }
   }
 
@@ -13,6 +16,7 @@ class App extends React.Component {
     return (
       <div>
         <Graph />
+        <InputBalance/>
       </div>
     )
   }
