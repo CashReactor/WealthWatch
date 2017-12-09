@@ -32,7 +32,7 @@ app.post('/weather', function(req, res) {
     console.log('THIS IS THE WEATHER', response.data);
     var  weather = {
       state: data.name,
-      weather: data.weather[0].main + ': ' + data.weather[0].description,
+      weather: data.weather[0].main + ' (' + data.weather[0].description + ')',
       temperature: data.main.temp
     }
     res.send(weather);

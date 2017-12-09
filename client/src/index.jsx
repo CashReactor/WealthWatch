@@ -17,10 +17,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Clock/>
+        <div className="widget">
+          <Clock/>
+          <Weather/>
+        </div>
         <Graph />
         <InputBalance/>
-        <Weather/>
       </div>
     )
   }

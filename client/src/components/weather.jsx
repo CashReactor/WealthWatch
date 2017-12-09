@@ -27,15 +27,22 @@ class Weather extends React.Component {
     })
   }
 
-
   render(){
-    return(
-      <div className="weather">
-        {this.state.state}<br></br>
-        {this.state.temperature}<br></br>
-        {this.state.weather}<br></br>
-      </div>
-    )
+    if (this.state.state) {
+      return(
+        <div className="weather">
+          {this.state.state}<br></br>
+          {this.state.temperature}<br></br>
+          {this.state.weather}<br></br>
+        </div>
+      )
+    } else {
+      return(
+        <div className="weather">
+        Loading weather...
+        </div>
+      )
+    }
   }
 }
 
