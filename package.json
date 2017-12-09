@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server": "nodemon server/index.js --inspect",
+    "start-client": "./node_modules/.bin/webpack -d --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CashReactor/WealthWatch.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "CashReactor",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/CashReactor/WealthWatch/issues"
@@ -34,10 +36,9 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "mongoose": "^4.13.6",
+    "path": "^0.12.7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
     "webpack": "^3.10.0"
   }
 }
