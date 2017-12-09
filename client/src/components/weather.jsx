@@ -28,11 +28,20 @@ class Weather extends React.Component {
         console.log(response.data);
         var weather = response.data;
         scope.setState(weather);
+    }
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&${lon}&APPID=${process.env.WEATHER_API}`;
+      axios.get(url).then(function(response) {
       })
     })
   }
 
-  render(){
+  render() {
     if (this.state.state) {
       return(
         <div className="weather">
@@ -49,6 +58,7 @@ class Weather extends React.Component {
       )
     }
   }
+
 }
 
 export default Weather;
