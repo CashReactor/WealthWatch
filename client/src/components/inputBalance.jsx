@@ -6,20 +6,44 @@ class InputBalance extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      budget: 0,
-      budgetInput: false
+      budget: '',
+      budgetInput: false,
+      currency: null
     }
     this.budgetToggle = this.budgetToggle.bind(this);
     this.searchBar = this.searchBar.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onCurrencyChange = this.onCurrencyChange.bind(this);
+  }
+
+
+  onInputChange(e) {
+    e.preventDefault();
+    this.setState({
+      budget: e.target.value
+    })
+  }
+
+  onCurrencyChange(e) {
+    e.preventDefault();
+    this.setState({
+      currency: e.target.value
+    })
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
   }
 
   searchBar() {
     if (this.state.budgetInput) {
       return (
         <div>
-          <form action="">
-            Input Balance: <input type="text" name="balance"/><br></br>
-            <select name="currency_code">
+          <form onSubmit={this.onSubmit}>
+            Input Balance: <input type="text" placeholder="Enter budget amount" value={this.state.budget} onChange={this.onInputChange} name="balance"/><br></br>
+            <select onChange={this.onCurrencyChange} id="currency" name="currency_code">
               <option value="">Select Currency</option>
               <option value="USD">U.S. Dollar</option>
               <option value="AUD">Australian Dollar</option>
@@ -46,18 +70,11 @@ class InputBalance extends React.Component {
               <option value="THB">Thai Baht</option>
               <option value="TRY">Turkish Lira</option>
             </select>
-
+            <input value="Submit" type="submit"></input>
           </form>
         </div>
       )
-    } else {
-      return (
-        <div>
-          Hello World
-        </div>
-      )
     }
-
   }
 
   budgetToggle() {
