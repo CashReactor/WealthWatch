@@ -1,1 +1,3 @@
-initial - state.js;
+const initialState = {
+  budget: 0
+}
