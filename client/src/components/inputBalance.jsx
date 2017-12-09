@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Graph from './graph.jsx'
+import Graph from './graph.jsx';
+import axios from 'axios';
 
 class InputBalance extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class InputBalance extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
   }
-
 
   onInputChange(e) {
     e.preventDefault();
