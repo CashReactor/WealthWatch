@@ -10,8 +10,18 @@ class App extends React.Component {
   }
 
   render() {
-    return <div>Anto</div>;
+    return (
+      <div>
+        Anto
+      </div>
+    )
+
   }
 }
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('app'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('app')
+);
