@@ -11,6 +11,11 @@ class Weather extends React.Component {
     }
   }
 
+  makeCelcius(number) {
+    var number = Math.round(Number(number));
+    return String(Math.round(number-273.1));
+  }
+
   componentDidMount() {
     var scope = this;
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -32,7 +37,7 @@ class Weather extends React.Component {
       return(
         <div className="weather">
           {this.state.state}<br></br>
-          {this.state.temperature}<br></br>
+          {this.makeCelcius(this.state.temperature)} &#8451;<br></br>
           {this.state.weather}<br></br>
         </div>
       )
