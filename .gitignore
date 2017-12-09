@@ -1,5 +1,5 @@
 node_modules
-/client/public/bundle.js
 .floo
 .flooignore
+client/public/bundle.js
 .env
