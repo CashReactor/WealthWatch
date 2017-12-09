@@ -3,3 +3,5 @@ node_modules
 .floo
 .flooignore
 .env
+npm-debug.log
+bundle.js
