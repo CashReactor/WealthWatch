@@ -2,6 +2,26 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 
+const recurringSchema = new mongoose.Schema({
+  expense: {
+    type: String,
+    unique: true,
+  },
+  amount: Number,
+  period: String,
+  category: String,
+  startDate: Date
+});
+
+// expense: Hulu, amount: 12, period: monthly/daily/weekly cat: Entertainment
+
+const oneTimeSchema = new mongoose.Schema({
+  expense: String,
+  amount: Number,
+  date: Date,
+  category: String
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -21,7 +41,10 @@ const userSchema = new mongoose.Schema({
     required: false
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  budget: Number,
+  recurring: [recurringSchema],
+  oneTime: [oneTimeSchema]
 });
 
 userSchema.pre('save', next => {
@@ -38,5 +61,8 @@ userSchema.pre('save', next => {
 userSchema.methods.comparePassword = password => {
   return bcrypt.compare(password, this.password);
 };
+
+
+
 
 module.exports.User = mongoose.model('User', userSchema);
