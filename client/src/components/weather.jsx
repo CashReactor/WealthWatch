@@ -20,7 +20,9 @@ class Weather extends React.Component {
         lat: lat,
         lon: lon
       }).then(function(response) {
-
+        console.log(response.data);
+        var weather = response.data;
+        scope.setState(weather);
       })
     })
   }

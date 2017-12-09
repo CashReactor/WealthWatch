@@ -1,5 +1,6 @@
 //Import your routes here
 // ***********************
+var axios = require('axios');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -22,12 +23,17 @@ app.listen(port, () => {
 });
 
 app.post('/weather', function(req, res) {
-  var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&${lon}&APPID=${process.env.WEATHER_API}`;
+  console.log(req.body);
+  var lat = req.body.lat;
+  var lon = req.body.lon;
+  var url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=fe22cf91271784d706fc84ca44d54cc3`;
   axios.get(url).then(function(response) {
+    var data = response.data;
+    console.log('THIS IS THE WEATHER', response.data);
     var  weather = {
-      state: response.name,
-      weather: response.weather.main + ': ' + response.weather.description,
-      temperature: response.main.temp
+      state: data.name,
+      weather: data.weather[0].main + ': ' + data.weather[0].description,
+      temperature: data.main.temp
     }
     res.send(weather);
     res.end();
