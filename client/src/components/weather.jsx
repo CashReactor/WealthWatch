@@ -16,15 +16,11 @@ class Weather extends React.Component {
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
-      var url = `api.openweathermap.org/data/2.5/weather?lat=${lat}&${lon}&APPID=${process.env.WEATHER_API}`;
-      axios.get(url).then(function(response) {
-        scope.setState(
-          {
-            state: response.name,
-            weather: response.weather.main + ': ' + response.weather.description,
-            temperature: response.main.temp
-          }
-        )
+      axios.post('/weather', {
+        lat: lat,
+        lon: lon
+      }).then(function(response) {
+
       })
     })
   }
