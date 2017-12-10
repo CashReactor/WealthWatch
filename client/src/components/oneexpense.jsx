@@ -6,17 +6,25 @@ class OneExpense extends React.Component {
     this.state = {
       addExpense: '',
       category: '',
+      amount: '',
       one: []
     }
-
-    onInputChange = onInputChange.bind(this);
-    onCategoryChange = onCategoryChange.bind(this);
+    this.onInputChange = onInputChange.bind(this);
+    this.onCategoryChange = onCategoryChange.bind(this);
+    this.onAmountChange = this.onAmountChange.bind(this);
   }
 
   onInputChange(e) {
     e.preventDefault();
     this.setState({
       addExpense: e.target.value
+    })
+  }
+
+  onAmountChange(e) {
+    e.preventDefault();
+    this.setState({
+      amount: e.target.value
     })
   }
 
@@ -27,12 +35,13 @@ class OneExpense extends React.Component {
     })
   }
 
-  render(){
+  searchBar() {
     return(
       <div>
         <form onSubmit={this.onSubmit}>
-            Add one-time expense: <input type="text" placeholder="Enter expense" value={this.state.budget} onChange={this.onInputChange} name="one"/><br></br>
-            <select onChange={this.onCurrencyChange} id="currency" name="currency_code">
+            Add one-time expense: <input type="text" placeholder="Enter expense" value={this.state.addExpense} onChange={this.onInputChange} name="one"/><br></br>
+            Add expense amount: <input type="text" placeholder="Enter amount" value={this.state.amount} onChange={this.onAmountChange} name="one"/><br></br>
+            <select onChange={this.onCategoryChange} id="currency" name="currency_code">
               <option value="">Select Category</option>
               <option value={1}>Entertainment</option>
               <option value={2}>Food</option>
@@ -42,6 +51,12 @@ class OneExpense extends React.Component {
             <input value="Submit" type="submit"></input>
           </form>
       </div>
+    )
+  }
+
+  render(){
+    return(
+      {this.searchBar()}
     )
   }
 }
