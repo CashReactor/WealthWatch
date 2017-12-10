@@ -12,7 +12,7 @@ const generateToken = user => {
 };
 /*********************************************************/
 
-router.post('/login', localAuth(), (req, res) => {
+router.post('/login', localAuth, (req, res) => {
   const token = generateToken(req.body.username);
   res.json({ message: 'Login successful', token });
 });
