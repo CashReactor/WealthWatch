@@ -23,6 +23,7 @@ const oneTimeSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
+  //user has email, name, password, budget, and recurring/onetime expensees
   email: {
     type: String,
     unique: true,
@@ -62,7 +63,6 @@ userSchema.methods.comparePassword = password => {
   return bcrypt.compare(password, this.password);
 };
 
-
-
-
 module.exports.User = mongoose.model('User', userSchema);
+module.exports.One = mongoose.model('One', oneTimeSchema);
+module.exports.Rec = mongoose.model('Rec', recurringSchema);

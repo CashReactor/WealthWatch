@@ -30,7 +30,7 @@ class Clock extends React.Component {
     if (seconds < 10) { seconds = '0' + seconds; }
 
     return(
-      <div className="clock">
+      <div id="clock">
         Time: {hours}:{minutes}:{seconds}<br></br>
         Date: {this.state.time.toDateString()}
       </div>
