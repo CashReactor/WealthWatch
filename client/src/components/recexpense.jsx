@@ -16,21 +16,21 @@ class RecExpense extends React.Component {
   }
 
   onInputChange(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({
       addExpense: e.target.value
     })
   }
 
   onAmountChange(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({
       amount: e.target.value
     })
   }
 
   onCategoryChange(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({
       category: e.target.value
     })

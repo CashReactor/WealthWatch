@@ -19,14 +19,14 @@ class InputBalance extends React.Component {
   }
 
   onInputChange(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({
       budget: e.target.value
     })
   }
 
   onCurrencyChange(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({
       currency: e.target.value
     })
