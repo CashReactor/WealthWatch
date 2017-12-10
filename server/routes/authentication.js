@@ -39,4 +39,4 @@ router.post('/signup', (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports.auth = router;
