@@ -12,7 +12,6 @@ const recurringSchema = new mongoose.Schema({
   category: String,
   startDate: Date
 });
-
 // expense: Hulu, amount: 12, period: monthly/daily/weekly cat: Entertainment
 
 const oneTimeSchema = new mongoose.Schema({
@@ -23,7 +22,7 @@ const oneTimeSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  //user has email, name, password, budget, and recurring/onetime expensees
+  //user has email, name, password, budget, and recurring/onetime as arrays of expense models
   email: {
     type: String,
     unique: true,
