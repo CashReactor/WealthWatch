@@ -1,22 +1,32 @@
 //Import your routes here
+const auth = require('./routes/authentication').auth;
 // ***********************
 var axios = require('axios');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
 require('dotenv').config();
 
+const morgan = require('morgan'); 
+
 const app = express();
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
 
 app.use(express.static(__dirname + '/../client/public'));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Use Routes here.....
+app.use('/auth', auth);
+/************************/
+
+app.get('/', (req, res) => {
+  res.json('Hello World');
+});
 
 app.listen(port, () => {
   console.log('Express is listening on port 1337');
