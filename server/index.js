@@ -1,5 +1,6 @@
 //Import your routes here
-const auth = require('./routes/authentication');
+const auth = require('./routes/authentication').auth;
+// ***********************
 var axios = require('axios');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 const passport = require('passport');
@@ -69,6 +70,12 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 
 app.use(express.static(__dirname + '/../client/public'));
 // Use Routes here.....
+app.use('/auth', auth);
+// **********************
+
+app.get('/', (req, res) => {
+  res.json('Hello World');
+});
 
 app.get('/', (req, res) => {
   res.json('Hello World');

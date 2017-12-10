@@ -53,9 +53,7 @@ passport.use(
     });
   })
 );
-
 // Function to be used when logging in
 module.exports.localAuth = () => {
   passport.authenticate('local', { session: false });
 };
-

@@ -6,7 +6,6 @@ const crypto = require('crypto');
 const User = require('../../database/models/user');
 const { _secret } = require('../../config');
 
-
 // Helper functions
 const generateToken = user => {
   return jwt.sign(user, _secret, { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 });
