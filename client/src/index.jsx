@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Graph from './components/graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
+import Clock from './components/clock.jsx';
+import Weather from './components/weather.jsx';
+import OneExpense from './components/oneExpense.jsx';
+import RecExpense from './components/recExpense.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,8 +19,14 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Graph />
+        <div className="widget">
+          <Clock/>
+          <Weather/>
+        </div>
+        <Graph/>
         <InputBalance/>
+        <OneExpense/>
+        <RecExpense/>
       </div>
     )
   }

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+// mongoose.Promise = require('bluebird');
+
 const uri = 'mongodb://localhost/wealthWatch';
 
 mongoose
