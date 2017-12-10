@@ -9,9 +9,10 @@ class OneExpense extends React.Component {
       amount: '',
       one: []
     }
-    this.onInputChange = onInputChange.bind(this);
-    this.onCategoryChange = onCategoryChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
+    this.searchBar = this.searchBar.bind(this);
   }
 
   onInputChange(e) {
@@ -35,6 +36,10 @@ class OneExpense extends React.Component {
     })
   }
 
+  onSubmit(e) {
+    e.preventDefault();
+  }
+
   searchBar() {
     return(
       <div>
@@ -56,7 +61,9 @@ class OneExpense extends React.Component {
 
   render(){
     return(
-      {this.searchBar()}
+      <div>
+        {this.searchBar()}
+      </div>
     )
   }
 }

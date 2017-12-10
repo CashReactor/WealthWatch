@@ -9,8 +9,8 @@ class RecExpense extends React.Component {
       amount: '',
       rec: []
     }
-    this.onInputChange = onInputChange.bind(this);
-    this.onCategoryChange = onCategoryChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
     this.searchBar = this.searchBar.bind(this);
   }
@@ -36,6 +36,10 @@ class RecExpense extends React.Component {
     })
   }
 
+  onSubmit(e) {
+    e.preventDefault();
+  }
+
   searchBar() {
     return(
       <div>
@@ -57,7 +61,9 @@ class RecExpense extends React.Component {
 
   render(){
     return(
-      {this.searchBar()}
+      <div>
+        {this.searchBar()}
+      </div>
     )
   }
 }

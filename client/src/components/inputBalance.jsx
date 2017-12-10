@@ -34,7 +34,6 @@ class InputBalance extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-
   }
 
   searchBar() {
