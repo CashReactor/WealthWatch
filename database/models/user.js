@@ -43,8 +43,11 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   budget: Number,
+  googleId: String,
+  googleToken: String,
   recurring: [recurringSchema],
-  oneTime: [oneTimeSchema]
+  oneTime: [oneTimeSchema],
+  imageUrl: String
 });
 
 userSchema.pre('save', next => {

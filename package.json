@@ -26,7 +26,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "dotenv": "^4.0.0",
-    "nodemon": "^1.12.5"
+    "nodemon": "^1.12.5",
+    "passport-google-oauth2": "^0.1.6"
   },
   "dependencies": {
     "axios": "^0.17.1",

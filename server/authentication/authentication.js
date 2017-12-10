@@ -16,6 +16,9 @@ const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 };
 
+
+//Add Google Strategy
+
 passport.use(
   new JwtStrategy(jwtOptions, (jwt_payload, done) => {
     User.findById(jwt_payload.userId).then(user => {
@@ -49,6 +52,7 @@ passport.use(
     });
   })
 );
+
 // Function to be used when logging in
 module.exports.localAuth = () => {
   passport.authenticate('local', { session: false });
