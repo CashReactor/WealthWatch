@@ -12,15 +12,25 @@ class App extends React.Component {
     super(props);
     this.state = {
       budget: 0,
-      budgetInput: false
+      budgetInput: false,
+      currentDate: ''
     }
+    this.getCurrentDate = this.getCurrentDate.bind(this);
+  }
+
+  getCurrentDate(date) {
+    this.setState({ currentDate: date });
+  }
+
+  daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
   }
 
   render() {
     return (
       <div>
         <div className="widget">
-          <Clock/>
+          <Clock getCurrentDate={this.getCurrentDate}/>
           <Weather/>
         </div>
         <Graph/>
