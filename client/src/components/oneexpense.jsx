@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class OneExpense extends React.Component {
   constructor(props){
@@ -38,6 +39,9 @@ class OneExpense extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    axios.post('/oneExpense', {
+
+    })
   }
 
   searchBar() {

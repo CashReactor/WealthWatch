@@ -6,7 +6,10 @@ import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
 import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
+import LoginSignup from './components/loginSignup.jsx';
 import Chart from 'chart.js';
+import 'bootstrap/dist/css/bootstrap.css'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +17,8 @@ class App extends React.Component {
     this.state = {
       budget: 500,
       budgetInput: false,
-      currentDate: new Date()
+      currentDate: new Date(),
+      loggedIn: false
     }
     this.getCurrentDate = this.getCurrentDate.bind(this);
   }
@@ -85,6 +89,7 @@ class App extends React.Component {
         <InputBalance/>
         <OneExpense/>
         <RecExpense/>
+        <LoginSignup/>
       </div>
     )
   }
