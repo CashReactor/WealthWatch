@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+const database = require('../config');
 const bcrypt = require('bcrypt');
-const validator = require('validator');
+const isEmail = require('validator/lib/isEmail');
 
 const recurringSchema = new mongoose.Schema({
   expense: {
     type: String,
-    unique: true,
+    unique: true
   },
   amount: Number,
   period: String,
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: [validator.isEmail, 'Invalid Email Address'],
+    validate: [{ isAsync: false, validator: isEmail, msg: 'Invalid Email Address' }],
     required: 'Please supply an email address'
   },
   name: {
@@ -38,7 +39,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: false
+    required: 'Please supply a password'
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -50,25 +51,26 @@ const userSchema = new mongoose.Schema({
   imageUrl: String
 });
 
-userSchema.pre('save', next => {
-  if (this.password) {
-    return bcrypt.hash(this.password, 10, (error, hash) => {
-      if (hash) {
-        this.password = hash;
-        next();
-      }
-    });
-  }
-});
-
-userSchema.methods.comparePassword = (password, callback) => {
+userSchema.methods.comparePassword = function (password, callback) {
+  console.log('Compare password:', this.password);
   bcrypt.compare(password, this.password, (error, isMatch) => {
     if (error) {
-      return cb(error);
+      return callback(error);
     }
-    cb(null, error);
+    callback(null, isMatch);
   });
 };
+
+//The second argument of pre can't be arrow function or else this will not be the user
+userSchema.pre('save', function(next) {
+  return bcrypt.hash(this.password, 10, (error, hash) => {
+    if (error) {
+      return next(error);
+    }
+    this.password = hash;
+    next();
+  });
+});
 
 module.exports.User = mongoose.model('User', userSchema);
 module.exports.One = mongoose.model('One', oneTimeSchema);
