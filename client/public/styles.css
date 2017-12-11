@@ -24,7 +24,10 @@ img {
   height: 197px;
 }
 
-
+.btn {
+  margin-right: 77%;
+  margin-left: 13.7px;
+}
 .weather {
   text-align: right;
 }
