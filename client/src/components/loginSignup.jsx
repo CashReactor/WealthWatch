@@ -80,7 +80,7 @@ class LoginSignup extends React.Component {
   render() {
     return (
       <div>
-        {this.loginForm()}<br></br><br></br><br></br><br></br>
+        {this.loginForm()}
         {this.signupForm()}
       </div>
     )

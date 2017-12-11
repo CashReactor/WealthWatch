@@ -8,7 +8,7 @@ import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
 import LoginSignup from './components/loginSignup.jsx';
 import Chart from 'chart.js';
-// import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
 class App extends React.Component {
