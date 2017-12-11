@@ -7,10 +7,6 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const { _secret } = require('../../config');
 const { User } = require('../../database/models/user');
 
-// local login strategy options configuration
-// Telling passport to use email as the username field
-const localOptions = { usernameField: 'email' };
-
 // jwt login strategy options configuration
 const jwtOptions = {
   secretOrKey: _secret,
@@ -22,7 +18,7 @@ const jwtOptions = {
 
 passport.use(
   new JwtStrategy(jwtOptions, (jwt_payload, done) => {
-    User.findById(jwt_payload.userId).then(user => {
+    User.findById(jwt_payload._id).then(user => {
       if (user) {
         done(null, user);
       } else {
@@ -33,27 +29,42 @@ passport.use(
 );
 // Function to be used when checking user JWT
 module.exports.jwtAuth = () => {
-  passport.authenticate('jwt', { session: false });
+  return passport.authenticate('jwt', { session: false });
 };
 
+// local login strategy options configuration
+// Telling passport to use email as the username field
+const localOptions = { usernameField: 'email' };
+
 passport.use(
-  new LocalStrategy(localOptions, (email, password, done) => {
-    User.findOne({ email }).then(user => {
-      if (user) {
-        return user.comparePassword(password).then(isMatch => {
-          if (isMatch) {
-            return done(null, user);
-          } else {
-            return done(null, false, { message: 'Invalid password' });
-          }
-        });
-      } else {
-        return done(null, false, { message: 'Invalid Username' });
+  new LocalStrategy(localOptions, function(email, password, done) {
+    console.log('local strategy');
+    User.findOne({ email: email }, function(err, user) {
+      if (err) {
+        return done(err);
       }
+      if (!user) {
+        return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
+      }
+
+      user.comparePassword(password, function(err, isMatch) {
+        if (err) {
+          return done(err);
+        }
+        if (!isMatch) {
+          return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
+        }
+
+        return done(null, user);
+      });
     });
   })
 );
+
 // Function to be used when logging in
 module.exports.localAuth = () => {
-  passport.authenticate('local', { session: false });
+  console.log('local auth');
+  return passport.authenticate('local', { session: false });
 };
+
+module.exports.passport = passport;

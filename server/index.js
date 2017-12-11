@@ -1,5 +1,5 @@
 //Import your routes here
-const auth = require('./routes/authentication').auth;
+const { auth } = require('./routes/authentication.js');
 // ***********************
 var axios = require('axios');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
@@ -9,16 +9,17 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const { User } = require('../database/models/user.js');
-
+const { passport } = require('./authentication/authentication');
 require('dotenv').config();
 
-const morgan = require('morgan'); 
+const morgan = require('morgan');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
@@ -94,12 +95,12 @@ app.post('/weather', function(req, res) {
   axios.get(url).then(function(response) {
     var data = response.data;
     console.log('THIS IS THE WEATHER', response.data);
-    var  weather = {
+    var weather = {
       state: data.name,
       weather: data.weather[0].main + ' (' + data.weather[0].description + ')',
       temperature: data.main.temp
-    }
+    };
     res.send(weather);
     res.end();
-  })
-})
+  });
+});
