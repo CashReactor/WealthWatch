@@ -10,7 +10,6 @@ class Graph extends React.Component {
       <div>
         <canvas id="financeChart"></canvas>
         <br></br>
-        D3 graph will go here
       </div>
     )
   }

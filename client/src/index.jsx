@@ -32,7 +32,8 @@ class App extends React.Component {
     var month = this.state.currentDate.getMonth() + 1;
     var year = this.state.currentDate.getFullYear();
     var daysInMonth = this.daysInMonth(month, year);
-    for (var i = 0; i <= daysInMonth; i++) {
+
+    for (var i = 1; i <= daysInMonth; i++) {
       days.push(i);
     }
     var ctx = document.getElementById('financeChart');
