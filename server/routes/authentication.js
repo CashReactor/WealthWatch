@@ -1,4 +1,4 @@
-const { localAuth, jwtAuth} = require('../authentication/authentication');
+const { localAuth, jwtAuth, googleAuth, googleAuthCallback } = require('../authentication/authentication');
 
 const express = require('express');
 const router = express.Router();
@@ -48,6 +48,12 @@ router.post('/signup', (req, res) => {
     .catch(error => {
       res.status(500).json({ message: error });
     });
+});
+
+router.get('/google', googleAuth());
+
+router.get('/google/callback', googleAuthCallback(), function(req, res) {
+  res.redirect('/');
 });
 
 module.exports.auth = router;
