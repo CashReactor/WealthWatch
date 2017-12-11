@@ -1,11 +1,11 @@
 const { localAuth } = require('../authentication/authentication');
-
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../../database/models/user');
 const { _secret } = require('../../config');
+
 
 // Helper functions
 const generateToken = user => {
@@ -40,4 +40,4 @@ router.post('/signup', (req, res) => {
     });
 });
 
-module.exports.auth = router;
+module.exports = router;

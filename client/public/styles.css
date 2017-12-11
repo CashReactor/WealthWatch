@@ -1,4 +1,3 @@
-
 img {
   margin: 0px;
   padding: 0px;
@@ -9,15 +8,16 @@ img {
 .widget {
   border-style: solid;
   border-width: 7px;
-  border-color: navy;
+  border-color: grey;
   font-size: 3.7vh;
   color: white;
   font-weight: 900;
-  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1504247025080-d81dd33c7faf?auto=format&fit=crop&w=1950&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-size: cover;
   background-position: center;
-  width: 57%;
-  margin: 0;
+  width: 77%;
+  margin-left: 11.5%;
+  margin-right: 11.5%;
   padding: 0;
 /*   margin-left: 5%;
   margin-right: 5%; */

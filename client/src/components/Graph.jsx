@@ -8,6 +8,8 @@ class Graph extends React.Component {
   render(){
     return(
       <div>
+        <canvas id="financeChart"></canvas>
+        <br></br>
         D3 graph will go here
       </div>
     )
