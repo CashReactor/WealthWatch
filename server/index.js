@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const { User } = require('../database/models/user.js');
-const { passport } = require('./authentication/authentication');
 require('dotenv').config();
 
 const morgan = require('morgan');
@@ -104,3 +103,4 @@ app.post('/weather', function(req, res) {
     res.end();
   });
 });
+
