@@ -93,7 +93,6 @@ class App extends React.Component {
     });
     window.localStorage.setItem('wealthwatch_token', token);
   }
-
   setLogoutState(event) {
     this.setState({
       loggedIn: false,
