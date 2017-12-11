@@ -45,7 +45,7 @@ class LoginSignup extends React.Component {
             <input type="password" className="form-control" id="loginPassword" placeholder="Password"/>
           </div>
         </form>
-        <button type="submit" className="btn btn-primary">Login</button>
+        <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">Login</button>
       </div>
     )
   }
@@ -71,7 +71,7 @@ class LoginSignup extends React.Component {
             <label for="inputName">Profile Image</label>
             <input type="text" className="form-control" id="signupImageUrl" placeholder="Image Url"/>
           </div>
-          <button type="submit" className="btn btn-primary">Sign Up</button>
+          <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">Sign Up</button>
         </form>
       </div>
     )

@@ -17,7 +17,8 @@ class App extends React.Component {
     this.state = {
       budget: 500,
       budgetInput: false,
-      currentDate: new Date()
+      currentDate: new Date(),
+      loggedIn: false
     }
     this.getCurrentDate = this.getCurrentDate.bind(this);
   }
@@ -89,7 +90,6 @@ class App extends React.Component {
         <OneExpense/>
         <RecExpense/>
         <LoginSignup/>
-
       </div>
     )
   }

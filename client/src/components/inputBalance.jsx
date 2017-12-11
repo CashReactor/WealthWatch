@@ -85,7 +85,7 @@ class InputBalance extends React.Component {
   render() {
     return (
       <div>
-        <button type="button" onClick={this.budgetToggle} className="btn btn-primary">Balance</button>
+        <button type="button" onClick={this.budgetToggle}>Balance</button>
         {this.searchBar()}
       </div>
     )
