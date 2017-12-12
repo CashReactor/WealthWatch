@@ -4,7 +4,7 @@ const oneTimeSchema = new mongoose.Schema({
   expense: String,
   amount: Number,
   date: Date,
-  category: String
+  category: String,
 });
 
 module.exports.oneTimeSchema = oneTimeSchema;

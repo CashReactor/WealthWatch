@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 
 class InputBalance extends React.Component {
   constructor(props) {
@@ -9,8 +8,8 @@ class InputBalance extends React.Component {
     this.state = {
       budget: '',
       budgetInput: false,
-      currency: null
-    }
+      currency: null,
+    };
     this.budgetToggle = this.budgetToggle.bind(this);
     this.searchBar = this.searchBar.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -21,15 +20,15 @@ class InputBalance extends React.Component {
   onInputChange(e) {
     // e.preventDefault();
     this.setState({
-      budget: e.target.value
-    })
+      budget: e.target.value,
+    });
   }
 
   onCurrencyChange(e) {
     // e.preventDefault();
     this.setState({
-      currency: e.target.value
-    })
+      currency: e.target.value,
+    });
   }
 
   onSubmit(e) {
@@ -41,7 +40,15 @@ class InputBalance extends React.Component {
       return (
         <div>
           <form onSubmit={this.onSubmit}>
-            Input Balance: <input type="text" placeholder="Enter budget amount" value={this.state.budget} onChange={this.onInputChange} name="balance"/><br></br>
+            Input Balance:{' '}
+            <input
+              type="text"
+              placeholder="Enter budget amount"
+              value={this.state.budget}
+              onChange={this.onInputChange}
+              name="balance"
+            />
+            <br />
             <select onChange={this.onCurrencyChange} id="currency" name="currency_code">
               <option value="">Select Currency</option>
               <option value="USD">U.S. Dollar</option>
@@ -69,24 +76,26 @@ class InputBalance extends React.Component {
               <option value="THB">Thai Baht</option>
               <option value="TRY">Turkish Lira</option>
             </select>
-            <input value="Submit" type="submit"></input>
+            <input value="Submit" type="submit" />
           </form>
         </div>
-      )
+      );
     }
   }
 
   budgetToggle() {
-    this.setState({budgetInput: !this.state.budgetInput})
+    this.setState({ budgetInput: !this.state.budgetInput });
   }
 
   render() {
     return (
       <div>
-        <button type="button" onClick={this.budgetToggle} className="btn">Balance</button>
+        <button type="button" onClick={this.budgetToggle} className="btn">
+          Balance
+        </button>
         {this.searchBar()}
       </div>
-    )
+    );
   }
 }
 

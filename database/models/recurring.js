@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const recurringSchema = new mongoose.Schema({
   expense: {
     type: String,
-    unique: true
+    unique: true,
   },
   amount: Number,
   period: String,
   category: String,
-  startDate: Date
+  startDate: Date,
 });
 
 module.exports.recurringSchema = recurringSchema;
