@@ -5,7 +5,7 @@ class RecExpense extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      addExpense: '',
+      expense: '',
       category: '',
       amount: '',
       period: '',
@@ -20,7 +20,7 @@ class RecExpense extends React.Component {
   onInputChange(e) {
     // e.preventDefault();
     this.setState({
-      addExpense: e.target.value
+      expense: e.target.value
     })
   }
 
@@ -53,7 +53,7 @@ class RecExpense extends React.Component {
     return(
       <div>
         <form onSubmit={this.onSubmit}>
-            Add recurring expense: <input type="text" placeholder="Enter expense" value={this.state.addExpense} onChange={this.onInputChange} name="rec"/><br></br>
+            Add recurring expense: <input type="text" placeholder="Enter expense" value={this.state.expense} onChange={this.onInputChange} name="rec"/><br></br>
             Add expense amount: <input type="text" placeholder="Enter amount" value={this.state.amount} onChange={this.onAmountChange} name="rec"/><br></br>
             <select onChange={this.onCategoryChange} id="currency" name="currency_code">
               <option value="">Select Category</option>

@@ -1,8 +1,8 @@
 //Import your routes here
 const { auth } = require('./routes/authentication.js');
 const { User } = require('../database/models/user.js');
-const { Rec } = require('../database/models/user.js');
-const { One } = require('../database/models/user.js');
+const { Rec } = require('../database/models/recurring.js');
+const { One } = require('../database/models/oneTime.js');
 
 // ***********************
 var axios = require('axios');
@@ -67,14 +67,53 @@ app.listen(port, () => {
 //   category: String
 // });
 
+// const userSchema = new mongoose.Schema({
+//   //user has email, name, password, budget, and recurring/onetime as arrays of expense models
+//   email: {
+//     type: String,
+//     unique: true,
+//     lowercase: true,
+//     trim: true,
+//     validate: [{ isAsync: false, validator: isEmail, msg: 'Invalid Email Address' }],
+//     required: 'Please supply an email address'
+//   },
+//   name: {
+//     type: String,
+//     required: 'Please supply a name',
+//     trim: true
+//   },
+//   password: {
+//     type: String,
+//     required: 'Please supply a password'
+//   },
+//   resetPasswordToken: String,
+//   resetPasswordExpires: Date,
+//   budget: Number,
+//   googleId: String,
+//   googleToken: String,
+//   recurring: [recurringSchema],
+//   oneTime: [oneTimeSchema],
+//   imageUrl: String
+// });
+
 app.post('/recExpense', function(req, res) {
   console.log('adding recurring expense');
   var currentEmail = req.body.currentEmail;
   User.findOne({ email: currentEmail }, function(err, user) {
     if (err) throw err;
-    var recurring = user.recurring;
-
-
+    var recExpenses = user.recurring;
+    var recExpense = new Rec({
+      expense: req.body.expense,
+      amount: req.body.period,
+      category: req.body.category,
+      startDate: new Date()
+    })
+    recExpense.push(recExpense);
+    User.findOneAndUpdate({ email: currentEmail }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
+      if (err) throw err;
+      res.send(updatedUser);
+      res.end();
+    })
   })
 })
 
