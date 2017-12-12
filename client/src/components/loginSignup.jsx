@@ -57,6 +57,7 @@ class LoginSignup extends React.Component {
           password: this.state.loginPassword
         })
         .then(response => {
+          console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token);
           }

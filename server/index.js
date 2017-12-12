@@ -86,7 +86,7 @@ app.use(session({
 }));
 
 app.post('/login', function(req, res) {
-  console.log(req.session);
+
 })
 
 app.post('/oneExpense', function(req, res) {
