@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
+const session = require('express-session');
+var bcrypt = require('bcrypt');
 
 require('dotenv').config();
 

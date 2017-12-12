@@ -28,11 +28,25 @@ class LoginSignup extends React.Component {
     });
   }
 
+  onSubmitSignup(e) {
+    e.preventDefault();
+    if (this.validateSignupForm()) {
+      axios.post('/signup', {
+        email: this.state.signupEmail,
+        name: this.state.signupName,
+        password: this.state.signupPassword
+      })
+      .then((response) => {
+
+      })
+    }
+  }
+
   onSignupSubmit(e) {
     e.preventDefault();
     if (this.validateSignupForm()) {
       axios
-        .post('/auth/signup', {
+        .post('auth/signup', {
           email: this.state.signupEmail,
           name: this.state.signupName,
           password: this.state.signupPassword
@@ -52,11 +66,12 @@ class LoginSignup extends React.Component {
     e.preventDefault();
     if (this.validateLoginForm()) {
       axios
-        .post('/auth/login', {
+        .post('auth/login', {
           email: this.state.loginEmail,
           password: this.state.loginPassword
         })
         .then(response => {
+          console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token);
           }
@@ -98,7 +113,7 @@ class LoginSignup extends React.Component {
 
   loginForm() {
     return (
-      <div>
+      <div className="loginForm">
         <form>
           <div className="form-group col-xs-4">
             <label htmlFor="inputEmail">Email Address</label>
@@ -137,7 +152,7 @@ class LoginSignup extends React.Component {
 
   signupForm() {
     return (
-      <div>
+      <div className="signupForm">
         <form>
           <div className="form-group col-xs-4">
             <label htmlFor="inputName">Name</label>

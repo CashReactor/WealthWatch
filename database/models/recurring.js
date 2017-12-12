@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const recurringSchema = new mongoose.Schema({
   expense: {
     type: String,
-    unique: true,
   },
   amount: Number,
   period: String,
