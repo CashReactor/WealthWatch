@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import BarGraph from './barGraph';
-import LineGraph from './lineGraph';
+import BarGraph from './barGraph.jsx';
+import LineGraph from './lineGraph.jsx';
 
 class Graph extends React.Component {
   constructor(props) {
