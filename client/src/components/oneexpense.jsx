@@ -5,7 +5,7 @@ class OneExpense extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      addExpense: '',
+      expense: '',
       category: '',
       amount: '',
       one: []
@@ -19,7 +19,7 @@ class OneExpense extends React.Component {
   onInputChange(e) {
     // e.preventDefault();
     this.setState({
-      addExpense: e.target.value
+      expense: e.target.value
     })
   }
 
@@ -39,8 +39,15 @@ class OneExpense extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    axios.post('/oneExpense', {
-
+    var data = {
+      email: this.props.currentEmail,
+      expense: this.state.expense,
+      category: this.state.category,
+      amount: this.state.amount,
+    }
+    axios.post('/oneExpense', data)
+    .then((response) => {
+      this.setState({ rec: response.data });
     })
   }
 
@@ -48,7 +55,7 @@ class OneExpense extends React.Component {
     return(
       <div>
         <form onSubmit={this.onSubmit}>
-            Add one-time expense: <input type="text" placeholder="Enter expense" value={this.state.addExpense} onChange={this.onInputChange} name="one"/><br></br>
+            Add one-time expense: <input type="text" placeholder="Enter expense" value={this.state.expense} onChange={this.onInputChange} name="one"/><br></br>
             Add expense amount: <input type="text" placeholder="Enter amount" value={this.state.amount} onChange={this.onAmountChange} name="one"/><br></br>
             <select onChange={this.onCategoryChange} id="currency" name="currency_code">
               <option value="">Select Category</option>

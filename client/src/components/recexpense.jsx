@@ -5,9 +5,10 @@ class RecExpense extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      addExpense: '',
+      expense: '',
       category: '',
       amount: '',
+      period: '',
       rec: []
     }
     this.onInputChange = this.onInputChange.bind(this);
@@ -19,7 +20,7 @@ class RecExpense extends React.Component {
   onInputChange(e) {
     // e.preventDefault();
     this.setState({
-      addExpense: e.target.value
+      expense: e.target.value
     })
   }
 
@@ -37,15 +38,32 @@ class RecExpense extends React.Component {
     })
   }
 
+  onPeriodChange(e) {
+    this.setState({
+      period: e.target.value
+    })
+  }
+
   onSubmit(e) {
     e.preventDefault();
+    var data = {
+      email: this.props.currentEmail,
+      expense: this.state.expense,
+      category: this.state.category,
+      amount: this.state.amount,
+      period: this.state.period
+    }
+    axios.post('/recExpense', data)
+    .then((response) => {
+      this.setState({ rec: response.data });
+    })
   }
 
   searchBar() {
     return(
       <div>
         <form onSubmit={this.onSubmit}>
-            Add recurring expense: <input type="text" placeholder="Enter expense" value={this.state.addExpense} onChange={this.onInputChange} name="rec"/><br></br>
+            Add recurring expense: <input type="text" placeholder="Enter expense" value={this.state.expense} onChange={this.onInputChange} name="rec"/><br></br>
             Add expense amount: <input type="text" placeholder="Enter amount" value={this.state.amount} onChange={this.onAmountChange} name="rec"/><br></br>
             <select onChange={this.onCategoryChange} id="currency" name="currency_code">
               <option value="">Select Category</option>
@@ -53,6 +71,12 @@ class RecExpense extends React.Component {
               <option value={2}>Food</option>
               <option value={3}>Rent</option>
               <option value={4}>Others</option>
+            </select>
+            <select onChange={this.periodChange} id="period" name="period">
+              <option value="">Select Period</option>
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
             </select>
             <input value="Submit" type="submit"></input>
           </form>

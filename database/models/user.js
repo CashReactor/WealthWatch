@@ -2,25 +2,27 @@ const mongoose = require('mongoose');
 const database = require('../config');
 const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail');
+const { recurringSchema } = require('./recurring.js');
+const { oneTimeSchema } = require('./oneTime.js')
 
-const recurringSchema = new mongoose.Schema({
-  expense: {
-    type: String,
-    unique: true
-  },
-  amount: Number,
-  period: String,
-  category: String,
-  startDate: Date
-});
+// const recurringSchema = new mongoose.Schema({
+//   expense: {
+//     type: String,
+//     unique: true
+//   },
+//   amount: Number,
+//   period: String,
+//   category: String,
+//   startDate: Date
+// });
 // expense: Hulu, amount: 12, period: monthly/daily/weekly cat: Entertainment
 
-const oneTimeSchema = new mongoose.Schema({
-  expense: String,
-  amount: Number,
-  date: Date,
-  category: String
-});
+// const oneTimeSchema = new mongoose.Schema({
+//   expense: String,
+//   amount: Number,
+//   date: Date,
+//   category: String
+// });
 
 const userSchema = new mongoose.Schema({
   //user has email, name, password, budget, and recurring/onetime as arrays of expense models
@@ -73,5 +75,5 @@ userSchema.pre('save', function(next) {
 });
 
 module.exports.User = mongoose.model('User', userSchema);
-module.exports.One = mongoose.model('One', oneTimeSchema);
-module.exports.Rec = mongoose.model('Rec', recurringSchema);
+// module.exports.One = mongoose.model('One', oneTimeSchema);
+// module.exports.Rec = mongoose.model('Rec', recurringSchema);
