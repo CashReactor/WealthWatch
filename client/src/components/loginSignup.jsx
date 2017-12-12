@@ -1,5 +1,4 @@
 import React from 'react';
-import Graph from './graph.jsx';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 

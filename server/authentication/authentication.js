@@ -1,5 +1,5 @@
 const passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth2').Strategy;
+// var GoogleStrategy = require('passport-google-oauth2').Strategy;
 const LocalStrategy = require('passport-local');
 const passportJWT = require('passport-jwt');
 const JwtStrategy = passportJWT.Strategy;
@@ -17,29 +17,29 @@ const googleOptions = {
 };
 
 //Google Strategy
-passport.use(
-  new GoogleStrategy(googleOptions, function(request, accessToken, refreshToken, profile, done) {
-    User.findOne({ googleId: profile.id }, function(err, user) {
-      if (err) throw err;
-      if (user) {
-        return done(err, user);
-      } else {
-        var data = {};
-        data.imageUrl = '';
-        data.email = profile.emails[0].value;
-        data.name = profile.displayName;
-        if (profile.photos && profile.photos.length) {
-          data.imageUrl = profilephotos[0].value;
-        }
-        var newUser = new User(data);
-        newUser.save(function(err) {
-          if (err) throw err;
-          return done(null, newUser);
-        });
-      }
-    });
-  })
-);
+// passport.use(
+//   new GoogleStrategy(googleOptions, function(request, accessToken, refreshToken, profile, done) {
+//     User.findOne({ googleId: profile.id }, function(err, user) {
+//       if (err) throw err;
+//       if (user) {
+//         return done(err, user);
+//       } else {
+//         var data = {};
+//         data.imageUrl = '';
+//         data.email = profile.emails[0].value;
+//         data.name = profile.displayName;
+//         if (profile.photos && profile.photos.length) {
+//           data.imageUrl = profilephotos[0].value;
+//         }
+//         var newUser = new User(data);
+//         newUser.save(function(err) {
+//           if (err) throw err;
+//           return done(null, newUser);
+//         });
+//       }
+//     });
+//   })
+// );
 
 // Function to be used when login with Google account
 module.exports.googleAuth = () => {
