@@ -8,6 +8,7 @@ class RecExpense extends React.Component {
       addExpense: '',
       category: '',
       amount: '',
+      period: '',
       rec: []
     }
     this.onInputChange = this.onInputChange.bind(this);
@@ -37,8 +38,15 @@ class RecExpense extends React.Component {
     })
   }
 
+  onPeriodChange(e) {
+    this.setState({
+      period: e.target.value
+    })
+  }
+
   onSubmit(e) {
     e.preventDefault();
+
   }
 
   searchBar() {
@@ -53,6 +61,12 @@ class RecExpense extends React.Component {
               <option value={2}>Food</option>
               <option value={3}>Rent</option>
               <option value={4}>Others</option>
+            </select>
+            <select onChange={this.periodChange} id="period" name="period">
+              <option value="">Select Period</option>
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
             </select>
             <input value="Submit" type="submit"></input>
           </form>

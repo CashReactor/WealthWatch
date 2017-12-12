@@ -1,5 +1,9 @@
 //Import your routes here
 const { auth } = require('./routes/authentication.js');
+const { User } = require('../database/models/user.js');
+const { Rec } = require('../database/models/user.js');
+const { One } = require('../database/models/user.js');
+
 // ***********************
 var axios = require('axios');
 const passport = require('passport');
@@ -7,7 +11,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const { User } = require('../database/models/user.js');
 require('dotenv').config();
 
 const morgan = require('morgan');
@@ -43,6 +46,37 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log('Express is listening on port 1337');
 });
+
+//*****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE*****
+// const recurringSchema = new mongoose.Schema({
+//   expense: {
+//     type: String,
+//     unique: true
+//   },
+//   amount: Number,
+//   period: String,
+//   category: String,
+//   startDate: Date
+// });
+
+//*****DATABASE SCHEMA FOR ONE-TIME EXPENSE FOR REFERENCE*****
+// const oneTimeSchema = new mongoose.Schema({
+//   expense: String,
+//   amount: Number,
+//   date: Date,
+//   category: String
+// });
+
+app.post('/recExpense', function(req, res) {
+  console.log('adding recurring expense');
+  var currentEmail = req.body.currentEmail;
+  User.findOne({ email: currentEmail }, function(err, user) {
+    if (err) throw err;
+    var recurring = user.recurring;
+
+
+  })
+})
 
 //weather-map API
 app.post('/weather', function(req, res) {

@@ -15,6 +15,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentEmail: '',
       budget: 500,
       budgetInput: false,
       currentDate: new Date(),
@@ -87,8 +88,8 @@ class App extends React.Component {
         </div>
         <Graph/>
         <InputBalance/>
-        <OneExpense/>
-        <RecExpense/>
+        <OneExpense currentEmail={this.state.currentEmail}/>
+        <RecExpense currentEmail={this.state.currentEmail}/>
         <LoginSignup/>
       </div>
     )
