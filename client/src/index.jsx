@@ -8,20 +8,23 @@ import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
 import LoginSignup from './components/loginSignup.jsx';
 import Chart from 'chart.js';
-import 'bootstrap/dist/css/bootstrap.css'
-
+import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const jwtToken = window.localStorage.getItem('wealthwatch_token') || '';
     this.state = {
       currentEmail: '',
       budget: 500,
       budgetInput: false,
       currentDate: new Date(),
-      loggedIn: false
-    }
+      token: jwtToken,
+      loggedIn: !!jwtToken
+    };
     this.getCurrentDate = this.getCurrentDate.bind(this);
+    this.setLoginState = this.setLoginState.bind(this);
+    this.setLogoutState = this.setLogoutState.bind(this);
   }
 
   componentDidMount() {
@@ -37,35 +40,39 @@ class App extends React.Component {
       type: 'bar',
       data: {
         labels: days,
-        datasets: [{
-          label: 'Current Monthly Balance ($)',
-          data: [this.state.budget, 400, 200, 100, 50, 25, -10, -20, -40],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            label: 'Current Monthly Balance ($)',
+            data: [this.state.budget, 400, 200, 100, 50, 25, -10, -20, -40],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }
+        ]
       },
       options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                  beginAtZero:true
-                }
-            }]
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
         }
       }
     });
@@ -79,24 +86,37 @@ class App extends React.Component {
     return new Date(year, month, 0).getDate();
   }
 
+  setLoginState(token) {
+    this.setState({
+      loggedIn: true,
+      token: token
+    });
+    window.localStorage.setItem('wealthwatch_token', token);
+  }
+
+  setLogoutState(event) {
+    this.setState({
+      loggedIn: false,
+      token: ''
+    });
+    window.localStorage.removeItem('wealthwatch_token');
+  }
+
   render() {
     return (
       <div>
         <div className="widget">
-          <Clock getCurrentDate={this.getCurrentDate}/>
-          <Weather/>
+          <Clock getCurrentDate={this.getCurrentDate} />
+          <Weather />
         </div>
-        <Graph/>
-        <InputBalance/>
-        <OneExpense currentEmail={this.state.currentEmail}/>
-        <RecExpense currentEmail={this.state.currentEmail}/>
-        <LoginSignup/>
+        <Graph />
+        <InputBalance />
+        <OneExpense currentEmail={this.state.currentEmail} />
+        <RecExpense currentEmail={this.state.currentEmail} />
+        <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
       </div>
-    )
+    );
   }
 }
 
-ReactDOM.render(
-    <App />,
-  document.getElementById('app')
-);
+ReactDOM.render(<App />, document.getElementById('app'));
