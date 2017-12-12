@@ -11,34 +11,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const session = require('express-session');
 const app = express();
 
 require('dotenv').config();
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
-app.use('/auth', auth);
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-app.use(session({
-  secret: 'dantomicob',
-  resave: false,
-  saveUninitialized: true,
-}));
-//this session is created to store in the session the user's email upon logging in
+
 app.use(express.static(__dirname + '/../client/public'));
 
-
-app.get('/', (req, res) => {
-  res.json('Hello World');
-});
-
-app.listen(port, () => {
-  console.log('Express is listening on port 1337');
-});
+// Routes
+app.use('/auth', auth); // Authentication route
+/******************************************************/
 
 //*****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE*****
 // const recurringSchema = new mongoose.Schema({
@@ -150,3 +139,6 @@ app.post('/weather', function(req, res) {
   });
 });
 
+app.listen(port, () => {
+  console.log('Express is listening on port 1337');
+});

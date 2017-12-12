@@ -20,7 +20,6 @@ router.get('/', jwtAuth(), (req, res, next) => {
 /*********************************************************/
 
 router.post('/login', localAuth(), (req, res) => {
-  console.log('Login state req:', req);
   const { _id, email, name } = req.user;
   const user = { _id, email, name };
   const token = generateToken(user);
