@@ -54,15 +54,13 @@ class LineGraph extends React.Component {
       type: 'line',
       data: {
         labels: days,
-        datasets: [
-          {
-            label: 'Current Monthly Expenditure ($)',
-            data: updatedBudgets,
-            // backgroundColor: randomColors,
-            // borderColor: randomColors,
-            borderWidth: 1,
-          },
-        ],
+        datasets: [{
+          label: 'Current Monthly Expenditure ($)',
+          data: updatedBudgets,
+          backgroundColor: randomColors,
+          borderColor: randomColors,
+          borderWidth: 1
+        }]
       },
       options: {
         scales: {
