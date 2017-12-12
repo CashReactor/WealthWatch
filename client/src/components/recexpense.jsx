@@ -47,6 +47,7 @@ class RecExpense extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     var data = {
+      email: this.props.currentEmail,
       expense: this.state.expense,
       category: this.state.category,
       amount: this.state.amount,

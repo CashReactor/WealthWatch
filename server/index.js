@@ -10,34 +10,27 @@ const passport = require('passport');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const session = require('express-session');
+const app = express();
 
 require('dotenv').config();
 
-const morgan = require('morgan');
-
-const app = express();
-
+app.set('port', process.env.PORT || 1337);
+const port = app.get('port');
+app.use('/auth', auth);
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-
-app.set('port', process.env.PORT || 1337);
-const port = app.get('port');
-
-app.use('/auth', auth);
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(session({
+  secret: 'dantomicob',
+  resave: false,
+  saveUninitialized: true,
+}));
+//this session is created to store in the session the user's email upon logging in
 app.use(express.static(__dirname + '/../client/public'));
-// Use Routes here.....
-app.use('/auth', auth);
-/************************/
 
-app.get('/', (req, res) => {
-  res.json('Hello World');
-});
 
 app.get('/', (req, res) => {
   res.json('Hello World');
@@ -95,6 +88,27 @@ app.listen(port, () => {
 //   oneTime: [oneTimeSchema],
 //   imageUrl: String
 // });
+
+app.post('/oneExpense', function(req, res) {
+  console.log('adding one-time expense');
+  var currentEmail = req.body.currentEmail;
+  User.findOne({ email: currentEmail }, function(err, user) {
+    if (err) throw err;
+    var oneExpenses = user.oneTime;
+    var oneExpense = new One({
+      expense: req.body.expense,
+      amount: req.body.expense,
+      date: new Date(),
+      category: req.body.category
+    })
+    oneExpenses.push(oneExpense);
+    User.findOneAndUpdate({ email: currentEmail }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
+      if (err) throw err;
+      res.send(updatedUser);
+      res.end();
+    })
+  })
+})
 
 app.post('/recExpense', function(req, res) {
   console.log('adding recurring expense');
