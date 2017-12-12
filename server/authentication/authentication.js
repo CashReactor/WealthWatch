@@ -13,7 +13,7 @@ const googleOptions = {
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/',
-  passReqToCallback: true
+  passReqToCallback: true,
 };
 
 //Google Strategy
@@ -52,7 +52,7 @@ module.exports.googleAuthCallback = () => {
 // JWT login strategy options configuration
 const jwtOptions = {
   secretOrKey: _secret,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
 //JWT Strategy

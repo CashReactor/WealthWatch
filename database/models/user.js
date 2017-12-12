@@ -3,7 +3,7 @@ const database = require('../config');
 const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail');
 const { recurringSchema } = require('./recurring.js');
-const { oneTimeSchema } = require('./oneTime.js')
+const { oneTimeSchema } = require('./oneTime.js');
 
 // const recurringSchema = new mongoose.Schema({
 //   expense: {
@@ -31,16 +31,16 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
     validate: [{ isAsync: false, validator: isEmail, msg: 'Invalid Email Address' }],
-    required: 'Please supply an email address'
+    required: 'Please supply an email address',
   },
   name: {
     type: String,
     required: 'Please supply a name',
-    trim: true
+    trim: true,
   },
   password: {
     type: String,
-    required: 'Please supply a password'
+    required: 'Please supply a password',
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
   googleToken: String,
   recurring: [recurringSchema],
   oneTime: [oneTimeSchema],
-  imageUrl: String
+  imageUrl: String,
 });
 
 userSchema.methods.comparePassword = function (password, callback) {
@@ -58,18 +58,18 @@ userSchema.methods.comparePassword = function (password, callback) {
     if (error) {
       return callback(error);
     }
-    callback(null, isMatch);
+    return callback(null, isMatch);
   });
 };
 
-//The second argument of pre can't be arrow function or else this will not be the user
-userSchema.pre('save', function(next) {
+// The second argument of pre can't be arrow function or else this will not be the user
+userSchema.pre('save', function (next) {
   return bcrypt.hash(this.password, 10, (error, hash) => {
     if (error) {
       return next(error);
     }
     this.password = hash;
-    next();
+    return next();
   });
 });
 

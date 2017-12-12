@@ -1,32 +1,32 @@
 import React from 'react';
-import BarGraph from './barGraph.jsx';
-import LineGraph from './lineGraph.jsx'
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import BarGraph from './barGraph';
+import LineGraph from './lineGraph';
 
 class Graph extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       data: [],
-      currentDate: new Date()
-    }
+      currentDate: new Date(),
+    };
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <div>
         <Tabs>
           <Tab label="Bar Graph">
             <div>
-              <BarGraph/>
+              <BarGraph />
             </div>
           </Tab>
           <Tab label="Line Graph">
-            <LineGraph></LineGraph>
+            <LineGraph />
           </Tab>
         </Tabs>
       </div>
-    )
+    );
   }
 }
 

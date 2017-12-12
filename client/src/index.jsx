@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Graph from './components/Graph.jsx';
-import InputBalance from './components/inputBalance.jsx';
-import Clock from './components/clock.jsx';
-import Weather from './components/weather.jsx';
-import OneExpense from './components/oneExpense.jsx';
-import RecExpense from './components/recExpense.jsx';
-import LoginSignup from './components/loginSignup.jsx';
-import Chart from 'chart.js';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Chart from 'chart.js';
+import Graph from './components/Graph';
+import InputBalance from './components/inputBalance';
+import Clock from './components/clock';
+import Weather from './components/weather';
+import OneExpense from './components/oneExpense';
+import RecExpense from './components/recExpense';
+import LoginSignup from './components/loginSignup';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,16 +20,14 @@ class App extends React.Component {
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
-      loggedIn: !!jwtToken
+      loggedIn: !!jwtToken,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   getCurrentDate(date) {
     this.setState({ currentDate: date });
@@ -42,15 +40,14 @@ class App extends React.Component {
   setLoginState(token) {
     this.setState({
       loggedIn: true,
-      token: token
+      token: token,
     });
     window.localStorage.setItem('wealthwatch_token', token);
-
   }
   setLogoutState(event) {
     this.setState({
       loggedIn: false,
-      token: ''
+      token: '',
     });
     window.localStorage.removeItem('wealthwatch_token');
   }
@@ -59,21 +56,20 @@ class App extends React.Component {
     return (
       <div>
         <div className="widget">
-          <Clock getCurrentDate={this.getCurrentDate}/>
-          <Weather/>
-        <br></br>
+          <Clock getCurrentDate={this.getCurrentDate} />
+          <Weather />
+          <br />
         </div>
         <MuiThemeProvider>
-          <Graph/>
+          <Graph />
         </MuiThemeProvider>
-        <InputBalance/>
-        <OneExpense currentEmail={this.state.currentEmail}/>
-        <RecExpense currentEmail={this.state.currentEmail}/>
-        <LoginSignup/>
+        <InputBalance />
+        <OneExpense currentEmail={this.state.currentEmail} />
+        <RecExpense currentEmail={this.state.currentEmail} />
+        <LoginSignup />
       </div>
     );
   }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
