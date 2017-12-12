@@ -46,7 +46,16 @@ class RecExpense extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-
+    var data = {
+      expense: this.state.expense,
+      category: this.state.category,
+      amount: this.state.amount,
+      period: this.state.period
+    }
+    axios.post('/recExpense', data)
+    .then((response) => {
+      this.setState({ rec: response.data });
+    })
   }
 
   searchBar() {
