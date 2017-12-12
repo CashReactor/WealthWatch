@@ -53,22 +53,27 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="widget">
-          <Clock getCurrentDate={this.getCurrentDate} />
-          <Weather />
-          <br />
+    if (!this.state.loggedIn) {
+      return (
+        <div>
+          <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
         </div>
-        <MuiThemeProvider>
+      )
+    } else {
+      return (
+        <div>
+          <div className="widget">
+            <Clock getCurrentDate={this.getCurrentDate} />
+            <Weather />
+          </div>
           <Graph />
-        </MuiThemeProvider>
-        <InputBalance />
-        <OneExpense currentEmail={this.state.currentEmail} />
-        <RecExpense currentEmail={this.state.currentEmail} />
-        <LoginSignup />
-      </div>
-    );
+          <InputBalance />
+          <OneExpense currentEmail={this.state.currentEmail} />
+          <RecExpense currentEmail={this.state.currentEmail} />
+          <button onClick={this.setState({ loggedIn: false })} type="" className="btn btn-warning">Logout</button>
+        </div>
+      );
+    }
   }
 }
 

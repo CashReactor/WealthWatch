@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
+const session = require('express-session');
 
 require('dotenv').config();
 
@@ -77,6 +78,16 @@ app.use('/auth', auth); // Authentication route
 //   oneTime: [oneTimeSchema],
 //   imageUrl: String
 // });
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.post('/login', function(req, res) {
+  console.log(req.session);
+})
 
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
