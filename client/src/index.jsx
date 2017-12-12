@@ -81,7 +81,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.renderChart();
+    this.renderChart()
   }
 
   getCurrentDate(date) {

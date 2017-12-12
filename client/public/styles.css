@@ -37,6 +37,9 @@ img {
   border-style: solid;
   margin-bottom: 30px;
   background-color: lightblue;
+  background-image: url('https://images.unsplash.com/photo-1500993855538-c6a99f437aa7?auto=format&fit=crop&w=2100&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-size: cover;
+  background-position: bottom;
 }
 
 .signupForm{
