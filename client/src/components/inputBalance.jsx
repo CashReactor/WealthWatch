@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Graph from './graph.jsx';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css'
-
 
 class InputBalance extends React.Component {
   constructor(props) {
@@ -85,7 +83,7 @@ class InputBalance extends React.Component {
   render() {
     return (
       <div>
-        <button type="button" onClick={this.budgetToggle}>Balance</button>
+        <button type="button" onClick={this.budgetToggle} className="btn">Balance</button>
         {this.searchBar()}
       </div>
     )

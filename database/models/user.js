@@ -25,7 +25,6 @@ const { oneTimeSchema } = require('./oneTime.js')
 // });
 
 const userSchema = new mongoose.Schema({
-  //user has email, name, password, budget, and recurring/onetime as arrays of expense models
   email: {
     type: String,
     unique: true,

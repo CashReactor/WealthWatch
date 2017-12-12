@@ -9,7 +9,7 @@ img {
   border-style: solid;
   border-width: 7px;
   border-color: grey;
-  font-size: 2.7vh;
+  font-size: 3.7vh;
   color: white;
   font-weight: 900;
   background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1504247025080-d81dd33c7faf?auto=format&fit=crop&w=1950&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
@@ -32,6 +32,3 @@ img {
 .weather {
   text-align: right;
 }
-
-/*         <img className="logo" src="https://i.imgur.com/wnAg9hG.png"></img>
- */
