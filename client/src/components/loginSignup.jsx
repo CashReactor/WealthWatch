@@ -46,7 +46,7 @@ class LoginSignup extends React.Component {
     e.preventDefault();
     if (this.validateSignupForm()) {
       axios
-        .post('/auth/signup', {
+        .post('/signup', {
           email: this.state.signupEmail,
           name: this.state.signupName,
           password: this.state.signupPassword
@@ -66,7 +66,7 @@ class LoginSignup extends React.Component {
     e.preventDefault();
     if (this.validateLoginForm()) {
       axios
-        .post('auth/login', {
+        .post('/login', {
           email: this.state.loginEmail,
           password: this.state.loginPassword
         })

@@ -20,11 +20,8 @@ class App extends React.Component {
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
-<<<<<<< HEAD
       loggedIn: !!jwtToken,
-=======
       loggedIn: true
->>>>>>> Add new signup route until jwt debug
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -34,58 +31,58 @@ class App extends React.Component {
   }
 
   renderChart() {
-    var days = [];
-    var month = this.state.currentDate.getMonth() + 1;
-    var year = this.state.currentDate.getFullYear();
-    var daysInMonth = this.daysInMonth(month, year);
-    for (var i = 0; i <= daysInMonth; i++) {
-      days.push(i);
-    }
-    var ctx = document.getElementById('financeChart');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: days,
-        datasets: [
-          {
-            label: 'Current Monthly Balance ($)',
-            data: [this.state.budget, 400, 200, 100, 50, 25, -10, -20, -40],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    });
+    // var days = [];
+    // var month = this.state.currentDate.getMonth() + 1;
+    // var year = this.state.currentDate.getFullYear();
+    // var daysInMonth = this.daysInMonth(month, year);
+    // for (var i = 0; i <= daysInMonth; i++) {
+    //   days.push(i);
+    // }
+    // var ctx = document.getElementById('financeChart');
+    // var myChart = new Chart(ctx, {
+    //   type: 'bar',
+    //   data: {
+    //     labels: days,
+    //     datasets: [
+    //       {
+    //         label: 'Current Monthly Balance ($)',
+    //         data: [this.state.budget, 400, 200, 100, 50, 25, -10, -20, -40],
+    //         backgroundColor: [
+    //           'rgba(255, 99, 132, 0.2)',
+    //           'rgba(54, 162, 235, 0.2)',
+    //           'rgba(255, 206, 86, 0.2)',
+    //           'rgba(75, 192, 192, 0.2)',
+    //           'rgba(153, 102, 255, 0.2)',
+    //           'rgba(255, 159, 64, 0.2)'
+    //         ],
+    //         borderColor: [
+    //           'rgba(255,99,132,1)',
+    //           'rgba(54, 162, 235, 1)',
+    //           'rgba(255, 206, 86, 1)',
+    //           'rgba(75, 192, 192, 1)',
+    //           'rgba(153, 102, 255, 1)',
+    //           'rgba(255, 159, 64, 1)'
+    //         ],
+    //         borderWidth: 1
+    //       }
+    //     ]
+    //   },
+    //   options: {
+    //     scales: {
+    //       yAxes: [
+    //         {
+    //           ticks: {
+    //             beginAtZero: true
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // });
   }
 
   componentDidMount() {
-    this.renderChart()
+    this.renderChart();
   }
 
   getCurrentDate(date) {
@@ -101,7 +98,7 @@ class App extends React.Component {
       loggedIn: true,
       token: token,
     });
-    this.renderChart();
+    // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
   }
   setLogoutState(event) {
@@ -132,11 +129,13 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather />
           </div>
-          <Graph />
+          <MuiThemeProvider>
+            <Graph />
+          </MuiThemeProvider>
           <InputBalance />
           <OneExpense currentEmail={this.state.currentEmail} />
           <RecExpense currentEmail={this.state.currentEmail} />
-          <button onClick={this.logout} type="" className="btn btn-warning">Logout</button>
+          <button onClick={this.setLogoutState} type="" className="btn btn-warning">Logout</button>
         </div>
       );
     }
