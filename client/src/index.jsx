@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
-import Graph from './components/Graph';
-import InputBalance from './components/inputBalance';
-import Clock from './components/clock';
-import Weather from './components/weather';
-import OneExpense from './components/oneExpense';
-import RecExpense from './components/recExpense';
-import LoginSignup from './components/loginSignup';
+import Graph from './components/Graph.jsx';
+import InputBalance from './components/inputBalance.jsx';
+import Clock from './components/clock.jsx';
+import Weather from './components/weather.jsx';
+import OneExpense from './components/oneExpense.jsx';
+import RecExpense from './components/recExpense.jsx';
+import LoginSignup from './components/loginSignup.jsx';
 
 class App extends React.Component {
   constructor(props) {
