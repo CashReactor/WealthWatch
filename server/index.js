@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 const session = require('express-session');
+var bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
@@ -87,6 +88,20 @@ app.use(session({
 
 app.post('/login', function(req, res) {
 
+})
+
+app.post('signup', function(req, res) {
+  var encryptedPassword = bcrpyt.hashSync(req.body.password);
+  var data = {
+    email: req.body.email,
+    imageUrl: req.body.imageUrl,
+    password: encryptedPassword,
+    name: req.body.name
+  }
+  var newUser = new User(data);
+  newUser.save(function(error) {
+    if (err) throw err;
+  })
 })
 
 app.post('/oneExpense', function(req, res) {
