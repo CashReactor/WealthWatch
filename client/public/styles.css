@@ -8,19 +8,15 @@ img {
 .widget {
   border-style: solid;
   border-width: 7px;
-  border-color: grey;
-  font-size: 3.7vh;
+  border-color: lightblue;
+  font-size: 2.7vh;
   color: white;
   font-weight: 900;
-  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1504247025080-d81dd33c7faf?auto=format&fit=crop&w=1950&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-size: cover;
   background-position: center;
-  width: 77%;
-  margin-left: 11.5%;
-  margin-right: 11.5%;
+  width: 100%;
   padding: 0;
-/*   margin-left: 5%;
-  margin-right: 5%; */
   height: 197px;
 }
 
@@ -34,17 +30,27 @@ img {
 }
 
 .loginForm{
+  color: white;
   border-style: solid;
+  border-width: 7px;
+  border-color: lightblue;
   margin-bottom: 30px;
-  background-color: lightblue;
-
+  background-color: white;
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-size: cover;
   background-position: bottom;
+  padding: 17px;
 }
 
 .signupForm{
   border-style: solid;
+  border-width: 7px;
+  border-color: lightblue;
+  color: white;
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  border-style: solid;
   background-color: lightgreen;
+  padding: 17px;
 }
 
 /*         <img className="logo" src="https://i.imgur.com/wnAg9hG.png"></img>

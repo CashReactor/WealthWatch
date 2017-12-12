@@ -21,7 +21,6 @@ class App extends React.Component {
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
-      loggedIn: true
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -135,7 +134,7 @@ class App extends React.Component {
           <InputBalance />
           <OneExpense currentEmail={this.state.currentEmail} />
           <RecExpense currentEmail={this.state.currentEmail} />
-          <button onClick={this.setLogoutState} type="" className="btn btn-warning">Logout</button>
+          <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );
     }
