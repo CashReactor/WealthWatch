@@ -28,6 +28,20 @@ class LoginSignup extends React.Component {
     });
   }
 
+  onSubmitSignup(e) {
+    e.preventDefault();
+    if (this.validateSignupForm()) {
+      axios.post('/signup', {
+        email: this.state.signupEmail,
+        name: this.state.signupName,
+        password: this.state.signupPassword
+      })
+      .then((response) => {
+
+      })
+    }
+  }
+
   onSignupSubmit(e) {
     e.preventDefault();
     if (this.validateSignupForm()) {

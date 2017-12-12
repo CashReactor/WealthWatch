@@ -20,7 +20,11 @@ class App extends React.Component {
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
+<<<<<<< HEAD
       loggedIn: !!jwtToken,
+=======
+      loggedIn: true
+>>>>>>> Add new signup route until jwt debug
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -101,6 +105,7 @@ class App extends React.Component {
     window.localStorage.setItem('wealthwatch_token', token);
   }
   setLogoutState(event) {
+    event.preventDefault();
     this.setState({
       loggedIn: false,
       token: '',
