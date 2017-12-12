@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Graph from './graph.jsx';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 
 class LoginSignup extends React.Component {
   constructor(props) {
@@ -10,25 +9,92 @@ class LoginSignup extends React.Component {
     this.state = {
       loginEmail: '',
       loginPassword: '',
+      loginWarning: '',
       signupEmail: '',
       signupName: '',
       signupPassword: '',
-      signupImageUrl: ''
-    }
+      signupImageUrl: '',
+      signupWarning: ''
+    };
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onSignupSubmit = this.onSignupSubmit.bind(this);
+    this.onLoginSubmit = this.onLoginSubmit.bind(this);
+    this.validateLoginForm = this.validateLoginForm.bind(this);
+    this.validateSignupForm = this.validateSignupForm.bind(this);
   }
 
   onInputChange(e) {
     this.setState({
       [e.target.id]: e.target.value
-    })
+    });
   }
 
   onSignupSubmit(e) {
     e.preventDefault();
+    if (this.validateSignupForm()) {
+      axios
+        .post('/auth/signup', {
+          email: this.state.signupEmail,
+          name: this.state.signupName,
+          password: this.state.signupPassword
+        })
+        .then(response => {
+          if (response.status === 201) {
+            this.props.setLoginState(response.data.token);
+          }
+        })
+        .catch(error => {
+          this.setState({ signupWarning: error.response.data });
+        });
+    }
   }
 
   onLoginSubmit(e) {
     e.preventDefault();
+    if (this.validateLoginForm()) {
+      axios
+        .post('/auth/login', {
+          email: this.state.loginEmail,
+          password: this.state.loginPassword
+        })
+        .then(response => {
+          if (response.status === 200) {
+            this.props.setLoginState(response.data.token);
+          }
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            this.setState({ loginWarning: 'Incorrect username or password' });
+          }
+        });
+    }
+  }
+
+  validateLoginForm() {
+    if (!this.state.loginEmail) {
+      this.setState({ loginWarning: 'Please enter an email address' });
+      return false;
+    } else if (!this.state.loginPassword) {
+      this.setState({ loginWarning: 'Please enter a password' });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  validateSignupForm() {
+    if (!this.state.signupEmail) {
+      this.setState({ signupWarning: 'Please enter an email address' });
+      return false;
+    } else if (!this.state.signupName) {
+      this.setState({ signupWarning: 'Please enter a name' });
+      return false;
+    } else if (!this.state.signupPassword) {
+      this.setState({ signupWarning: 'Please enter a password' });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   loginForm() {
@@ -36,18 +102,38 @@ class LoginSignup extends React.Component {
       <div>
         <form>
           <div className="form-group col-xs-4">
-            <label for="inputEmail">Email Address</label>
-            <input type="email" className="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email"/>
-            <small id="emailHelp" className="form-text text-muted">We'll never share your email to anyone else.</small>
+            <label htmlFor="inputEmail">Email Address</label>
+            <input
+              type="email"
+              value={this.state.loginEmail}
+              onChange={this.onInputChange}
+              className="form-control"
+              id="loginEmail"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+            />
+            <small id="emailHelp" className="form-text text-muted">
+              We'll never share your email to anyone else.
+            </small>
           </div>
           <div className="form-group col-xs-4">
-            <label for="inputPassword">Password</label>
-            <input type="password" className="form-control" id="loginPassword" placeholder="Password"/>
+            <label htmlFor="inputPassword">Password</label>
+            <input
+              value={this.state.loginPassword}
+              onChange={this.onInputChange}
+              type="password"
+              className="form-control"
+              id="loginPassword"
+              placeholder="Password"
+            />
           </div>
         </form>
-        <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">Login</button>
+        <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
+          Login
+        </button>
+        {this.state.loginWarning}
       </div>
-    )
+    );
   }
 
   signupForm() {
@@ -55,26 +141,59 @@ class LoginSignup extends React.Component {
       <div>
         <form>
           <div className="form-group col-xs-4">
-            <label for="inputName">Name</label>
-            <input type="text" className="form-control" id="signupName" placeholder="Name"/>
+            <label htmlFor="inputName">Name</label>
+            <input
+              value={this.state.signupName}
+              onChange={this.onInputChange}
+              type="text"
+              className="form-control"
+              id="signupName"
+              placeholder="Name"
+            />
           </div>
           <div className="form-group col-xs-4">
-            <label for="inputEmail">Email</label>
-            <input type="email" className="form-control" id="signupEmail" placeholder="Email"/>
-            <small id="emailHelp" className="form-text text-muted">This email account will be used for logging in.</small>
-          </div>
-            <div className="form-group col-xs-8">
-            <label for="inputPassword">Password</label>
-            <input type="password" className="form-control" id="signupPassword" placeholder="Password"/>
+            <label htmlFor="inputEmail">Email</label>
+            <input
+              value={this.state.signupEmail}
+              onChange={this.onInputChange}
+              type="email"
+              className="form-control"
+              id="signupEmail"
+              placeholder="Email"
+            />
+            <small id="emailHelp" className="form-text text-muted">
+              This email account will be used for logging in.
+            </small>
           </div>
           <div className="form-group col-xs-8">
-            <label for="inputName">Profile Image</label>
-            <input type="text" className="form-control" id="signupImageUrl" placeholder="Image Url"/>
+            <label htmlFor="inputPassword">Password</label>
+            <input
+              value={this.state.signupPassword}
+              onChange={this.onInputChange}
+              type="password"
+              className="form-control"
+              id="signupPassword"
+              placeholder="Password"
+            />
           </div>
-          <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">Sign Up</button>
+          <div className="form-group col-xs-8">
+            <label htmlFor="inputName">Profile Image</label>
+            <input
+              value={this.state.signupImageUrl}
+              onChange={this.onInputChange}
+              type="text"
+              className="form-control"
+              id="signupImageUrl"
+              placeholder="Image Url"
+            />
+          </div>
+          <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
+            Sign Up
+          </button>
+          {this.state.signupWarning}
         </form>
       </div>
-    )
+    );
   }
 
   render() {
@@ -83,7 +202,7 @@ class LoginSignup extends React.Component {
         {this.loginForm()}
         {this.signupForm()}
       </div>
-    )
+    );
   }
 }
 
