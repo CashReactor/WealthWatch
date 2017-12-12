@@ -80,55 +80,6 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}));
-
-app.post('/login', function(req, res) {
-  User.findOne({
-    email: req.body.email
-  }, function(err, user) {
-    if (err) throw err;
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        req.session.user = req.body.email;
-        res.send('success');
-        res.end();
-      }
-    } else {
-      res.send();
-      res.end();
-    }
-  })
-})
-
-app.post('/logout', function(req, res) {
-  req.session.destroy((err) => {
-    if (err) throw err;
-    console.log('Logout successful');
-    res.send();
-    res.end();
-  })
-})
-
-app.post('signup', function(req, res) {
-  var encryptedPassword = bcrpyt.hashSync(req.body.password);
-  var data = {
-    email: req.body.email,
-    imageUrl: req.body.imageUrl,
-    password: encryptedPassword,
-    name: req.body.name
-  }
-  var newUser = new User(data);
-  newUser.save(function(err) {
-    if (err) throw err;
-    res.send('success');
-    res.end();
-  })
-})
-
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
   var currentEmail = req.body.currentEmail;
