@@ -17,7 +17,7 @@ class OneExpense extends React.Component {
   }
 
   getOneExpenses() {
-    axios.get('/oneExpenses')
+    axios.post('/fetchOneExpenses', { email: this.props.currentEmail })
     .then((response) => {
       this.setState({ one: response.data })
     })

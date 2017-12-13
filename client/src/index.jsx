@@ -27,7 +27,6 @@ class App extends React.Component {
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
-    this.logout = this.logout.bind(this);
     this.renderChart = this.renderChart.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
   }
@@ -110,20 +109,11 @@ class App extends React.Component {
 
   setLogoutState(event) {
     event.preventDefault();
-    axios.get('/logout')
-    .then((response) => {
-      console.log('THIS IS HITTING')
-      this.setState({
-        loggedIn: false,
-        token: '',
-      });
-      window.localStorage.removeItem('wealthwatch_token');
-    })
-  }
-
-  logout(e) {
-    e.preventDefault();
-    this.setState({ loggedIn: false });
+    this.setState({
+      loggedIn: false,
+      token: '',
+    });
+    window.localStorage.removeItem('wealthwatch_token');
   }
 
   render() {

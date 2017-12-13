@@ -89,8 +89,11 @@ app.get('/logout', function(req, res) {
   res.end();
 })
 
-app.get('/oneExpenses', function(req, res) {
-  User.findOne({ email: req.session.user.email })
+app.post('/fetchOneExpenses', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.oneTime);
+    res.end();
+  })
 })
 
 app.post('/oneExpense', function(req, res) {
@@ -114,8 +117,11 @@ app.post('/oneExpense', function(req, res) {
   })
 })
 
-app.get('/recExpenses', function(req, res) {
-
+app.post('/fetchRecExpenses', function(req, res) {
+  User.findOne({ email: req.body.email}, (err, user) => {
+    res.send(user.recurring);
+    res.end();
+  })
 })
 
 app.post('/recExpense', function(req, res) {

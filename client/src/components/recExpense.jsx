@@ -18,7 +18,7 @@ class RecExpense extends React.Component {
   }
 
   getRecExpenses() {
-    axios.get('/recExpenses')
+    axios.get('/fetchRecExpenses', { email: this.props.email })
     .then((response) => {
       this.setState({ rec: response.data })
     })
