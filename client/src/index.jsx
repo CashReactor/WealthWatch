@@ -26,68 +26,12 @@ class App extends React.Component {
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
-    this.renderChart = this.renderChart.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
   }
 
   getCurrentEmail(email) {
     this.setState({ currentEmail: email })
   }
-
-  // renderChart() {
-    // var days = [];
-    // var month = this.state.currentDate.getMonth() + 1;
-    // var year = this.state.currentDate.getFullYear();
-    // var daysInMonth = this.daysInMonth(month, year);
-    // for (var i = 0; i <= daysInMonth; i++) {
-    //   days.push(i);
-    // }
-    // var ctx = document.getElementById('financeChart');
-    // var myChart = new Chart(ctx, {
-    //   type: 'bar',
-    //   data: {
-    //     labels: days,
-    //     datasets: [
-    //       {
-    //         label: 'Current Monthly Balance ($)',
-    //         data: [this.state.budget, 400, 200, 100, 50, 25, -10, -20, -40],
-    //         backgroundColor: [
-    //           'rgba(255, 99, 132, 0.2)',
-    //           'rgba(54, 162, 235, 0.2)',
-    //           'rgba(255, 206, 86, 0.2)',
-    //           'rgba(75, 192, 192, 0.2)',
-    //           'rgba(153, 102, 255, 0.2)',
-    //           'rgba(255, 159, 64, 0.2)'
-    //         ],
-    //         borderColor: [
-    //           'rgba(255,99,132,1)',
-    //           'rgba(54, 162, 235, 1)',
-    //           'rgba(255, 206, 86, 1)',
-    //           'rgba(75, 192, 192, 1)',
-    //           'rgba(153, 102, 255, 1)',
-    //           'rgba(255, 159, 64, 1)'
-    //         ],
-    //         borderWidth: 1
-    //       }
-    //     ]
-    //   },
-    //   options: {
-    //     scales: {
-    //       yAxes: [
-    //         {
-    //           ticks: {
-    //             beginAtZero: true
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   }
-    // });
-  // }
-
-  // componentDidMount() {
-    // this.renderChart();
-  // }
 
   getCurrentDate(date) {
     this.setState({ currentDate: date });
@@ -136,10 +80,8 @@ class App extends React.Component {
             <Graph />
             <br/>
             <InputBalance />
-            <Expenses />
+            <Expenses currentEmail={this.state.currentEmail}/>
           </MuiThemeProvider>
-          <OneExpense currentEmail={this.state.currentEmail}/>
-          <RecExpense currentEmail={this.state.currentEmail}/>
           <br/>
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
