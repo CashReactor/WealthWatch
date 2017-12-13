@@ -24,7 +24,20 @@ const { oneTimeSchema } = require('./oneTime.js');
 //   category: String
 // });
 
-const userSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const googleUserSchema = new Schema({
+  googleId: String,
+  googleToken: String,
+  imageUrl: String,
+  recurring: [recurringSchema],
+  oneTime: [oneTimeSchema],
+  budget: Number,
+  name: String,
+  email: String
+})
+
+const userSchema = new Schema({
   email: {
     type: String,
     unique: true,

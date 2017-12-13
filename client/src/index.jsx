@@ -29,6 +29,10 @@ class App extends React.Component {
     this.renderChart = this.renderChart.bind(this);
   }
 
+  getRecExpenses() {
+    axios.get('/recExpenses')
+  }
+
   renderChart() {
     // var days = [];
     // var month = this.state.currentDate.getMonth() + 1;

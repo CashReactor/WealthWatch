@@ -16,6 +16,15 @@ const googleOptions = {
   passReqToCallback: true,
 };
 
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 //Google Strategy
 passport.use(
   new GoogleStrategy(googleOptions, function(request, accessToken, refreshToken, profile, done) {
@@ -30,7 +39,7 @@ passport.use(
         data.email = profile.emails[0].value;
         data.name = profile.displayName;
         if (profile.photos && profile.photos.length) {
-          data.imageUrl = profilephotos[0].value;
+          data.imageUrl = profile.photos[0].value;
         }
         var newUser = new User(data);
         newUser.save(function(err) {
