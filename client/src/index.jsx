@@ -15,18 +15,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const jwtToken = window.localStorage.getItem('wealthwatch_token') || '';
+    const email = window.localStorage.getItem('user_email');
     this.state = {
       budget: 5000,
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
-      currentEmail: ''
+      currentEmail: email
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
   }
 
   getCurrentEmail(email) {
@@ -41,13 +46,15 @@ class App extends React.Component {
     return new Date(year, month, 0).getDate();
   }
 
-  setLoginState(token) {
+  setLoginState(token, email) {
     this.setState({
       loggedIn: true,
       token: token,
+      currentEmail: email
     });
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
+    window.localStorage.setItem('user_email', email);
   }
 
   setLogoutState(event) {
@@ -57,6 +64,7 @@ class App extends React.Component {
       token: '',
     });
     window.localStorage.removeItem('wealthwatch_token');
+    window.localStorage.removeItem('user_email');
   }
 
   render() {

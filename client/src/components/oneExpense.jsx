@@ -14,6 +14,7 @@ class OneExpense extends React.Component {
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
     this.searchBar = this.searchBar.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   getOneExpenses() {
@@ -63,7 +64,7 @@ class OneExpense extends React.Component {
   searchBar() {
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form>
           Add one-time expense:{' '}
           <input
             type="text"
@@ -89,7 +90,7 @@ class OneExpense extends React.Component {
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <input value="Submit" type="submit" />
+          <input onClick={this.onSubmit} value="Submit" type="submit" />
         </form>
       </div>
     );

@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
 import Paper from 'material-ui/Paper';
-import { red200, orange300, blue500, blue700, blue900 } from 'material-ui/styles/colors';
+import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
 
 var styles = {
   default_tab:{
@@ -12,10 +12,11 @@ var styles = {
     fontWeight: 400,
   },
   paper: {
-    height: 750,
-    width: 1220,
+    height: '50%',
+    width: '70%',
     textAlign: "center",
-    marginLeft: 5,
+    marginLeft: '15%',
+    marginRight: '15%'
   }
 }
 

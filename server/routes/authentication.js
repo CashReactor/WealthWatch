@@ -20,10 +20,12 @@ router.get('/', jwtAuth(), (req, res, next) => {
 /*********************************************************/
 
 router.post('/login', localAuth(), (req, res) => {
+  console.log('THIS IS THE EMAILLLLL', req.body.email)
+  console.log('THIS IS THE USERRRRRR', req.user);
   const { _id, email, name } = req.user;
   const user = { _id, email, name };
   const token = generateToken(user);
-  res.json({ message: 'Login successful', token });
+  res.json({ message: 'Login successful', token, email });
 });
 
 router.post('/signup', (req, res) => {

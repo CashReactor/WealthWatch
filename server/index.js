@@ -99,8 +99,10 @@ app.post('/fetchOneExpenses', function(req, res) {
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
   var email = req.body.email;
-  User.findOne({ email: currentEmail }, function(err, user) {
+  console.log('THIS IS THE EMAILLLLL', email)
+  User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
+    console.log('THIS IS THE USERRRR', user);
     var oneExpenses = user.oneTime;
     var oneExpense = new One({
       expense: req.body.expense,
