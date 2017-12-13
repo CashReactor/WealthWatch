@@ -10,6 +10,7 @@ import Weather from './components/weather.jsx';
 import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
 import LoginSignup from './components/loginSignup.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,12 +22,17 @@ class App extends React.Component {
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
+      currentEmail: ''
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
-    this.logout = this.logout.bind(this);
     this.renderChart = this.renderChart.bind(this);
+    this.getCurrentEmail = this.getCurrentEmail.bind(this);
+  }
+
+  getCurrentEmail(email) {
+    this.setState({ currentEmail: email })
   }
 
   renderChart() {
@@ -100,6 +106,7 @@ class App extends React.Component {
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
   }
+
   setLogoutState(event) {
     event.preventDefault();
     this.setState({
@@ -109,16 +116,13 @@ class App extends React.Component {
     window.localStorage.removeItem('wealthwatch_token');
   }
 
-  logout(e) {
-    e.preventDefault();
-    this.setState({ loggedIn: false });
-  }
-
   render() {
     if (!this.state.loggedIn) {
       return (
         <div>
-          <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+          <MuiThemeProvider>
+            <LoginSignup getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+          </MuiThemeProvider>
         </div>
       )
     } else {
@@ -132,8 +136,8 @@ class App extends React.Component {
             <Graph />
           </MuiThemeProvider>
           <InputBalance />
-          <OneExpense currentEmail={this.state.currentEmail} />
-          <RecExpense currentEmail={this.state.currentEmail} />
+          <OneExpense currentEmail={this.state.currentEmail}/>
+          <RecExpense currentEmail={this.state.currentEmail}/>
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );

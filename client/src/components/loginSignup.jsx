@@ -1,6 +1,27 @@
 import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import Paper from 'material-ui/Paper';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+
+const style = {
+  paper: {
+    height: '50%',
+    length: '50%',
+    margin: '0 auto',
+    textAlign: 'center',
+    width: '70%'
+  }
+}
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: '#F06292',
+    primary2Color: '#AB47BC'
+  }
+});
 
 class LoginSignup extends React.Component {
   constructor(props) {
@@ -52,6 +73,7 @@ class LoginSignup extends React.Component {
           password: this.state.signupPassword
         })
         .then(response => {
+          this.props.getCurrentEmail(this.state.signupEmail);
           if (response.status === 201) {
             this.props.setLoginState(response.data.token);
           }
@@ -62,6 +84,10 @@ class LoginSignup extends React.Component {
     }
   }
 
+  // googleAuth(e) {
+
+  // }
+
   onLoginSubmit(e) {
     e.preventDefault();
     if (this.validateLoginForm()) {
@@ -71,6 +97,7 @@ class LoginSignup extends React.Component {
           password: this.state.loginPassword
         })
         .then(response => {
+          this.props.getCurrentEmail(this.state.loginEmail);
           console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token);
@@ -145,6 +172,7 @@ class LoginSignup extends React.Component {
         <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
+        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg"><i class="fa fa-google-plus fa-fw"></i> Sign in with Google</a>
         {this.state.loginWarning}
       </div>
     );

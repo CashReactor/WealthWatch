@@ -17,6 +17,16 @@ class RecExpense extends React.Component {
     this.searchBar = this.searchBar.bind(this);
   }
 
+  getRecExpenses() {
+    axios.get('/fetchRecExpenses', { email: this.props.email })
+    .then((response) => {
+      this.setState({ rec: response.data })
+    })
+    .catch((err) => {
+      throw err;
+    })
+  }
+
   onInputChange(e) {
     // e.preventDefault();
     this.setState({

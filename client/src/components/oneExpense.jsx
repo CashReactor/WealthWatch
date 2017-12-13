@@ -16,6 +16,16 @@ class OneExpense extends React.Component {
     this.searchBar = this.searchBar.bind(this);
   }
 
+  getOneExpenses() {
+    axios.post('/fetchOneExpenses', { email: this.props.currentEmail })
+    .then((response) => {
+      this.setState({ one: response.data })
+    })
+    .catch((err) => {
+      throw err;
+    })
+  }
+
   onInputChange(e) {
     // e.preventDefault();
     this.setState({

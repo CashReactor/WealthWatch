@@ -3,6 +3,7 @@ const { auth } = require('./routes/authentication.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
 const { One } = require('../database/models/oneTime.js');
+const { jwtAuth } = require('./authentication/authentication.js')
 
 // ***********************
 var axios = require('axios');
@@ -24,7 +25,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-
 app.use(express.static(__dirname + '/../client/public'));
 
 // Routes
@@ -80,9 +80,25 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.get('/logout', function(req, res) {
+  console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
+  req.session.destroy((err) => {
+    if (err) throw err;
+  })
+  res.send('success');
+  res.end();
+})
+
+app.post('/fetchOneExpenses', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.oneTime);
+    res.end();
+  })
+})
+
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
-  var currentEmail = req.body.currentEmail;
+  var email = req.body.email;
   User.findOne({ email: currentEmail }, function(err, user) {
     if (err) throw err;
     var oneExpenses = user.oneTime;
@@ -93,7 +109,7 @@ app.post('/oneExpense', function(req, res) {
       category: req.body.category
     })
     oneExpenses.push(oneExpense);
-    User.findOneAndUpdate({ email: currentEmail }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
+    User.findOneAndUpdate({ email: email }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
       if (err) throw err;
       res.send(updatedUser);
       res.end();
@@ -101,10 +117,17 @@ app.post('/oneExpense', function(req, res) {
   })
 })
 
+app.post('/fetchRecExpenses', function(req, res) {
+  User.findOne({ email: req.body.email}, (err, user) => {
+    res.send(user.recurring);
+    res.end();
+  })
+})
+
 app.post('/recExpense', function(req, res) {
   console.log('adding recurring expense');
-  var currentEmail = req.body.currentEmail;
-  User.findOne({ email: currentEmail }, function(err, user) {
+  var email = req.body.email;
+  User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
     var recExpenses = user.recurring;
     var recExpense = new Rec({
@@ -114,7 +137,7 @@ app.post('/recExpense', function(req, res) {
       startDate: new Date()
     })
     recExpense.push(recExpense);
-    User.findOneAndUpdate({ email: currentEmail }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
+    User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
       if (err) throw err;
       res.send(updatedUser);
       res.end();
@@ -124,7 +147,7 @@ app.post('/recExpense', function(req, res) {
 
 //weather-map API
 app.post('/weather', function(req, res) {
-  console.log(req.body);
+  console.log('THIS IS THE SESSION EMAIL', req.session);
   var lat = req.body.lat;
   var lon = req.body.lon;
   var url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=fe22cf91271784d706fc84ca44d54cc3`;
