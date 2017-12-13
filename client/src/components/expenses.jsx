@@ -27,8 +27,8 @@ class Expenses extends React.Component {
       <div>
         <Paper style={style.paper} zDepth={5}>
           Add Expense
-          <OneExpense />
-          <RecExpense />
+          <OneExpense currentEmail={this.props.currentEmail}/>
+          <RecExpense currentEmail={this.props.currentEmail}/>
         </Paper>
       </div>
     )
