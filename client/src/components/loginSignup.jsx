@@ -83,6 +83,10 @@ class LoginSignup extends React.Component {
     }
   }
 
+  // googleAuth(e) {
+
+  // }
+
   onLoginSubmit(e) {
     e.preventDefault();
     if (this.validateLoginForm()) {
@@ -166,7 +170,8 @@ class LoginSignup extends React.Component {
         <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
-<a href="#" title="Google+" class="btn btn-googleplus btn-lg"><i class="fa fa-google-plus fa-fw"></i> Google+</a>        {this.state.loginWarning}
+        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg"><i class="fa fa-google-plus fa-fw"></i> Sign in with Google</a>
+        {this.state.loginWarning}
       </div>
     );
   }
