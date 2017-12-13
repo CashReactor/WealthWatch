@@ -70,6 +70,7 @@ passport.use(
   new JwtStrategy(jwtOptions, (jwt_payload, done) => {
     User.findById(jwt_payload._id).then(user => {
       if (user) {
+        console.log('USER FOUND FOR JWT AUTH RUNNING RUNNING')
         done(null, user);
       } else {
         done(null, false);
@@ -89,7 +90,6 @@ const localOptions = { usernameField: 'email' };
 //Local Strategy
 passport.use(
   new LocalStrategy(localOptions, function(email, password, done) {
-    console.log('local strategy');
     User.findOne({ email: email }, function(err, user) {
       if (err) {
         return done(err);

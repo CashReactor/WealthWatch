@@ -3,6 +3,7 @@ const { auth } = require('./routes/authentication.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
 const { One } = require('../database/models/oneTime.js');
+const { jwtAuth } = require('./authentication/authentication.js')
 
 // ***********************
 var axios = require('axios');
@@ -19,12 +20,15 @@ require('dotenv').config();
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
-
+app.use(session({
+  secret: 'keyboard tiger',
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-
 app.use(express.static(__dirname + '/../client/public'));
 
 // Routes
@@ -80,9 +84,21 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.get('logout', function(req, res) {
+  req.session.destroy((err) => {
+    if (err) throw err;
+  })
+  res.send('success');
+  res.end();
+})
+
+app.get('/oneExpenses', function(req, res) {
+
+})
+
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
-  var currentEmail = req.body.currentEmail;
+  var email = req.session.user.email;
   User.findOne({ email: currentEmail }, function(err, user) {
     if (err) throw err;
     var oneExpenses = user.oneTime;
@@ -93,7 +109,7 @@ app.post('/oneExpense', function(req, res) {
       category: req.body.category
     })
     oneExpenses.push(oneExpense);
-    User.findOneAndUpdate({ email: currentEmail }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
+    User.findOneAndUpdate({ email: email }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
       if (err) throw err;
       res.send(updatedUser);
       res.end();
@@ -101,10 +117,14 @@ app.post('/oneExpense', function(req, res) {
   })
 })
 
+app.get('/recExpenses', function(req, res) {
+
+})
+
 app.post('/recExpense', function(req, res) {
   console.log('adding recurring expense');
-  var currentEmail = req.body.currentEmail;
-  User.findOne({ email: currentEmail }, function(err, user) {
+  var email = req.session.email;
+  User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
     var recExpenses = user.recurring;
     var recExpense = new Rec({
@@ -114,7 +134,7 @@ app.post('/recExpense', function(req, res) {
       startDate: new Date()
     })
     recExpense.push(recExpense);
-    User.findOneAndUpdate({ email: currentEmail }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
+    User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
       if (err) throw err;
       res.send(updatedUser);
       res.end();

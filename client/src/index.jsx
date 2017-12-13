@@ -29,10 +29,6 @@ class App extends React.Component {
     this.renderChart = this.renderChart.bind(this);
   }
 
-  getRecExpenses() {
-    axios.get('/recExpenses')
-  }
-
   renderChart() {
     // var days = [];
     // var month = this.state.currentDate.getMonth() + 1;
@@ -104,13 +100,17 @@ class App extends React.Component {
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
   }
+
   setLogoutState(event) {
     event.preventDefault();
-    this.setState({
-      loggedIn: false,
-      token: '',
-    });
-    window.localStorage.removeItem('wealthwatch_token');
+    axios.get('/logout')
+    .then((response) {
+      this.setState({
+        loggedIn: false,
+        token: '',
+      });
+      window.localStorage.removeItem('wealthwatch_token');
+    })
   }
 
   logout(e) {
