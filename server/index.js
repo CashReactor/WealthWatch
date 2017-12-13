@@ -20,11 +20,7 @@ require('dotenv').config();
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
-app.use(session({
-  secret: 'keyboard tiger',
-  resave: false,
-  saveUninitialized: true
-}));
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,7 +80,8 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
-app.get('logout', function(req, res) {
+app.get('/logout', function(req, res) {
+  console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {
     if (err) throw err;
   })
@@ -93,12 +90,12 @@ app.get('logout', function(req, res) {
 })
 
 app.get('/oneExpenses', function(req, res) {
-
+  User.findOne({ email: req.session.user.email })
 })
 
 app.post('/oneExpense', function(req, res) {
   console.log('adding one-time expense');
-  var email = req.session.user.email;
+  var email = req.body.email;
   User.findOne({ email: currentEmail }, function(err, user) {
     if (err) throw err;
     var oneExpenses = user.oneTime;
@@ -123,7 +120,7 @@ app.get('/recExpenses', function(req, res) {
 
 app.post('/recExpense', function(req, res) {
   console.log('adding recurring expense');
-  var email = req.session.email;
+  var email = req.body.email;
   User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
     var recExpenses = user.recurring;
@@ -144,7 +141,7 @@ app.post('/recExpense', function(req, res) {
 
 //weather-map API
 app.post('/weather', function(req, res) {
-  console.log(req.body);
+  console.log('THIS IS THE SESSION EMAIL', req.session);
   var lat = req.body.lat;
   var lon = req.body.lon;
   var url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=fe22cf91271784d706fc84ca44d54cc3`;

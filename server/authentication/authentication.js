@@ -70,7 +70,6 @@ passport.use(
   new JwtStrategy(jwtOptions, (jwt_payload, done) => {
     User.findById(jwt_payload._id).then(user => {
       if (user) {
-        console.log('USER FOUND FOR JWT AUTH RUNNING RUNNING')
         done(null, user);
       } else {
         done(null, false);

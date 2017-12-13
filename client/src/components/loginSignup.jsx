@@ -73,6 +73,7 @@ class LoginSignup extends React.Component {
           password: this.state.signupPassword
         })
         .then(response => {
+          this.props.getCurrentEmail(this.state.signupEmail);
           if (response.status === 201) {
             this.props.setLoginState(response.data.token);
           }
@@ -96,6 +97,7 @@ class LoginSignup extends React.Component {
           password: this.state.loginPassword
         })
         .then(response => {
+          this.props.getCurrentEmail(this.state.loginEmail);
           console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token);

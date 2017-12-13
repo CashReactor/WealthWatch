@@ -10,6 +10,7 @@ import Weather from './components/weather.jsx';
 import OneExpense from './components/oneExpense.jsx';
 import RecExpense from './components/recExpense.jsx';
 import LoginSignup from './components/loginSignup.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,12 +22,18 @@ class App extends React.Component {
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
+      currentEmail: ''
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.logout = this.logout.bind(this);
     this.renderChart = this.renderChart.bind(this);
+    this.getCurrentEmail = this.getCurrentEmail.bind(this);
+  }
+
+  getCurrentEmail(email) {
+    this.setState({ currentEmail: email })
   }
 
   renderChart() {
@@ -104,7 +111,8 @@ class App extends React.Component {
   setLogoutState(event) {
     event.preventDefault();
     axios.get('/logout')
-    .then((response) {
+    .then((response) => {
+      console.log('THIS IS HITTING')
       this.setState({
         loggedIn: false,
         token: '',
@@ -123,7 +131,7 @@ class App extends React.Component {
       return (
         <div>
           <MuiThemeProvider>
-            <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+            <LoginSignup getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
           </MuiThemeProvider>
         </div>
       )
@@ -138,8 +146,8 @@ class App extends React.Component {
             <Graph />
           </MuiThemeProvider>
           <InputBalance />
-          <OneExpense currentEmail={this.state.currentEmail} />
-          <RecExpense currentEmail={this.state.currentEmail} />
+          <OneExpense currentEmail={this.state.currentEmail}/>
+          <RecExpense currentEmail={this.state.currentEmail}/>
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );
