@@ -1,8 +1,8 @@
 node_modules
 .floo
 .flooignore
+.env
 /client/public/bundle.js
 /client/src/components/Graph_d3.jsx
-.env
 .eslintrc
 .eslintignore
