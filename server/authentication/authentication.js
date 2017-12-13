@@ -24,6 +24,7 @@ passport.use(
       if (user) {
         return done(err, user);
       } else {
+        console.log(profile)
         var data = {};
         data.imageUrl = '';
         data.email = profile.emails[0].value;
@@ -43,7 +44,7 @@ passport.use(
 
 // Function to be used when login with Google account
 module.exports.googleAuth = () => {
-  return passport.authenticate('google', { scope: ['profile'] });
+  return passport.authenticate('google', { scope: ['profile email'] });
 };
 module.exports.googleAuthCallback = () => {
   return passport.authenticate('google', { failureRediret: '/login' });
