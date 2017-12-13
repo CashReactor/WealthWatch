@@ -19,6 +19,7 @@ class BarGraph extends React.Component {
       days.push(i);
     }
     let barCtx = document.getElementById('barChart');
+    barCtx.style.backgroundColor = 'rgba(0,0,170, 0.1)'
     let updatedBudgets = [
       this.state.budget,
       4000,
@@ -46,13 +47,8 @@ class BarGraph extends React.Component {
       -250,
       -800,
     ];
-    function randomColor() {
-      let o = Math.round,
-        r = Math.random,
-        s = 230;
-      return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-    }
-    let randomColors = updatedBudgets.map(budget => (budget > 0 ? randomColor() : 'rgba(255, 0, 0, 0.5)'));
+    let positiveColor = 'rgba(0,0,210, 0.5)'
+    let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
     var barGraph = new Chart(barCtx, {
       type: 'bar',
       data: {
@@ -61,8 +57,8 @@ class BarGraph extends React.Component {
           {
             label: 'Current Monthly Balance ($)',
             data: updatedBudgets,
-            backgroundColor: randomColors,
-            borderColor: randomColors,
+            backgroundColor: color,
+            borderColor: color,
             borderWidth: 1,
           },
         ],
