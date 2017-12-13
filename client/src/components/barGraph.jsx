@@ -47,8 +47,10 @@ class BarGraph extends React.Component {
       -250,
       -800,
     ];
-    let positiveColor = 'rgba(0,0,210, 0.5)'
+    let positiveColor = 'rgba(54, 162, 235, 0.7)'
+
     let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
+
     var barGraph = new Chart(barCtx, {
       type: 'bar',
       data: {

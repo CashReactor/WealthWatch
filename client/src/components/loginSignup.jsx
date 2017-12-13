@@ -229,6 +229,8 @@ class LoginSignup extends React.Component {
               placeholder="Image Url"
             />
           </div>
+          <div className="form-group col-xs-8">
+          </div>
           <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
             Sign Up
           </button>

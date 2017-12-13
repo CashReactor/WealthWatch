@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
 import Paper from 'material-ui/Paper';
+import { red200, orange300, blue500, blue700, blue900 } from 'material-ui/styles/colors';
 
 var styles = {
   default_tab:{
@@ -18,6 +19,7 @@ var styles = {
   }
 }
 
+
 class Graph extends React.Component {
   constructor(props) {
     super(props);
@@ -32,12 +34,12 @@ class Graph extends React.Component {
       <div>
         <Paper style={styles.paper} zDepth={5}>
           <Tabs>
-            <Tab style={styles.default_tab} label="Bar Graph">
+            <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Bar Graph">
               <div>
                 <BarGraph />
               </div>
             </Tab>
-            <Tab style={styles.default_tab} label="Line Graph">
+            <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Line Graph">
               <LineGraph />
             </Tab>
           </Tabs>

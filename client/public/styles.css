@@ -24,11 +24,16 @@ img {
 .btn {
   margin-right: 77%;
   margin-left: 13.7px;
-  margin-bottom: 17px;
-  margin-top: 17px;
+  margin-bottom: 37px;
+  margin-top: 1.7px;
 }
+
 .weather {
   text-align: right;
+}
+
+.space {
+  margin: 17px;
 }
 
 .loginForm{
@@ -53,6 +58,7 @@ img {
   border-style: solid;
   background-color: lightgreen;
   padding: 17px;
+  padding-bottom: 27px;
 }
 
 .btn-googleplus {
