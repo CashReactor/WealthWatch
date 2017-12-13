@@ -16,7 +16,7 @@ class LineGraph extends React.Component {
       days.push(i);
     }
     let lineCtx = document.getElementById('lineChart');
-    lineCtx.style.backgroundColor = 'rgba(0,0,230, 0.3)'
+    lineCtx.style.backgroundColor = 'rgba(0,0,170, 0.1)'
     let updatedBudgets = [
       0,
       200,

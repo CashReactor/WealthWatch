@@ -19,6 +19,7 @@ class BarGraph extends React.Component {
       days.push(i);
     }
     let barCtx = document.getElementById('barChart');
+    barCtx.style.backgroundColor = 'rgba(0,0,170, 0.1)'
     let updatedBudgets = [
       this.state.budget,
       4000,
