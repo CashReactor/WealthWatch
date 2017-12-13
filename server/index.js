@@ -97,16 +97,13 @@ app.post('/fetchOneExpenses', function(req, res) {
 })
 
 app.post('/oneExpense', function(req, res) {
-  console.log('adding one-time expense');
   var email = req.body.email;
-  console.log('THIS IS THE EMAILLLLL', email)
   User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
-    console.log('THIS IS THE USERRRR', user);
     var oneExpenses = user.oneTime;
     var oneExpense = new One({
       expense: req.body.expense,
-      amount: req.body.expense,
+      amount: req.body.amount,
       date: new Date(),
       category: req.body.category
     })
@@ -127,6 +124,7 @@ app.post('/fetchRecExpenses', function(req, res) {
 })
 
 app.post('/recExpense', function(req, res) {
+  console.log('THIS IS THE PERIOOODDD', req.body.period);
   console.log('adding recurring expense');
   var email = req.body.email;
   User.findOne({ email: email }, function(err, user) {
@@ -134,13 +132,15 @@ app.post('/recExpense', function(req, res) {
     var recExpenses = user.recurring;
     var recExpense = new Rec({
       expense: req.body.expense,
-      amount: req.body.period,
+      amount: req.body.amount,
+      period: req.body.period,
       category: req.body.category,
       startDate: new Date()
     })
-    recExpense.push(recExpense);
+    recExpenses.push(recExpense);
     User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
       if (err) throw err;
+      console.log(updatedUser);
       res.send(updatedUser);
       res.end();
     })

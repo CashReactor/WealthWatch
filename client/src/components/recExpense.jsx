@@ -14,7 +14,9 @@ class RecExpense extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
+    this.onPeriodChange = this.onPeriodChange.bind(this);
     this.searchBar = this.searchBar.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   getRecExpenses() {
@@ -97,7 +99,7 @@ class RecExpense extends React.Component {
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <select onChange={this.periodChange} id="period" name="period">
+          <select onChange={this.onPeriodChange} id="period" name="period">
             <option value="">Select Period</option>
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
