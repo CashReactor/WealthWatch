@@ -16,7 +16,6 @@ const googleOptions = {
   passReqToCallback: true,
 };
 
-
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -25,7 +24,7 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
-//Google Strategy
+// Google Strategy
 passport.use(
   new GoogleStrategy(googleOptions, function(request, accessToken, refreshToken, profile, done) {
     User.findOne({ googleId: profile.id }, function(err, user) {

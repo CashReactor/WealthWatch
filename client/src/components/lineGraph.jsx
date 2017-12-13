@@ -15,7 +15,8 @@ class LineGraph extends React.Component {
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
-    let barCtx = document.getElementById('lineChart');
+    let lineCtx = document.getElementById('lineChart');
+    lineCtx.style.backgroundColor = 'rgba(0,0,170, 0.1)'
     let updatedBudgets = [
       0,
       200,
@@ -50,7 +51,8 @@ class LineGraph extends React.Component {
       return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
     }
     let randomColors = updatedBudgets.map(budget => (budget > 0 ? randomColor() : 'rgba(255, 0, 0, 0.5)'));
-    var barGraph = new Chart(barCtx, {
+
+    var barGraph = new Chart(lineCtx, {
       type: 'line',
       data: {
         labels: days,
@@ -58,9 +60,10 @@ class LineGraph extends React.Component {
           {
             label: 'Current Monthly Expenditure ($)',
             data: updatedBudgets,
-            // backgroundColor: randomColors,
-            // borderColor: randomColors,
+            backgroundColor: randomColors,
+            borderColor: randomColors,
             borderWidth: 1,
+            fill: false,
           },
         ],
       },
