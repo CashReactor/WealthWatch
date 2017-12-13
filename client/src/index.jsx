@@ -7,9 +7,8 @@ import Graph from './components/Graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import OneExpense from './components/oneExpense.jsx';
-import RecExpense from './components/recExpense.jsx';
 import LoginSignup from './components/loginSignup.jsx';
+import Expenses from './components/expenses.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -26,10 +25,10 @@ class App extends React.Component {
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.logout = this.logout.bind(this);
-    this.renderChart = this.renderChart.bind(this);
+    // this.renderChart = this.renderChart.bind(this);
   }
 
-  renderChart() {
+  // renderChart() {
     // var days = [];
     // var month = this.state.currentDate.getMonth() + 1;
     // var year = this.state.currentDate.getFullYear();
@@ -78,11 +77,11 @@ class App extends React.Component {
     //     }
     //   }
     // });
-  }
+  // }
 
-  componentDidMount() {
-    this.renderChart();
-  }
+  // componentDidMount() {
+    // this.renderChart();
+  // }
 
   getCurrentDate(date) {
     this.setState({ currentDate: date });
@@ -115,6 +114,7 @@ class App extends React.Component {
   }
 
   render() {
+    // console.log('index::::::', this.state.currentEmail)
     if (!this.state.loggedIn) {
       return (
         <div>
@@ -130,10 +130,11 @@ class App extends React.Component {
           </div>
           <MuiThemeProvider>
             <Graph />
+            <br/>
+            <InputBalance />
+            <Expenses />
           </MuiThemeProvider>
-          <InputBalance />
-          <OneExpense currentEmail={this.state.currentEmail} />
-          <RecExpense currentEmail={this.state.currentEmail} />
+          <br/>
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );

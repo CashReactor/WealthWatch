@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import Paper from 'material-ui/Paper';
 
 class InputBalance extends React.Component {
   constructor(props) {
