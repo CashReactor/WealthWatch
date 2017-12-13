@@ -118,7 +118,9 @@ class App extends React.Component {
     if (!this.state.loggedIn) {
       return (
         <div>
-          <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+          <MuiThemeProvider>
+            <LoginSignup setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+          </MuiThemeProvider>
         </div>
       )
     } else {
