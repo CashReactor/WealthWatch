@@ -34,6 +34,15 @@ class InputBalance extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    var data = {
+      email: this.props.currentEmail,
+      budget: this.state.budget,
+      currency: this.state.currency
+    }
+    axios.post('updateBalance', data)
+    .then((response) => {
+      console.log('updating budget successful');
+    })
   }
 
   searchBar() {

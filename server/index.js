@@ -80,6 +80,18 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.post('/updateBalance', function(req, res) {
+  User.findOneAndUpdate({ email: req.body.email },
+    {
+      $set: { budget: req.body.budget, currency: req.body.currency }
+    }, (err, user) => {
+      console.log(user);
+      res.send('success')
+      res.end();
+    }
+  )
+})
+
 app.get('/logout', function(req, res) {
   console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {

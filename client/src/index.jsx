@@ -87,7 +87,7 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph />
             <br/>
-            <InputBalance />
+            <InputBalance currentEmail={this.state.currentEmail}/>
             <Expenses currentEmail={this.state.currentEmail}/>
           </MuiThemeProvider>
           <br/>

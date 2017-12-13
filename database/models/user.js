@@ -58,6 +58,7 @@ const userSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   budget: Number,
+  currency: String,
   googleId: String,
   googleToken: String,
   recurring: [recurringSchema],
