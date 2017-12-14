@@ -31,6 +31,9 @@ class App extends React.Component {
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
+    this.logout = this.logout.bind(this);
+    this.renderChart = this.renderChart.bind(this);
+    this.getAuthentication = this.getAuthentication.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +80,10 @@ class App extends React.Component {
     window.localStorage.removeItem('user_email');
   }
 
+  getAuthentication() {
+    return this.state.token;
+  }
+
   render() {
     if (!this.state.loggedIn) {
       return (
@@ -91,7 +98,7 @@ class App extends React.Component {
         <div>
           <div id="widget" className="widget">
             <Clock getCurrentDate={this.getCurrentDate} />
-            <Weather />
+            <Weather getAuthentication={this.getAuthentication} />
           </div>
           <MuiThemeProvider>
             <Graph />

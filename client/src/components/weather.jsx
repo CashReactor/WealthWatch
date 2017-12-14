@@ -21,11 +21,9 @@ class Weather extends React.Component {
     navigator.geolocation.getCurrentPosition(function (position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
+      const data = { lat, lon };
       axios
-        .post('/weather', {
-          lat: lat,
-          lon: lon,
-        })
+        .post('/weather', data, {headers: {'Authorization': 'bearer ' + scope.props.getAuthentication()}})
         .then(function (response) {
           var weather = response.data;
           scope.setState(weather);

@@ -1,4 +1,4 @@
-//Import your routes here
+// Import your routes here
 const { auth } = require('./routes/authentication.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
@@ -6,15 +6,14 @@ const { One } = require('../database/models/oneTime.js');
 const { jwtAuth } = require('./authentication/authentication.js')
 
 // ***********************
-var axios = require('axios');
+const axios = require('axios');
 const passport = require('passport');
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+
 const app = express();
-const session = require('express-session');
-var bcrypt = require('bcrypt');
+const { jwtAuth } = require('./authentication/authentication');
 
 require('dotenv').config();
 
@@ -29,9 +28,9 @@ app.use(express.static(__dirname + '/../client/public'));
 
 // Routes
 app.use('/auth', auth); // Authentication route
-/******************************************************/
+/* **************************************************** */
 
-//*****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE*****
+/* ****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE**** */
 // const recurringSchema = new mongoose.Schema({
 //   expense: {
 //     type: String,
@@ -43,7 +42,7 @@ app.use('/auth', auth); // Authentication route
 //   startDate: Date
 // });
 
-//*****DATABASE SCHEMA FOR ONE-TIME EXPENSE FOR REFERENCE*****
+/* ****DATABASE SCHEMA FOR ONE-TIME EXPENSE FOR REFERENCE**** */
 // const oneTimeSchema = new mongoose.Schema({
 //   expense: String,
 //   amount: Number,
@@ -160,8 +159,8 @@ app.post('/recExpense', function(req, res) {
 })
 
 //weather-map API
-app.post('/weather', function(req, res) {
-  console.log('THIS IS THE SESSION EMAIL', req.session);
+app.post('/weather', jwtAuth(), function(req, res) {
+  console.log(req.body);
   var lat = req.body.lat;
   var lon = req.body.lon;
   var url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=fe22cf91271784d706fc84ca44d54cc3`;
