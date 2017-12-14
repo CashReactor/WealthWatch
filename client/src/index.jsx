@@ -10,6 +10,8 @@ import Weather from './components/weather.jsx';
 import LoginSignup from './components/loginSignup.jsx';
 import axios from 'axios';
 import Expenses from './components/expenses.jsx'
+import Paper from 'material-ui/Paper';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -68,7 +70,6 @@ class App extends React.Component {
   }
 
   render() {
-    // console.log('index::::::', this.state.currentEmail)
     if (!this.state.loggedIn) {
       return (
         <div>

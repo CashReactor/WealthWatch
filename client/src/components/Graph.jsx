@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
 import Paper from 'material-ui/Paper';
+import Avatar from 'material-ui/Avatar';
 import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
 
 var styles = {
@@ -13,10 +14,10 @@ var styles = {
   },
   paper: {
     height: '50%',
-    width: '70%',
+    width: '77%',
     textAlign: "center",
-    marginLeft: '15%',
-    marginRight: '15%'
+    marginLeft: '11.5%',
+    marginRight: '11.5%'
   }
 }
 
@@ -33,21 +34,24 @@ class Graph extends React.Component {
   render() {
     return (
       <div>
-        <Paper style={styles.paper} zDepth={5}>
-          <Tabs>
-            <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Bar Graph">
-              <div>
-                <BarGraph />
-              </div>
-            </Tab>
-            <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Line Graph">
-              <LineGraph />
-            </Tab>
-          </Tabs>
+        <Paper style={styles.paper}>
+          <BarGraph />
+          <LineGraph />
         </Paper>
       </div>
     );
   }
 }
+
+{/*<Tabs>
+  <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Bar Graph">
+    <div>
+      <BarGraph />
+    </div>
+  </Tab>
+  <Tab style={{ border: 'solid', borderWidth: '0px', borderColor: red200, backgroundColor: '#FF8A65' }} label="Line Graph">
+    <LineGraph />
+  </Tab>
+</Tabs>*/}
 
 export default Graph;

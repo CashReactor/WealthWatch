@@ -243,6 +243,14 @@ class LoginSignup extends React.Component {
   render() {
     return (
       <div>
+        <div className="jumbotron">
+          <h1 className="display-3">Welcome to WealthWatch</h1>
+          <p className="lead">This app is designed for people who need a simple interface to manage budgetary concerns.</p>
+          <hr className="my-4"/>
+          <p>It uses Graph.js for rendering data and JWT Tokens for authentication.</p>
+          <p className="lead">
+          </p>
+        </div>
         {this.loginForm()}
         {this.signupForm()}
       </div>

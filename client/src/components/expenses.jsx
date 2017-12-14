@@ -25,11 +25,8 @@ class Expenses extends React.Component {
   render(){
     return (
       <div>
-        <Paper style={style.paper} zDepth={5}>
-          Add Expense
-          <OneExpense currentEmail={this.props.currentEmail}/>
-          <RecExpense currentEmail={this.props.currentEmail}/>
-        </Paper>
+        <OneExpense currentEmail={this.props.currentEmail}/>
+        <RecExpense currentEmail={this.props.currentEmail}/>
       </div>
     )
   }

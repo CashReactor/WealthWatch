@@ -17,9 +17,17 @@ img {
   background-position: center;
   padding: 0;
   height: 197px;
-  width: 70%;
-  margin-left: 15%;
-  margin-right: 15%;
+  width: 77%;
+  margin-left: 11.5%;
+  margin-right: 11.5%;
+}
+
+.jumbotron {
+  padding: 17px;
+  color: white !important;
+  background-image: linear-gradient(rgba(0,0,0, 0.7), rgba(0,0,0, 0.7)), url('https://images.unsplash.com/photo-1495511623436-ba44aaee07cf?auto=format&fit=crop&w=1951&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 .btn {
