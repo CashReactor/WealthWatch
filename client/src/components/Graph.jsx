@@ -25,14 +25,29 @@ class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
       currentDate: new Date(),
+      one: [],
+      rec: [],
     };
+  }
+
+  componentDidMount() {
+    axios.post('/fetchOneExpenses', { this.props.currentEmail })
+    .then((response) => {
+      this.setState({ rec: response.data });
+      console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
+    })
+    axios.post('/fetchRecExpenses', { this.props.currentEmail })
+    .then((response) => {
+      this.setState({ one: response.data });
+      console.log('THIS IS THE ONTIME EXPENSES', this.state.one);
+    })
   }
 
   render() {
     return (
       <div>
+        <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
         <Paper style={styles.paper}>
           <BarGraph />
           <LineGraph />

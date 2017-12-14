@@ -98,10 +98,10 @@ class App extends React.Component {
             <Weather getAuthentication={this.getAuthentication} />
           </div>
           <MuiThemeProvider>
-            <Graph />
+            <Graph currentEmail={this.state.currentEmail} />
             <br/>
-            <InputBalance currentEmail={this.state.currentEmail}/>
-            <Expenses currentEmail={this.state.currentEmail}/>
+            <InputBalance currentEmail={this.state.currentEmail} />
+            <Expenses currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
           <a onClick={console.log('HELLO WORLD')} className="btn btn-info" href="#widget">Graph</a>

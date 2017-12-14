@@ -127,7 +127,7 @@ app.post('/oneExpense', function(req, res) {
 })
 
 app.post('/fetchRecExpenses', function(req, res) {
-  User.findOne({ email: req.body.email}, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
     res.send(user.recurring);
     res.end();
   })
