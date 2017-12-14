@@ -31,9 +31,6 @@ class App extends React.Component {
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
-    this.logout = this.logout.bind(this);
-    this.renderChart = this.renderChart.bind(this);
-    this.getAuthentication = this.getAuthentication.bind(this);
   }
 
   componentDidMount() {

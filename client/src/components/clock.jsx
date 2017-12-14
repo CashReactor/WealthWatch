@@ -18,15 +18,15 @@ class Clock extends React.Component {
   }
 
   timer() {
-    var date = new Date();
+    const date = new Date();
     this.setState({ time: date });
     // this.props.getCurrentDate(date);
   }
 
   render() {
-    var hours = this.state.time.getHours();
-    var minutes = this.state.time.getMinutes();
-    var seconds = this.state.time.getSeconds();
+    let hours = this.state.time.getHours();
+    let minutes = this.state.time.getMinutes();
+    let seconds = this.state.time.getSeconds();
     if (hours < 10) {
       hours = '0' + hours;
     }

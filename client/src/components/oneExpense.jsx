@@ -26,7 +26,7 @@ class OneExpense extends React.Component {
     })
     .catch((err) => {
       throw err;
-    })
+    });
   }
 
   onInputChange(e) {
@@ -68,13 +68,13 @@ class OneExpense extends React.Component {
       <div>
         <div className="form-group">
           <h1 className="header">One-time Expense</h1>
-          <label for="inputExpense">Enter one-time expense</label>
+          <label htmlFor="inputExpense">Enter one-time expense</label>
           <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
           <small id="budgetHelp" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
-          <label for="inputAmount">Enter amount</label>
+          <label htmlFor="inputAmount">Enter amount</label>
           <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
           <br></br>
-          <label for="inputCurrency">Select Category</label>
+          <label htmlFor="inputCurrency">Select Category</label>
           <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
             <option value="">Select Category</option>
             <option value={1}>Entertainment</option>
@@ -125,10 +125,10 @@ class OneExpense extends React.Component {
 
   render() {
     return (
-      <Paper style={{'paddingTop':'7px','width':'77%', marginLeft:'11.5%', marginRight:'11.5'}}>
-      {this.bootstrapBar()}
+      <Paper style={{ paddingTop: '7px', width: '77%', marginLeft: '11.5%', marginRight: '11.5' }}>
+        {this.bootstrapBar()}
       </Paper>
-    )
+    );
   }
 }
 
