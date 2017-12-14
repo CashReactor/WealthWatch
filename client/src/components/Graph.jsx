@@ -5,6 +5,7 @@ import LineGraph from './lineGraph.jsx';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
+import axios from 'axios';
 
 const styles = {
   default_tab: {
@@ -32,12 +33,12 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
-    axios.post('/fetchOneExpenses', { this.props.currentEmail })
+    axios.post('/fetchOneExpenses', { email: this.props.currentEmail })
     .then((response) => {
       this.setState({ rec: response.data });
       console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
     })
-    axios.post('/fetchRecExpenses', { this.props.currentEmail })
+    axios.post('/fetchRecExpenses', { email: this.props.currentEmail })
     .then((response) => {
       this.setState({ one: response.data });
       console.log('THIS IS THE ONTIME EXPENSES', this.state.one);
