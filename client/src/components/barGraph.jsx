@@ -9,7 +9,8 @@ class BarGraph extends React.Component {
       currentDate: new Date(),
       budget: 7777,
       one: [],
-      rec: []
+      rec: [],
+      currentGraph: null,
     };
   }
 
@@ -18,7 +19,7 @@ class BarGraph extends React.Component {
     axios.post('/user', { email: this.props.currentEmail })
     .then((response) => {
       if (!response.data.budget) {
-        response.data.budget = "7777";
+        response.data.user.budget = "7777";
       }
       this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring });
       console.log('THIS IS THE CURRENT BUDGET', this.state.budget);
@@ -29,8 +30,12 @@ class BarGraph extends React.Component {
   }
 
   renderGraph() {
+    if (this.state.currentGraph) {
+      this.state.currentGraph.destroy();
+    }
     let days = [];
     let budget = [];
+    let day = this.state.currentDate.getDate();
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
@@ -42,9 +47,11 @@ class BarGraph extends React.Component {
     }
     for (let i = 0; i < this.state.one.length; i++) {
       var expenseAmount = this.state.one[i].amount;
-      var expenseDay = this.state.one[i].getDate();
-      var expenseMonth = this.state.one[i].getMonth() + 1;
-      var expenseYear = this.state.one[i].getFullYear();
+      console.log('THIS STATE ONE', new Date(this.state.one[i].date).getDate());
+      var expenseDay = new Date(this.state.one[i].date).getDate();
+      console.log('THIS IS THE EXPENSE DAY', expenseDay);
+      var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
+      var expenseYear = new Date(this.state.one[i].date).getFullYear();
       if (expenseYear === year && expenseMonth === month && expenseDay === day) {
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[expenseDay] = budget[expenseDay] - expenseAmount;
@@ -55,6 +62,7 @@ class BarGraph extends React.Component {
       var expenseAmount = this.state.rec[i].amount;
       budget[1] = budget[1] - expenseAmount;
     }
+    console.log(budget);
     let barCtx = document.getElementById('barChart');
     barCtx.style.backgroundColor = '#FAFAFA'
     let updatedBudgets = budget;
@@ -88,6 +96,7 @@ class BarGraph extends React.Component {
         },
       },
     });
+    this.setState({ currentGraph: barGraph });
   }
 
 
