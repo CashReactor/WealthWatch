@@ -7,7 +7,7 @@ const {
   resetPassword,
   confirmedPassword,
   updatePassword,
-} = require('../authentication/authentication');
+} = require('../handlers/authentication');
 
 const express = require('express');
 
