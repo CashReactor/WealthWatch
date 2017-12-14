@@ -30,41 +30,34 @@ class BarGraph extends React.Component {
 
   renderGraph() {
     let days = [];
+    let budget = [];
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
+    for (let i = 0; i <= daysInMonth; i++) {
+      budget.push(this.state.budget)
+    }
+    for (let i = 0; i < this.state.one.length; i++) {
+      var expenseAmount = this.state.one[i].amount;
+      var expenseDay = this.state.one[i].getDate();
+      var expenseMonth = this.state.one[i].getMonth() + 1;
+      var expenseYear = this.state.one[i].getFullYear();
+      if (expenseYear === year && expenseMonth === month && expenseDay === day) {
+        for (let j = expenseDay; j <= daysInMonth; j++) {
+          budget[expenseDay] = budget[expenseDay] - expenseAmount;
+        }
+      }
+    }
+    for (let i = 0; i < this.state.rec.length; i++) {
+      var expenseAmount = this.state.rec[i].amount;
+      budget[1] = budget[1] - expenseAmount;
+    }
     let barCtx = document.getElementById('barChart');
     barCtx.style.backgroundColor = '#FAFAFA'
-    let updatedBudgets = [
-      this.state.budget,
-      4000,
-      2000,
-      1000,
-      500,
-      250,
-      200,
-      190,
-      180,
-      170,
-      165,
-      140,
-      120,
-      100,
-      89,
-      78,
-      72,
-      73,
-      60,
-      14,
-      -10,
-      -25,
-      -100,
-      -250,
-      -800,
-    ];
+    let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)'
 
     let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
