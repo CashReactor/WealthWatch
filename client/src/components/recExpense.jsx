@@ -77,10 +77,10 @@ class RecExpense extends React.Component {
       <div>
         <div className="form-group">
           <label for="inputExpense">Enter recurring expense</label>
-          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
+          <input  value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
           <small id="budgetHelp" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
           <label for="inputAmount">Enter amount</label>
-          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
+          <input  value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
           <br></br>
           <label for="inputPeriod">Select Period</label>
           <select value={this.state.category} onChange={this.onPeriodChange} className="form-control" id="inputPeriod">
@@ -90,7 +90,7 @@ class RecExpense extends React.Component {
             <option value="yearly">Yearly</option>
           </select><br></br>
           <label for="inputCurrency">Select Category</label>
-          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
+          <select  value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
             <option value="">Select Category</option>
             <option value={1}>Entertainment</option>
             <option value={2}>Food</option>
