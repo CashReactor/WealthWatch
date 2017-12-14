@@ -37,21 +37,47 @@ img {
   background-size: cover;
 }
 
+#btn {
+  margin-right: 77%;
+  margin-left: 1.5% !important;
+  margin-bottom: 1.7% !important;
+  margin-top: 1.7% !important;
+}
+
 .btn {
   margin-right: 77%;
-  margin-left: 13.7px;
-  margin-bottom: 37px;
-  margin-top: 1.7px;
+  margin-bottom: 15px;
+  margin-left: 15px;
+
 }
 
 .weather {
   text-align: right;
 }
 
+#small {
+  margin-left: 1.5% !important;
+}
+
+.signupImageUrl
+
 .space {
   margin: 17px;
 }
 
+#input, #select {
+  width: 97% !important;
+  margin-left: 1.5% !important;
+}
+
+.header {
+  margin-top: 1.7% !important;
+  margin-left: 1.5% !important;
+}
+
+#label {
+  margin-left: 1.5% !important;
+}
 .loginForm{
   color: white;
   border-style: solid;

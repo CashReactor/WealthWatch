@@ -66,21 +66,21 @@ class InputBalance extends React.Component {
       <div>
         <div className="form-group">
           <h1 className="header">Balance</h1>
-          <label htmlFor="inputBudget">Enter balance</label>
+          <label id="label" htmlFor="inputBudget">Enter balance</label>
           <input
             type="number"
             onChange={this.onInputChange}
             className="form-control"
-            id="inputBudget"
+            id="input"
             placeholder="Enter Balance"
           />
-          <small id="budgetHelp" className="form-text text-muted">
+          <small id="small" className="form-text text-muted">
             We won't share your income to anyone else.
           </small>
           <br />
           <br />
-          <label htmlFor="inputCurrency">Select currency</label>
-          <select onChange={this.onCurrencyChange} className="form-control" id="inputCurrency">
+          <label id="label" htmlFor="inputCurrency">Select currency</label>
+          <select onChange={this.onCurrencyChange} className="form-control" id="select">
             <option value="">Select Currency</option>
             <option value="USD">U.S. Dollar</option>
             <option value="AUD">Australian Dollar</option>
@@ -108,6 +108,7 @@ class InputBalance extends React.Component {
             <option value="TRY">Turkish Lira</option>
           </select>
           <a
+            id="btn"
             href="#widget"
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
@@ -135,7 +136,7 @@ class InputBalance extends React.Component {
               name="balance"
             />
             <br />
-            <select onChange={this.onCurrencyChange} id="currency" name="currency_code">
+            <select onChange={this.onCurrencyChange} id="select" name="currency_code">
               <option value="">Select Currency</option>
               <option value="USD">U.S. Dollar</option>
               <option value="AUD">Australian Dollar</option>

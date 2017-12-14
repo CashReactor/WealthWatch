@@ -77,28 +77,28 @@ class RecExpense extends React.Component {
       <div>
         <div className="form-group">
           <h1 className="header">Recurring Expense</h1>
-          <label for="inputExpense">Enter recurring expense</label>
-          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
-          <small id="budgetHelp" className="form-text text-muted">Remember this is a recurring expense.</small><br></br><br></br>
-          <label for="inputAmount">Enter amount</label>
-          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
+          <label id="label" for="inputExpense">Enter recurring expense</label>
+          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="input" placeholder="Enter Expense"/>
+          <small id="small" className="form-text text-muted">Remember this is a recurring expense.</small><br></br><br></br>
+          <label id="label" for="inputAmount">Enter amount</label>
+          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="input" placeholder="Enter Amount"/>
           <br></br>
-          <label for="inputPeriod">Select Period</label>
-          <select value={this.state.category} onChange={this.onPeriodChange} className="form-control" id="inputPeriod">
+          <label id="label" for="inputPeriod">Select Period</label>
+          <select value={this.state.category} onChange={this.onPeriodChange} className="form-control" id="select">
             <option value="">Select Period</option>
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
           </select><br></br>
-          <label for="inputCurrency">Select Category</label>
-          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
+          <label id="label" for="inputCurrency">Select Category</label>
+          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="select">
             <option value="">Select Category</option>
             <option value={1}>Entertainment</option>
             <option value={2}>Food</option>
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-success">Submit</a>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-success">Submit</a>
         </div>
       </div>
     )

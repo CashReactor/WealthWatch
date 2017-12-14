@@ -45,16 +45,20 @@ class App extends React.Component {
       }, 700);
     });
 
-    axios.post('/fetchOneExpenses', { email: this.state.currentEmail })
-    .then((response) => {
+    if (this.state.loggedIn) {
+      axios.post('/fetchOneExpenses', { email: this.state.currentEmail })
+      .then((response) => {
       this.setState({ rec: response.data });
-      console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
-    })
-    axios.post('/fetchRecExpenses', { email: this.state.currentEmail })
-    .then((response) => {
-      this.setState({ one: response.data });
-      console.log('THIS IS THE ONE-TIME EXPENSES', this.state.one);
-    })
+        console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
+      })
+      axios.post('/fetchRecExpenses', { email: this.state.currentEmail })
+      .then((response) => {
+        this.setState({ one: response.data });
+        console.log('THIS IS THE ONE-TIME EXPENSES', this.state.one);
+      })
+    }
+
+
   }
 
   getCurrentEmail(email) {
