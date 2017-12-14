@@ -13,8 +13,8 @@ const styles = {
     textAlign: 'center',
     width: '70%',
     backgroundColor: '#DCEDC8',
-  }
-}
+  },
+};
 
 class InputBalance extends React.Component {
   constructor(props) {
@@ -47,30 +47,39 @@ class InputBalance extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    var data = {
+    const data = {
       email: this.props.currentEmail,
       budget: this.state.budget,
-      currency: this.state.currency
-    }
-    axios.post('updateBalance', data)
-    .then((response) => {
+      currency: this.state.currency,
+    };
+    axios.post('updateBalance', data).then((response) => {
       this.setState({
         budget: '',
-        currency: null
-      })
+        currency: null,
+      });
       console.log('updating budget successful');
-    })
+    });
   }
 
   bootstrapBar() {
-    return(
+    return (
       <div>
         <div className="form-group">
           <h1 className="header">Balance</h1>
-          <label for="inputBudget">Enter balance</label>
-          <input type="number" onChange={this.onInputChange} className="form-control" id="inputBudget" placeholder="Enter Balance"/>
-          <small id="budgetHelp" className="form-text text-muted">We won't share your income to anyone else.</small><br></br><br></br>
-          <label for="inputCurrency">Select currency</label>
+          <label htmlFor="inputBudget">Enter balance</label>
+          <input
+            type="number"
+            onChange={this.onInputChange}
+            className="form-control"
+            id="inputBudget"
+            placeholder="Enter Balance"
+          />
+          <small id="budgetHelp" className="form-text text-muted">
+            We won't share your income to anyone else.
+          </small>
+          <br />
+          <br />
+          <label htmlFor="inputCurrency">Select currency</label>
           <select onChange={this.onCurrencyChange} className="form-control" id="inputCurrency">
             <option value="">Select Currency</option>
             <option value="USD">U.S. Dollar</option>
@@ -98,10 +107,18 @@ class InputBalance extends React.Component {
             <option value="THB">Thai Baht</option>
             <option value="TRY">Turkish Lira</option>
           </select>
-          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-responsive btn-primary">Submit</a>
+          <a
+            href="#widget"
+            onClick={this.onSubmit}
+            style={{ margin: '1vh' }}
+            type="submit"
+            className="btn btn-responsive btn-primary"
+          >
+            Submit
+          </a>
         </div>
       </div>
-    )
+    );
   }
 
   searchBar() {
@@ -159,7 +176,7 @@ class InputBalance extends React.Component {
   render() {
     return (
       <div>
-        <Paper style={{'paddingTop':'7px','width':'77%', marginLeft:'11.5%', marginRight:'11.5%'}}>
+        <Paper style={{ paddingTop: '7px', width: '77%', marginLeft: '11.5%', marginRight: '11.5%' }}>
           {this.bootstrapBar()}
         </Paper>
       </div>
@@ -167,6 +184,8 @@ class InputBalance extends React.Component {
   }
 }
 
-{/*<button type="button" onClick={this.budgetToggle} className="btn">Balance</button>*/}
+{
+  /*<button type="button" onClick={this.budgetToggle} className="btn">Balance</button>*/
+}
 
 export default InputBalance;

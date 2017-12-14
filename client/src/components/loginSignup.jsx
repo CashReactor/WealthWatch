@@ -5,22 +5,21 @@ import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-
 const style = {
   paper: {
     height: '50%',
     length: '50%',
     margin: '0 auto',
     textAlign: 'center',
-    width: '70%'
-  }
-}
+    width: '70%',
+  },
+};
 
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: '#F06292',
-    primary2Color: '#AB47BC'
-  }
+    primary2Color: '#AB47BC',
+  },
 });
 
 class LoginSignup extends React.Component {
@@ -34,7 +33,7 @@ class LoginSignup extends React.Component {
       signupName: '',
       signupPassword: '',
       signupImageUrl: '',
-      signupWarning: ''
+      signupWarning: '',
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onSignupSubmit = this.onSignupSubmit.bind(this);
@@ -45,21 +44,20 @@ class LoginSignup extends React.Component {
 
   onInputChange(e) {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   }
 
   onSubmitSignup(e) {
     e.preventDefault();
     if (this.validateSignupForm()) {
-      axios.post('/signup', {
-        email: this.state.signupEmail,
-        name: this.state.signupName,
-        password: this.state.signupPassword
-      })
-      .then((response) => {
-
-      })
+      axios
+        .post('/signup', {
+          email: this.state.signupEmail,
+          name: this.state.signupName,
+          password: this.state.signupPassword,
+        })
+        .then(response => {});
     }
   }
 
@@ -70,15 +68,15 @@ class LoginSignup extends React.Component {
         .post('auth/signup', {
           email: this.state.signupEmail,
           name: this.state.signupName,
-          password: this.state.signupPassword
+          password: this.state.signupPassword,
         })
-        .then(response => {
+        .then((response) => {
           this.props.getCurrentEmail(this.state.signupEmail);
           if (response.status === 201) {
             this.props.setLoginState(response.data.token, response.data.email);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ signupWarning: error.response.data });
         });
     }
@@ -94,16 +92,16 @@ class LoginSignup extends React.Component {
       axios
         .post('auth/login', {
           email: this.state.loginEmail,
-          password: this.state.loginPassword
+          password: this.state.loginPassword,
         })
-        .then(response => {
+        .then((response) => {
           this.props.getCurrentEmail(this.state.loginEmail);
           console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token, response.data.email);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response.status === 401) {
             this.setState({ loginWarning: 'Incorrect username or password' });
           }
@@ -118,9 +116,8 @@ class LoginSignup extends React.Component {
     } else if (!this.state.loginPassword) {
       this.setState({ loginWarning: 'Please enter a password' });
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 
   validateSignupForm() {
@@ -133,9 +130,8 @@ class LoginSignup extends React.Component {
     } else if (!this.state.signupPassword) {
       this.setState({ signupWarning: 'Please enter a password' });
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 
   loginForm() {
@@ -172,7 +168,9 @@ class LoginSignup extends React.Component {
         <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
-        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg"><i className="fa fa-google-plus fa-fw"></i> Sign in with Google</a>
+        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg">
+          <i className="fa fa-google-plus fa-fw" /> Sign in with Google
+        </a>
         {this.state.loginWarning}
       </div>
     );
@@ -229,8 +227,7 @@ class LoginSignup extends React.Component {
               placeholder="Image Url"
             />
           </div>
-          <div className="form-group col-xs-8">
-          </div>
+          <div className="form-group col-xs-8" />
           <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
             Sign Up
           </button>
@@ -245,11 +242,12 @@ class LoginSignup extends React.Component {
       <div>
         <div className="jumbotron">
           <h1 className="display-3">Welcome to WealthWatch</h1>
-          <p className="lead">This app is designed for people who need a simple interface to manage budgetary concerns.</p>
-          <hr className="my-4"/>
-          <p>It uses Graph.js for rendering data and JWT Tokens for authentication.</p>
           <p className="lead">
+            This app is designed for people who need a simple interface to manage budgetary concerns.
           </p>
+          <hr className="my-4" />
+          <p>It uses Graph.js for rendering data and JWT Tokens for authentication.</p>
+          <p className="lead" />
         </div>
         {this.loginForm()}
         {this.signupForm()}

@@ -88,5 +88,3 @@ userSchema.pre('save', function (next) {
 });
 
 module.exports.User = mongoose.model('User', userSchema);
-// module.exports.One = mongoose.model('One', oneTimeSchema);
-// module.exports.Rec = mongoose.model('Rec', recurringSchema);

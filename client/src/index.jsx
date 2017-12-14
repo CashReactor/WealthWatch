@@ -77,6 +77,10 @@ class App extends React.Component {
     window.localStorage.removeItem('user_email');
   }
 
+  getAuthentication() {
+    return this.state.token;
+  }
+
   render() {
     if (!this.state.loggedIn) {
       return (
@@ -91,7 +95,7 @@ class App extends React.Component {
         <div>
           <div id="widget" className="widget">
             <Clock getCurrentDate={this.getCurrentDate} />
-            <Weather />
+            <Weather getAuthentication={this.getAuthentication} />
           </div>
           <MuiThemeProvider>
             <Graph />
