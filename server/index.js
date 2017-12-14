@@ -80,6 +80,18 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.post('/updateBalance', function(req, res) {
+  User.findOneAndUpdate({ email: req.body.email },
+    {
+      $set: { budget: req.body.budget, currency: req.body.currency }
+    }, (err, user) => {
+      console.log(user);
+      res.send('success')
+      res.end();
+    }
+  )
+})
+
 app.get('/logout', function(req, res) {
   console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {
@@ -97,14 +109,13 @@ app.post('/fetchOneExpenses', function(req, res) {
 })
 
 app.post('/oneExpense', function(req, res) {
-  console.log('adding one-time expense');
   var email = req.body.email;
-  User.findOne({ email: currentEmail }, function(err, user) {
+  User.findOne({ email: email }, function(err, user) {
     if (err) throw err;
     var oneExpenses = user.oneTime;
     var oneExpense = new One({
       expense: req.body.expense,
-      amount: req.body.expense,
+      amount: req.body.amount,
       date: new Date(),
       category: req.body.category
     })
@@ -125,6 +136,7 @@ app.post('/fetchRecExpenses', function(req, res) {
 })
 
 app.post('/recExpense', function(req, res) {
+  console.log('THIS IS THE PERIOOODDD', req.body.period);
   console.log('adding recurring expense');
   var email = req.body.email;
   User.findOne({ email: email }, function(err, user) {
@@ -132,13 +144,15 @@ app.post('/recExpense', function(req, res) {
     var recExpenses = user.recurring;
     var recExpense = new Rec({
       expense: req.body.expense,
-      amount: req.body.period,
+      amount: req.body.amount,
+      period: req.body.period,
       category: req.body.category,
       startDate: new Date()
     })
-    recExpense.push(recExpense);
+    recExpenses.push(recExpense);
     User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
       if (err) throw err;
+      console.log(updatedUser);
       res.send(updatedUser);
       res.end();
     })

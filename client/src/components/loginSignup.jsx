@@ -75,7 +75,7 @@ class LoginSignup extends React.Component {
         .then(response => {
           this.props.getCurrentEmail(this.state.signupEmail);
           if (response.status === 201) {
-            this.props.setLoginState(response.data.token);
+            this.props.setLoginState(response.data.token, response.data.email);
           }
         })
         .catch(error => {
@@ -100,7 +100,7 @@ class LoginSignup extends React.Component {
           this.props.getCurrentEmail(this.state.loginEmail);
           console.log('successful login search');
           if (response.status === 200) {
-            this.props.setLoginState(response.data.token);
+            this.props.setLoginState(response.data.token, response.data.email);
           }
         })
         .catch(error => {
@@ -172,7 +172,7 @@ class LoginSignup extends React.Component {
         <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
-        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg"><i class="fa fa-google-plus fa-fw"></i> Sign in with Google</a>
+        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg"><i className="fa fa-google-plus fa-fw"></i> Sign in with Google</a>
         {this.state.loginWarning}
       </div>
     );
@@ -229,6 +229,8 @@ class LoginSignup extends React.Component {
               placeholder="Image Url"
             />
           </div>
+          <div className="form-group col-xs-8">
+          </div>
           <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
             Sign Up
           </button>
@@ -241,6 +243,14 @@ class LoginSignup extends React.Component {
   render() {
     return (
       <div>
+        <div className="jumbotron">
+          <h1 className="display-3">Welcome to WealthWatch</h1>
+          <p className="lead">This app is designed for people who need a simple interface to manage budgetary concerns.</p>
+          <hr className="my-4"/>
+          <p>It uses Graph.js for rendering data and JWT Tokens for authentication.</p>
+          <p className="lead">
+          </p>
+        </div>
         {this.loginForm()}
         {this.signupForm()}
       </div>

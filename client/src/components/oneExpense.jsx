@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import Paper from 'material-ui/Paper';
+
 
 class OneExpense extends React.Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class OneExpense extends React.Component {
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
     this.searchBar = this.searchBar.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   getOneExpenses() {
@@ -56,14 +59,39 @@ class OneExpense extends React.Component {
       amount: this.state.amount,
     };
     axios.post('/oneExpense', data).then(response => {
-      this.setState({ rec: response.data });
+      this.setState({ expense: '', category: '', amount: '', rec: response.data });
     });
+  }
+
+  bootstrapBar() {
+    return (
+      <div>
+        <div className="form-group">
+          <h1 className="header">One-time Expense</h1>
+          <label for="inputExpense">Enter one-time expense</label>
+          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
+          <small id="budgetHelp" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
+          <label for="inputAmount">Enter amount</label>
+          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
+          <br></br>
+          <label for="inputCurrency">Select Category</label>
+          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
+            <option value="">Select Category</option>
+            <option value={1}>Entertainment</option>
+            <option value={2}>Food</option>
+            <option value={3}>Rent</option>
+            <option value={4}>Others</option>
+          </select>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-warning">Submit</a>
+        </div>
+      </div>
+    )
   }
 
   searchBar() {
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form>
           Add one-time expense:{' '}
           <input
             type="text"
@@ -89,14 +117,18 @@ class OneExpense extends React.Component {
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <input value="Submit" type="submit" />
+          <input onClick={this.onSubmit} value="Submit" type="submit" />
         </form>
       </div>
     );
   }
 
   render() {
-    return <div>{this.searchBar()}</div>;
+    return (
+      <Paper style={{'paddingTop':'7px','width':'77%', marginLeft:'11.5%', marginRight:'11.5'}}>
+      {this.bootstrapBar()}
+      </Paper>
+    )
   }
 }
 
