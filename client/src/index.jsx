@@ -11,6 +11,7 @@ import LoginSignup from './components/loginSignup.jsx';
 import axios from 'axios';
 import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
+import $ from 'jquery';
 
 
 class App extends React.Component {
@@ -34,6 +35,13 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
+    $(document).on('click', 'a[href^="#"]', function (event) {
+      event.preventDefault();
+
+      $('html, body').animate({
+          scrollTop: $($.attr(this, 'href')).offset().top
+      }, 700);
+    });
   }
 
   getCurrentEmail(email) {
@@ -81,7 +89,7 @@ class App extends React.Component {
     } else {
       return (
         <div>
-          <div className="widget">
+          <div id="widget" className="widget">
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather />
           </div>
@@ -92,6 +100,7 @@ class App extends React.Component {
             <Expenses currentEmail={this.state.currentEmail}/>
           </MuiThemeProvider>
           <br/>
+          <a onClick={console.log('HELLO WORLD')} className="btn btn-info" href="#widget">Graph</a>
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );

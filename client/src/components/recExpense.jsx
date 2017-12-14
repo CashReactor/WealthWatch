@@ -68,7 +68,7 @@ class RecExpense extends React.Component {
       period: this.state.period,
     };
     axios.post('/recExpense', data).then(response => {
-      this.setState({ rec: response.data });
+      this.setState({ expense: '', category: '', amount: '', period: '', rec: response.data });
     });
   }
 
@@ -97,7 +97,7 @@ class RecExpense extends React.Component {
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <button onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-success">Submit</button>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-success">Submit</a>
         </div>
       </div>
     )

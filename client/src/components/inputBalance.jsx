@@ -96,7 +96,7 @@ class InputBalance extends React.Component {
             <option value="THB">Thai Baht</option>
             <option value="TRY">Turkish Lira</option>
           </select>
-          <button onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-responsive btn-primary">Submit</button>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-responsive btn-primary">Submit</a>
         </div>
       </div>
     )

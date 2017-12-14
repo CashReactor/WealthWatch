@@ -81,7 +81,7 @@ class OneExpense extends React.Component {
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <button onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-warning">Submit</button>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-warning">Submit</a>
         </div>
       </div>
     )
