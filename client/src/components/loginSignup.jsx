@@ -201,7 +201,7 @@ class LoginSignup extends React.Component {
               id="signupEmail"
               placeholder="Email"
             />
-            <small id="emailHelp" className="form-text text-muted">
+            <small className="form-text text-muted">
               This email account will be used for logging in.
             </small>
           </div>
@@ -226,8 +226,8 @@ class LoginSignup extends React.Component {
               id="signupImageUrl"
               placeholder="Image Url"
             />
+            <small className="form-text text-muted">A profile image will further personalize your account!</small>
           </div>
-          <div className="form-group col-xs-8" />
           <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
             Sign Up
           </button>

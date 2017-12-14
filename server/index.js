@@ -127,7 +127,7 @@ app.post('/oneExpense', function(req, res) {
 })
 
 app.post('/fetchRecExpenses', function(req, res) {
-  User.findOne({ email: req.body.email}, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
     res.send(user.recurring);
     res.end();
   })
@@ -158,7 +158,7 @@ app.post('/recExpense', function(req, res) {
 })
 
 //weather-map API
-app.post('/weather', jwtAuth(), function(req, res) {
+app.post('/weather', function(req, res) {
   console.log(req.body);
   var lat = req.body.lat;
   var lon = req.body.lon;

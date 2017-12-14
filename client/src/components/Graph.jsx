@@ -5,6 +5,7 @@ import LineGraph from './lineGraph.jsx';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
+import axios from 'axios';
 
 const styles = {
   default_tab: {
@@ -25,14 +26,19 @@ class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
       currentDate: new Date(),
+      one: [],
+      rec: [],
     };
+  }
+
+  componentDidMount() {
   }
 
   render() {
     return (
       <div>
+        <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
         <Paper style={styles.paper}>
           <BarGraph />
           <LineGraph />

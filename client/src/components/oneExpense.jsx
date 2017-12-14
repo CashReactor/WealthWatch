@@ -68,21 +68,21 @@ class OneExpense extends React.Component {
       <div>
         <div className="form-group">
           <h1 className="header">One-time Expense</h1>
-          <label htmlFor="inputExpense">Enter one-time expense</label>
-          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
-          <small id="budgetHelp" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
-          <label htmlFor="inputAmount">Enter amount</label>
-          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="inputAmount" placeholder="Enter Amount"/>
+          <label id="label" htmlFor="inputExpense">Enter one-time expense</label>
+          <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="input" placeholder="Enter Expense"/>
+          <small id="small" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
+          <label id="label" htmlFor="inputAmount">Enter amount</label>
+          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="input" placeholder="Enter Amount"/>
           <br></br>
-          <label htmlFor="inputCurrency">Select Category</label>
-          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="inputCategory">
+          <label id="label" htmlFor="inputCurrency">Select Category</label>
+          <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="select">
             <option value="">Select Category</option>
             <option value={1}>Entertainment</option>
             <option value={2}>Food</option>
             <option value={3}>Rent</option>
             <option value={4}>Others</option>
           </select>
-          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" className="btn btn-warning">Submit</a>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-warning">Submit</a>
         </div>
       </div>
     )
