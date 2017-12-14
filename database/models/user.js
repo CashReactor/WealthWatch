@@ -5,25 +5,6 @@ const isEmail = require('validator/lib/isEmail');
 const { recurringSchema } = require('./recurring.js');
 const { oneTimeSchema } = require('./oneTime.js');
 
-// const recurringSchema = new mongoose.Schema({
-//   expense: {
-//     type: String,
-//     unique: true
-//   },
-//   amount: Number,
-//   period: String,
-//   category: String,
-//   startDate: Date
-// });
-// expense: Hulu, amount: 12, period: monthly/daily/weekly cat: Entertainment
-
-// const oneTimeSchema = new mongoose.Schema({
-//   expense: String,
-//   amount: Number,
-//   date: Date,
-//   category: String
-// });
-
 const Schema = mongoose.Schema;
 
 const googleUserSchema = new Schema({
@@ -35,7 +16,7 @@ const googleUserSchema = new Schema({
   budget: Number,
   name: String,
   email: String
-})
+});
 
 const userSchema = new Schema({
   email: {
