@@ -147,3 +147,4 @@ class InputBalance extends React.Component {
 }
 
 export default InputBalance;
+
