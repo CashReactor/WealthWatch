@@ -25,7 +25,9 @@ class App extends React.Component {
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
-      currentEmail: email
+      currentEmail: email,
+      rec: [],
+      one: []
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -42,6 +44,17 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
+
+    axios.post('/fetchOneExpenses', { email: this.state.currentEmail })
+    .then((response) => {
+      this.setState({ rec: response.data });
+      console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
+    })
+    axios.post('/fetchRecExpenses', { email: this.state.currentEmail })
+    .then((response) => {
+      this.setState({ one: response.data });
+      console.log('THIS IS THE ONE-TIME EXPENSES', this.state.one);
+    })
   }
 
   getCurrentEmail(email) {

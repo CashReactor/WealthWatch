@@ -33,16 +33,6 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
-    axios.post('/fetchOneExpenses', { email: this.props.currentEmail })
-    .then((response) => {
-      this.setState({ rec: response.data });
-      console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
-    })
-    axios.post('/fetchRecExpenses', { email: this.props.currentEmail })
-    .then((response) => {
-      this.setState({ one: response.data });
-      console.log('THIS IS THE ONTIME EXPENSES', this.state.one);
-    })
   }
 
   render() {
