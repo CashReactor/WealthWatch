@@ -17,7 +17,6 @@ class RecExpense extends React.Component {
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
     this.onPeriodChange = this.onPeriodChange.bind(this);
-    this.searchBar = this.searchBar.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -102,47 +101,6 @@ class RecExpense extends React.Component {
         </div>
       </div>
     )
-  }
-
-  searchBar() {
-    return (
-      <div>
-        <form onSubmit={this.onSubmit}>
-          Add recurring expense:{' '}
-          <input
-            type="text"
-            placeholder="Enter expense"
-            value={this.state.expense}
-            onChange={this.onInputChange}
-            name="rec"
-          />
-          <br />
-          Add expense amount:{' '}
-          <input
-            type="text"
-            placeholder="Enter amount"
-            value={this.state.amount}
-            onChange={this.onAmountChange}
-            name="rec"
-          />
-          <br />
-          <select onChange={this.onCategoryChange} id="currency" name="currency_code">
-            <option value="">Select Category</option>
-            <option value={1}>Entertainment</option>
-            <option value={2}>Food</option>
-            <option value={3}>Rent</option>
-            <option value={4}>Others</option>
-          </select>
-          <select onChange={this.onPeriodChange} id="period" name="period">
-            <option value="">Select Period</option>
-            <option value="daily">Daily</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-          <input value="Submit" type="submit" />
-        </form>
-      </div>
-    );
   }
 
   render() {

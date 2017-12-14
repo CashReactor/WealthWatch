@@ -21,19 +21,25 @@ class App extends React.Component {
     const email = window.localStorage.getItem('user_email');
     this.state = {
       budget: 7000,
+      one: [],
+      rec: [],
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
+      currentGraph: null,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
     this.setLogoutState = this.setLogoutState.bind(this);
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
+    this.renderGraph = this.renderGraph.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
   componentDidMount() {
+    this.renderGraph();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
       event.preventDefault();
@@ -42,6 +48,120 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
+    this.updateUser();
+  }
+
+  updateUser() {
+    axios.post('/user', { email: this.state.currentEmail })
+    .then((response) => {
+      console.log('RESPONSE DATAAAA', response.data);
+      if (!response.data.budget) {
+        response.data.budget = "7777";
+      }
+      this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring });
+      console.log('THIS IS THE CURRENT BUDGET', this.state.budget);
+      console.log('THIS IS THE BAR GRAPH ONETIME EXPENSES', this.state.one);
+      console.log('THIS IS THE BAR GRAPH RECURRING EXPENSES', this.state.rec);
+      this.renderGraph();
+    })
+  }
+
+  renderGraph() {
+    if (this.state.currentGraph) {
+      this.state.currentGraph.destroy();
+    }
+    let days = [];
+    let budget = [];
+    let day = this.state.currentDate.getDate();
+    let month = this.state.currentDate.getMonth() + 1;
+    let year = this.state.currentDate.getFullYear();
+    let daysInMonth = this.daysInMonth(month, year);
+    for (let i = 0; i <= daysInMonth; i++) {
+      days.push(i);
+    }
+    // for (let i = 0; i <= daysInMonth; i++) {
+    //   budget.push(this.state.budget)
+    // }
+    // for (let i = 0; i < this.state.one.length; i++) {
+    //   var expenseAmount = this.state.one[i].amount;
+    //   console.log('THIS STATE ONE', new Date(this.state.one[i].date).getDate());
+    //   var expenseDay = new Date(this.state.one[i].date).getDate();
+    //   console.log('THIS IS THE EXPENSE DAY', expenseDay);
+    //   var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
+    //   var expenseYear = new Date(this.state.one[i].date).getFullYear();
+    //   if (expenseYear === year && expenseMonth === month && expenseDay === i) {
+    //     for (let j = expenseDay; j <= daysInMonth; j++) {
+    //       budget[expenseDay] = budget[expenseDay] - expenseAmount;
+    //     }
+    //   }
+    // }
+    // for (let i = 0; i < this.state.rec.length; i++) {
+    //   var expenseAmount = this.state.rec[i].amount;
+    //   for (let j = 1; j < budget.length; j++) {
+    //     budget[j] = budget[j] - expenseAmount;
+    //   }
+    // }
+    console.log(budget);
+    let barCtx = document.getElementById('barChart');
+    barCtx.style.backgroundColor = '#FAFAFA'
+    let updatedBudgets = [
+      this.state.budget,
+      4000,
+      2000,
+      1000,
+      500,
+      250,
+      200,
+      190,
+      180,
+      170,
+      165,
+      140,
+      120,
+      100,
+      89,
+      78,
+      72,
+      73,
+      60,
+      14,
+      -10,
+      -25,
+      -100,
+      -250,
+      -800,
+    ];
+    let positiveColor = 'rgba(54, 162, 235, 0.7)'
+
+    let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
+
+    var barGraph = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: 'Current Monthly Balance ($)',
+            data: updatedBudgets,
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+    this.setState({ currentGraph: barGraph });
   }
 
   getCurrentEmail(email) {
@@ -100,8 +220,8 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
-            <InputBalance currentEmail={this.state.currentEmail} />
-            <Expenses currentEmail={this.state.currentEmail} />
+            <InputBalance updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <Expenses renderGraph={this.renderGraph} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
 
