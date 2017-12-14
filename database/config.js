@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 
 require('dotenv').config();
@@ -10,7 +11,7 @@ mongoose
     useMongoClient: true
   })
   .then(() => console.log('database connected'))
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
 

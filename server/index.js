@@ -3,7 +3,7 @@ const { auth } = require('./routes/authentication.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
 const { One } = require('../database/models/oneTime.js');
-const { jwtAuth } = require('./authentication/authentication.js')
+const { jwtAuth } = require('./handlers/authentication.js');
 
 // ***********************
 const axios = require('axios');
