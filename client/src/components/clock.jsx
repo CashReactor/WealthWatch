@@ -20,7 +20,6 @@ class Clock extends React.Component {
   timer() {
     const date = new Date();
     this.setState({ time: date });
-    // this.props.getCurrentDate(date);
   }
 
   render() {

@@ -20,14 +20,12 @@ class App extends React.Component {
     const jwtToken = window.localStorage.getItem('wealthwatch_token') || '';
     const email = window.localStorage.getItem('user_email');
     this.state = {
-      budget: 5000,
+      budget: 7000,
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
-      rec: [],
-      one: []
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -44,21 +42,6 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
-
-    if (this.state.loggedIn) {
-      axios.post('/fetchOneExpenses', { email: this.state.currentEmail })
-      .then((response) => {
-      this.setState({ rec: response.data });
-        console.log('THIS IS THE RECURRING EXPENSES', this.state.rec);
-      })
-      axios.post('/fetchRecExpenses', { email: this.state.currentEmail })
-      .then((response) => {
-        this.setState({ one: response.data });
-        console.log('THIS IS THE ONE-TIME EXPENSES', this.state.one);
-      })
-    }
-
-
   }
 
   getCurrentEmail(email) {
@@ -115,13 +98,13 @@ class App extends React.Component {
             <Weather getAuthentication={this.getAuthentication} />
           </div>
           <MuiThemeProvider>
-            <Graph currentEmail={this.state.currentEmail} />
+            <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
             <InputBalance currentEmail={this.state.currentEmail} />
             <Expenses currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
-          <a onClick={console.log('HELLO WORLD')} className="btn btn-info" href="#widget">Graph</a>
+
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
         </div>
       );

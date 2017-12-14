@@ -27,8 +27,6 @@ class Graph extends React.Component {
     super(props);
     this.state = {
       currentDate: new Date(),
-      one: [],
-      rec: [],
     };
   }
 
@@ -40,8 +38,8 @@ class Graph extends React.Component {
       <div>
         <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
         <Paper style={styles.paper}>
-          <BarGraph />
-          <LineGraph />
+          <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
+          <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
         </Paper>
       </div>
     );
