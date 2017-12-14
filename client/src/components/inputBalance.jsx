@@ -11,7 +11,8 @@ const styles = {
     length: '50%',
     margin: '0 auto',
     textAlign: 'center',
-    width: '70%'
+    width: '70%',
+    backgroundColor: '#DCEDC8',
   }
 }
 
@@ -65,6 +66,7 @@ class InputBalance extends React.Component {
     return(
       <div>
         <div className="form-group">
+          <h1 className="header">Balance</h1>
           <label for="inputBudget">Enter balance</label>
           <input type="number" onChange={this.onInputChange} className="form-control" id="inputBudget" placeholder="Enter Balance"/>
           <small id="budgetHelp" className="form-text text-muted">We won't share your income to anyone else.</small><br></br><br></br>

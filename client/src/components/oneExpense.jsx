@@ -67,6 +67,7 @@ class OneExpense extends React.Component {
     return (
       <div>
         <div className="form-group">
+          <h1 className="header">One-time Expense</h1>
           <label for="inputExpense">Enter one-time expense</label>
           <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="inputExpense" placeholder="Enter Expense"/>
           <small id="budgetHelp" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
