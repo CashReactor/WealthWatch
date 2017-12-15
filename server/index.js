@@ -90,6 +90,15 @@ app.post('/updateBalance', function(req, res) {
   )
 })
 
+app.post('/reset', function(req, res) {
+  User.findOneAndUpdate({ email: req.body.email }, {
+    $set: { oneTime: [], recurring: [] }
+  }, (err, user) => {
+    res.send('success');
+    res.end();
+  })
+})
+
 app.post('/user', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {
     res.send(user);

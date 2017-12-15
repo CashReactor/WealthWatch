@@ -44,11 +44,10 @@ img {
   margin-top: 1.7% !important;
 }
 
-.btn {
+#btns {
   margin-right: 77%;
   margin-bottom: 15px;
   margin-left: 15px;
-
 }
 
 .weather {

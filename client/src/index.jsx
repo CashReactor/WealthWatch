@@ -28,7 +28,8 @@ class App extends React.Component {
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
-      currentGraph: null,
+      currentBarGraph: null,
+      currentLineGraph: null,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -36,11 +37,12 @@ class App extends React.Component {
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
     this.renderGraph = this.renderGraph.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.resetUser = this.resetUser.bind(this);
   }
 
   componentDidMount() {
     // this.renderGraph();
-    this.renderGraph();
+    // this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
@@ -51,6 +53,13 @@ class App extends React.Component {
       }, 700);
     });
     // this.updateUser();
+  }
+
+  resetUser() {
+    axios.post('/reset', { email: this.state.currentEmail })
+    .then((response) => {
+      this.updateUser();
+    })
   }
 
   updateUser() {
@@ -69,14 +78,19 @@ class App extends React.Component {
   }
 
   renderGraph() {
-    if (this.state.currentGraph) {
-      this.state.currentGraph.destroy();
+    if (this.state.currentBarGraph) {
+      this.state.currentBarGraph.destroy();
+    }
+    if (this.state.currentLineGraph) {
+      this.state.currentLineGraph.destroy();
     }
     let days = [];
     let budget = [];
+    let expenses = [];
     let day = this.state.currentDate.getDate();
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
+    let totalRecExp = 0;
     console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
     for (let i = 0; i <= daysInMonth; i++) {
@@ -84,6 +98,7 @@ class App extends React.Component {
     }
     for (let i = 0; i <= daysInMonth; i++) {
       budget.push(this.state.budget)
+      expenses.push(0);
     }
     for (let i = 0; i < this.state.one.length; i++) {
       var expenseAmount = this.state.one[i].amount;
@@ -94,6 +109,7 @@ class App extends React.Component {
       var expenseYear = new Date(this.state.one[i].date).getFullYear();
       console.log('THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES', expenseDay, '//', expenseMonth, '//', expenseYear)
       if (expenseYear === year && expenseMonth === month) {
+        expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
         }
@@ -101,14 +117,17 @@ class App extends React.Component {
     }
     for (let i = 0; i < this.state.rec.length; i++) {
       var expenseAmount = this.state.rec[i].amount;
+      totalRecExp = totalRecExp + expenseAmount;
       for (let j = 1; j < budget.length; j++) {
         budget[j] = budget[j] - expenseAmount;
       }
     }
+    expenses[1] = totalRecExp;
     console.log(budget);
     let barCtx = document.getElementById('barChart');
+    let lineCtx = document.getElementById('lineChart');
+
     // console.log(barCtx)
-    barCtx.style.backgroundColor = '#FAFAFA'
     let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)'
 
@@ -124,6 +143,34 @@ class App extends React.Component {
         return 'rgba(255, 0, 0, 0.5)';
       }
     })
+
+    var lineGraph = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: 'Current Monthly Expenditure ($)',
+            data: expenses,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 1,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
 
     var barGraph = new Chart(barCtx, {
       type: 'bar',
@@ -151,7 +198,8 @@ class App extends React.Component {
         },
       },
     });
-    this.setState({ currentGraph: barGraph });
+    this.setState({ currentBarGraph: barGraph });
+    this.setState({ currentLineGraph: lineGraph });
   }
 
   getCurrentEmail(email) {
@@ -216,6 +264,7 @@ class App extends React.Component {
           <br/>
 
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
+          <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
         </div>
       );
     }
