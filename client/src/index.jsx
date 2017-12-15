@@ -13,6 +13,7 @@ import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
 import NPVCalculator from './components/npvCalculator.jsx'
 import $ from 'jquery';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
