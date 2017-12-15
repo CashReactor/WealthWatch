@@ -74,9 +74,11 @@ class App extends React.Component {
     }
     let days = [];
     let budget = [];
+    let expenses = [];
     let day = this.state.currentDate.getDate();
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
+    let totalRecExp = 0;
     console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
     for (let i = 0; i <= daysInMonth; i++) {
@@ -84,6 +86,7 @@ class App extends React.Component {
     }
     for (let i = 0; i <= daysInMonth; i++) {
       budget.push(this.state.budget)
+      expenses.push(0);
     }
     for (let i = 0; i < this.state.one.length; i++) {
       var expenseAmount = this.state.one[i].amount;
@@ -94,6 +97,7 @@ class App extends React.Component {
       var expenseYear = new Date(this.state.one[i].date).getFullYear();
       console.log('THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES', expenseDay, '//', expenseMonth, '//', expenseYear)
       if (expenseYear === year && expenseMonth === month) {
+        expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
         }
@@ -101,12 +105,16 @@ class App extends React.Component {
     }
     for (let i = 0; i < this.state.rec.length; i++) {
       var expenseAmount = this.state.rec[i].amount;
+      totalRecExp = totalRecExp + expenseAmount;
       for (let j = 1; j < budget.length; j++) {
         budget[j] = budget[j] - expenseAmount;
       }
     }
+    expenses[1] = totalRecExp;
     console.log(budget);
     let barCtx = document.getElementById('barChart');
+    let lineCtx = document.getElementById('lineChart');
+
     // console.log(barCtx)
     barCtx.style.backgroundColor = '#FAFAFA'
     let updatedBudgets = budget;
@@ -124,6 +132,34 @@ class App extends React.Component {
         return 'rgba(255, 0, 0, 0.5)';
       }
     })
+
+    var lineGraph = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: 'Current Monthly Expenditure ($)',
+            data: expenses,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 1,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
 
     var barGraph = new Chart(barCtx, {
       type: 'bar',
