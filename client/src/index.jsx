@@ -44,14 +44,18 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
-    $(document).on('click', 'a[href^="#"]', function (event) {
+    $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
-      $('html, body').animate({
-          scrollTop: $($.attr(this, 'href')).offset().top
-      }, 700);
+      $('html, body').animate(
+        {
+          scrollTop: $($.attr(this, 'href')).offset().top,
+        },
+        700
+      );
     });
     console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
@@ -71,11 +75,10 @@ class App extends React.Component {
   }
 
   updateUser() {
-    axios.post('/user', { email: this.state.currentEmail })
-    .then((response) => {
+    axios.post('/user', { email: this.state.currentEmail }).then((response) => {
       console.log('RESPONSE DATAAAA', response.data);
       if (!response.data.budget) {
-        response.data.budget = "7777";
+        response.data.budget = '7777';
       }
       this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring, currency: response.data.currency });
       console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
@@ -113,7 +116,14 @@ class App extends React.Component {
       console.log('THIS IS THE EXPENSE DAY', expenseDay);
       var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
       var expenseYear = new Date(this.state.one[i].date).getFullYear();
-      console.log('THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES', expenseDay, '//', expenseMonth, '//', expenseYear)
+      console.log(
+        'THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES',
+        expenseDay,
+        '//',
+        expenseMonth,
+        '//',
+        expenseYear
+      );
       if (expenseYear === year && expenseMonth === month) {
         expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
@@ -135,9 +145,8 @@ class App extends React.Component {
 
     // console.log(barCtx)
     let updatedBudgets = budget;
-    let positiveColor = 'rgba(54, 162, 235, 0.7)'
+    let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
-    // let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
     let color = updatedBudgets.map((budget, index) => {
       if (budget > 0) {
         if (index <= this.state.currentDate.getDate()) {
@@ -148,7 +157,7 @@ class App extends React.Component {
       } else {
         return 'rgba(255, 0, 0, 0.5)';
       }
-    })
+    });
 
     var lineGraph = new Chart(lineCtx, {
       type: 'line',
@@ -312,10 +321,15 @@ class App extends React.Component {
       return (
         <div>
           <MuiThemeProvider>
-            <LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+            <LoginSignup
+              updateUser={this.updateUser}
+              getCurrentEmail={this.getCurrentEmail}
+              setLoginState={this.setLoginState}
+              setLogoutState={this.setLogoutState}
+            />
           </MuiThemeProvider>
         </div>
-      )
+      );
     } else {
       return (
         <div>
