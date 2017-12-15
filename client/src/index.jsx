@@ -39,7 +39,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // this.renderGraph();
     this.renderGraph();
+    this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
       event.preventDefault();
@@ -48,7 +50,7 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
-    this.updateUser();
+    // this.updateUser();
   }
 
   updateUser() {
@@ -75,65 +77,53 @@ class App extends React.Component {
     let day = this.state.currentDate.getDate();
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
+    console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
-    // for (let i = 0; i <= daysInMonth; i++) {
-    //   budget.push(this.state.budget)
-    // }
-    // for (let i = 0; i < this.state.one.length; i++) {
-    //   var expenseAmount = this.state.one[i].amount;
-    //   console.log('THIS STATE ONE', new Date(this.state.one[i].date).getDate());
-    //   var expenseDay = new Date(this.state.one[i].date).getDate();
-    //   console.log('THIS IS THE EXPENSE DAY', expenseDay);
-    //   var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
-    //   var expenseYear = new Date(this.state.one[i].date).getFullYear();
-    //   if (expenseYear === year && expenseMonth === month && expenseDay === i) {
-    //     for (let j = expenseDay; j <= daysInMonth; j++) {
-    //       budget[expenseDay] = budget[expenseDay] - expenseAmount;
-    //     }
-    //   }
-    // }
-    // for (let i = 0; i < this.state.rec.length; i++) {
-    //   var expenseAmount = this.state.rec[i].amount;
-    //   for (let j = 1; j < budget.length; j++) {
-    //     budget[j] = budget[j] - expenseAmount;
-    //   }
-    // }
+    for (let i = 0; i <= daysInMonth; i++) {
+      budget.push(this.state.budget)
+    }
+    for (let i = 0; i < this.state.one.length; i++) {
+      var expenseAmount = this.state.one[i].amount;
+      console.log('THIS STATE ONE', new Date(this.state.one[i].date).getDate());
+      var expenseDay = new Date(this.state.one[i].date).getDate();
+      console.log('THIS IS THE EXPENSE DAY', expenseDay);
+      var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
+      var expenseYear = new Date(this.state.one[i].date).getFullYear();
+      console.log('THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES', expenseDay, '//', expenseMonth, '//', expenseYear)
+      if (expenseYear === year && expenseMonth === month) {
+        for (let j = expenseDay; j <= daysInMonth; j++) {
+          budget[j] = budget[j] - expenseAmount;
+        }
+      }
+    }
+    for (let i = 0; i < this.state.rec.length; i++) {
+      var expenseAmount = this.state.rec[i].amount;
+      for (let j = 1; j < budget.length; j++) {
+        budget[j] = budget[j] - expenseAmount;
+      }
+    }
     console.log(budget);
     let barCtx = document.getElementById('barChart');
+    // console.log(barCtx)
     barCtx.style.backgroundColor = '#FAFAFA'
-    let updatedBudgets = [
-      this.state.budget,
-      4000,
-      2000,
-      1000,
-      500,
-      250,
-      200,
-      190,
-      180,
-      170,
-      165,
-      140,
-      120,
-      100,
-      89,
-      78,
-      72,
-      73,
-      60,
-      14,
-      -10,
-      -25,
-      -100,
-      -250,
-      -800,
-    ];
+    let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)'
 
-    let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
+    // let color = updatedBudgets.map(budget => (budget > 0 ? positiveColor : 'rgba(255, 0, 0, 0.5)'));
+    let color = updatedBudgets.map((budget, index) => {
+      if (budget > 0) {
+        if (index <= this.state.currentDate.getDate()) {
+          return positiveColor;
+        } else {
+          return 'rgba(54, 162, 235, 0.3)';
+        }
+      } else {
+        return 'rgba(255, 0, 0, 0.5)';
+      }
+    })
 
     var barGraph = new Chart(barCtx, {
       type: 'bar',
@@ -206,7 +196,7 @@ class App extends React.Component {
       return (
         <div>
           <MuiThemeProvider>
-            <LoginSignup getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
+            <LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />
           </MuiThemeProvider>
         </div>
       )
@@ -221,7 +211,7 @@ class App extends React.Component {
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
             <InputBalance updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-            <Expenses renderGraph={this.renderGraph} currentEmail={this.state.currentEmail} />
+            <Expenses currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
 

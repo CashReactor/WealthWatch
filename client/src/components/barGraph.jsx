@@ -9,11 +9,12 @@ class BarGraph extends React.Component {
       currentDate: new Date(),
       budget: 7777,
       currentGraph: null,
+      one: [],
+      rec: [],
     };
   }
 
   componentDidMount() {
-
   }
 
 

@@ -95,6 +95,7 @@ class LoginSignup extends React.Component {
           password: this.state.loginPassword,
         })
         .then((response) => {
+          this.props.updateUser();
           this.props.getCurrentEmail(this.state.loginEmail);
           console.log('successful login search');
           if (response.status === 200) {
