@@ -37,12 +37,14 @@ img {
   background-size: cover;
 }
 
-#btn {
+#btn, #btn:visited {
   margin-right: 77%;
   margin-left: 1.5% !important;
   margin-bottom: 1.7% !important;
   margin-top: 1.7% !important;
 }
+
+
 
 #btns {
   margin-right: 77%;

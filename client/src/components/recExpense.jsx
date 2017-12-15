@@ -96,7 +96,8 @@ class RecExpense extends React.Component {
             <option value={1}>Entertainment</option>
             <option value={2}>Food</option>
             <option value={3}>Rent</option>
-            <option value={4}>Others</option>
+            <option value={4}>Utilities</option>
+            <option value={5}>Others</option>
           </select>
           <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-success">Submit</a>
         </div>

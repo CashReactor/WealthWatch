@@ -11,8 +11,8 @@ import LoginSignup from './components/loginSignup.jsx';
 import axios from 'axios';
 import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
+import NPVCalculator from './components/npvCalculator.jsx'
 import $ from 'jquery';
-
 
 class App extends React.Component {
   constructor(props) {
@@ -41,8 +41,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // this.renderGraph();
-    // this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
@@ -52,6 +50,9 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
+    console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
+    console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
+
     // this.updateUser();
   }
 
@@ -262,6 +263,7 @@ class App extends React.Component {
             <Expenses updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
+          <NPVCalculator/>
 
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
