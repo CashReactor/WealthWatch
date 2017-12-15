@@ -32,7 +32,7 @@ router.post('/login', localAuth(), (req, res) => {
   const { _id, email, name } = req.user;
   const user = { _id, email, name };
   const token = generateToken(user);
-  res.json({ message: 'Login successful', token, email });
+  res.status(200).json({ message: 'Login successful', token, email });
 });
 
 router.post('/signup', (req, res) => {
@@ -50,7 +50,7 @@ router.post('/signup', (req, res) => {
     })
     .then(() => {
       const token = generateToken(jwtData);
-      res.status(201).json({ message: 'Registration Successful', token });
+      res.status(201).json({ message: 'Registration Successful', token, email });
     })
     .catch((error) => {
       res.status(500).json({ message: error });
