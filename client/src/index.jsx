@@ -42,7 +42,7 @@ class App extends React.Component {
 
   componentDidMount() {
     // this.renderGraph();
-    this.renderGraph();
+    // this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
