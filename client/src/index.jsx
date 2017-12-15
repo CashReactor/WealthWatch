@@ -317,6 +317,43 @@ class App extends React.Component {
     return this.state.token;
   }
 
+  getCurrentEmail(email) {
+    this.setState({ currentEmail: email });
+  }
+
+  getCurrentDate(date) {
+    this.setState({ currentDate: date });
+  }
+
+  daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  setLoginState(token, email) {
+    this.setState({
+      loggedIn: true,
+      token: token,
+      currentEmail: email
+    });
+    // this.renderChart();
+    window.localStorage.setItem('wealthwatch_token', token);
+    window.localStorage.setItem('user_email', email);
+  }
+
+  setLogoutState(event) {
+    event.preventDefault();
+    this.setState({
+      loggedIn: false,
+      token: '',
+    });
+    window.localStorage.removeItem('wealthwatch_token');
+    window.localStorage.removeItem('user_email');
+  }
+
+  getAuthentication() {
+    return this.state.token;
+  }
+
   render() {
     if (!this.state.loggedIn) {
       return (
