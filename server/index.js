@@ -90,6 +90,20 @@ app.post('/updateBalance', function(req, res) {
   )
 })
 
+app.post('/user', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user);
+    res.end();
+  })
+})
+
+app.post('/fetchBudget', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(String(user.budget));
+    res.end();
+  })
+})
+
 app.get('/logout', function(req, res) {
   console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {
