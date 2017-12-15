@@ -211,7 +211,7 @@ class App extends React.Component {
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
             <InputBalance updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-            <Expenses currentEmail={this.state.currentEmail} />
+            <Expenses updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
 

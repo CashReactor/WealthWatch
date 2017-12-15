@@ -68,6 +68,7 @@ class RecExpense extends React.Component {
     };
     axios.post('/recExpense', data).then(response => {
       this.setState({ expense: '', category: '', amount: '', period: '', rec: response.data });
+      this.props.updateUser();
     });
   }
 
