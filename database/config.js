@@ -5,6 +5,7 @@ mongoose.Promise = global.Promise;
 require('dotenv').config();
 
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds135926.mlab.com:35926/wealthwatch`;
+console.log('uri::', uri)
 
 mongoose
   .connect(uri, {

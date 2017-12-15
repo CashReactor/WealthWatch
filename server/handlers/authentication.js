@@ -9,7 +9,6 @@ const mail = require('./mail');
 
 const { _secret } = require('../../config');
 const { User } = require('../../database/models/user');
-
 // JWT login strategy options configuration
 const googleOptions = {
   clientID: process.env.GOOGLE_CLIENT_ID,
