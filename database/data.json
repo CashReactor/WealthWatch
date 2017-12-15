@@ -1,0 +1,51 @@
+[
+  {
+    "email" : "blue@b.com",
+    "name" : "blue",
+    "password" : "1234",
+    "currency" : "USD",
+    "budget" : 7000,
+    "oneTime" : [
+      { "category" : "2", "date" : "2017-11-13T20:02:59.588Z", "amount": 12, "expense" : "pho" },
+      { "category" : "2", "date" : "2017-11-13T20:07:59.509Z", "amount" : 2, "expense" : "gatorade" },
+      { "category" : "2", "date" : "2017-11-14T00:40:16.799Z", "amount" : 2, "expense" : "orange juice" },
+      { "category" : "2", "date" : "2017-11-15T00:40:16.799Z", "amount" : 11, "expense" : "Chipotle" },
+      { "category" : "1", "date" : "2017-11-15T00:40:16.799Z", "amount" : 20, "expense" : "Ragnarok Movie" },
+      { "category" : "4", "date" : "2017-11-15T00:40:16.799Z", "amount" : 100, "expense" : "lend money" },
+      { "category" : "2", "date" : "2017-11-16T00:40:16.799Z", "amount" : 15, "expense" : "Bob evans" },
+      { "category" : "2", "date" : "2017-11-16T00:40:16.799Z", "amount" : 11, "expense" : "Chipotle" },
+      { "category" : "2", "date" : "2017-11-16T00:40:16.799Z", "amount" : 10, "expense" : "Chinese restaurant" },
+      { "category" : "4", "date" : "2017-11-17T00:40:16.799Z", "amount" : 100, "expense" : "Groceries" },
+      { "category" : "4", "date" : "2017-11-17T00:40:16.799Z", "amount" : 300, "expense" : "Curved monitor" },
+      { "category" : "4", "date" : "2017-11-17T00:40:16.799Z", "amount" : 100, "expense" : "Motherboard" },
+      { "category" : "4", "date" : "2017-11-18T00:40:16.799Z", "amount" : 1100, "expense" : "Computer parts" },
+      { "category" : "2", "date" : "2017-11-19T00:40:16.799Z", "amount" : 80, "expense" : "Korean BBq Buffet" },
+      { "category" : "2", "date" : "2017-11-20T00:40:16.799Z", "amount" : 11, "expense" : "Japanese Ramen" },
+      { "category" : "2", "date" : "2017-12-01T00:40:16.799Z", "amount" : 11, "expense" : "Chipotle" },
+      { "category" : "1", "date" : "2017-12-01T00:40:16.799Z", "amount" : 20, "expense" : "Christmas Present" },
+      { "category" : "4", "date" : "2017-12-02T00:40:16.799Z", "amount" : 200, "expense" : "lend money" },
+      { "category" : "2", "date" : "2017-12-03T00:40:16.799Z", "amount" : 14, "expense" : "Panera Bread" },
+      { "category" : "2", "date" : "2017-12-04T00:40:16.799Z", "amount" : 11, "expense" : "Chipotle" },
+      { "category" : "2", "date" : "2017-12-04T00:40:16.799Z", "amount" : 15, "expense" : "Popeyes" },
+      { "category" : "4", "date" : "2017-12-05T00:40:16.799Z", "amount" : 150, "expense" : "Groceries" },
+      { "category" : "4", "date" : "2017-12-06T00:40:16.799Z", "amount" : 300, "expense" : "Router" },
+      { "category" : "4", "date" : "2017-12-07T00:40:16.799Z", "amount" : 400, "expense" : "Speaker" },
+      { "category" : "4", "date" : "2017-12-08T00:40:16.799Z", "amount" : 1100, "expense" : "Keyboard" },
+      { "category" : "2", "date" : "2017-12-09T00:40:16.799Z", "amount" : 80, "expense" : "Korean BBq Buffet" },
+      { "category" : "2", "date" : "2017-12-09T00:40:16.799Z", "amount" : 11, "expense" : "Japanese Ramen" },
+      { "category" : "4", "date" : "2017-12-10T00:40:16.799Z", "amount" : 100, "expense" : "Sound Absorber" },
+      { "category" : "4", "date" : "2017-12-11T00:40:16.799Z", "amount" : 500, "expense" : "Guitar" },
+      { "category" : "4", "date" : "2017-12-11T00:40:16.799Z", "amount" : 20, "expense" : "Music Stands" },
+      { "category" : "4", "date" : "2017-12-12T00:40:16.799Z", "amount" : 300, "expense" : "Recording Software" },
+      { "category" : "2", "date" : "2017-12-13T00:40:16.799Z", "amount" : 40, "expense" : "Sushi Buffet" },
+      { "category" : "2", "date" : "2017-12-14T00:40:16.799Z", "amount" : 11, "expense" : "Japanese Ramen" }
+    ],
+    "recurring" : [
+      { "startDate" : "2017-11-01T20:11:20.509Z", "category" : "4", "period" : "daily", "amount" : 1, "expense" : "Daily Donation" },
+      { "startDate" : "2017-11-13T20:11:20.509Z", "category" : "1", "period" : "monthly", "amount" : 14, "expense" : "Netflix" },
+      { "startDate" : "2017-11-13T20:11:20.509Z", "category" : "3", "period" : "monthly", "amount" : 2200, "expense" : "apartment" },
+      { "startDate" : "2017-11-13T20:11:20.509Z", "category" : "4", "period" : "monthly", "amount" : 200, "expense" : "utility" },
+      { "startDate" : "2017-11-13T20:11:20.509Z", "category" : "4", "period" : "monthly", "amount" : 750, "expense" : "car lease" }
+    ]
+  }
+]
