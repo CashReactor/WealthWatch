@@ -29,7 +29,7 @@ class App extends React.Component {
       loggedIn: !!jwtToken,
       currentEmail: email,
       currentBarGraph: null,
-      currentLineGraph: null
+      currentLineGraph: null,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);

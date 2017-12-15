@@ -37,8 +37,9 @@ router.post('/login', localAuth(), (req, res) => {
 
 router.post('/signup', (req, res) => {
   const { email, name, password } = req.body;
+  const budget = 0;
   const jwtData = { email, name };
-  const newUser = new User({ email, name, password });
+  const newUser = new User({ email, name, password, budget });
 
   User.findOne({ email })
     .then((user) => {
