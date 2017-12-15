@@ -28,7 +28,8 @@ class App extends React.Component {
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
-      currentGraph: null,
+      currentBarGraph: null,
+      currentLineGraph: null
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -36,6 +37,7 @@ class App extends React.Component {
     this.getCurrentEmail = this.getCurrentEmail.bind(this);
     this.renderGraph = this.renderGraph.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.resetUser = this.resetUser.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +53,13 @@ class App extends React.Component {
       }, 700);
     });
     // this.updateUser();
+  }
+
+  resetUser() {
+    axios.post('/reset', { email: this.state.currentEmail })
+    .then((response) => {
+      this.updateUser();
+    })
   }
 
   updateUser() {
@@ -69,8 +78,11 @@ class App extends React.Component {
   }
 
   renderGraph() {
-    if (this.state.currentGraph) {
-      this.state.currentGraph.destroy();
+    if (this.state.currentBarGraph) {
+      this.state.currentBarGraph.destroy();
+    }
+    if (this.state.currentLineGraph) {
+      this.state.currentLineGraph.destroy();
     }
     let days = [];
     let budget = [];
@@ -116,7 +128,6 @@ class App extends React.Component {
     let lineCtx = document.getElementById('lineChart');
 
     // console.log(barCtx)
-    barCtx.style.backgroundColor = '#FAFAFA'
     let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)'
 
@@ -187,7 +198,8 @@ class App extends React.Component {
         },
       },
     });
-    this.setState({ currentGraph: barGraph });
+    this.setState({ currentBarGraph: barGraph });
+    this.setState({ currentLineGraph: lineGraph });
   }
 
   getCurrentEmail(email) {
@@ -252,6 +264,7 @@ class App extends React.Component {
           <br/>
 
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
+          <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
         </div>
       );
     }

@@ -166,7 +166,7 @@ class LoginSignup extends React.Component {
             />
           </div>
         </form>
-        <button type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
+        <button id="btns" type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
         <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg">
@@ -229,7 +229,7 @@ class LoginSignup extends React.Component {
             />
             <small className="form-text text-muted">A profile image will further personalize your account!</small>
           </div>
-          <button type="submit" onClick={this.onSignupSubmit} className="btn btn-primary">
+          <button type="submit" id="btns" onClick={this.onSignupSubmit} className="btn btn-primary">
             Sign Up
           </button>
           {this.state.signupWarning}
