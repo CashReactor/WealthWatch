@@ -10,7 +10,10 @@
     "start": "node server/index.js",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
-    "seed": "node ./database/seed.js"
+    "seed": "node ./database/seed.js",
+    "build": "webpack --config ./config/webpack.config.js --progress --colors",
+    "test": "",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
