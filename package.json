@@ -12,8 +12,12 @@
     "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
+<<<<<<< 44ab1cb185362fa9722b4e5d145daed15a344152
     "seed": "node ./database/seed.js",
     "postinstall": "npm run build",
+=======
+    "seed" : "node ./database/seed.js",
+>>>>>>> add
   },
   "repository": {
     "type": "git",
