@@ -6,11 +6,26 @@ const { One } = require('../database/models/oneTime.js');
 const { jwtAuth } = require('./handlers/authentication.js');
 
 // ***********************
+const path = require('path');
 const axios = require('axios');
 const passport = require('passport');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
+const { NODE_ENV } = process.env;
+
+let webpackConfig;
+if (NODE_ENV === 'development') {
+  webpackConfig = '../webpack.config.dev';
+} else {
+  webpackConfig = '../webpack.config';
+}
+
+const config = require(webpackConfig);
 
 const app = express();
 
@@ -18,6 +33,18 @@ require('dotenv').config();
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
+
+const compiler = webpack(config);
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+  noInfo: true,
+  hot: true,
+  historyApiFallback: true,
+  stats: {
+    colors: true,
+  },
+}));
+app.use(webpackHotMiddleware(compiler));
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -209,6 +236,10 @@ app.post('/weather', function(req, res) {
   });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
 app.listen(port, () => {
-  console.log('Express is listening on port 1337');
+  console.log('Express is listening hard on port 1337');
 });
