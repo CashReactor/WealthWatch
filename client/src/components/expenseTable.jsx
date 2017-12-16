@@ -25,7 +25,7 @@ class ExpenseTable extends React.Component {
       <div>
 
         <div>
-          <Table rec={this.props.rec}>
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
@@ -53,7 +53,7 @@ class ExpenseTable extends React.Component {
         </div>
 
         <div>
-          <Table one={this.props.one}>
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
