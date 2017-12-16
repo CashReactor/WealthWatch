@@ -3,17 +3,23 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
+import Paper from 'material-ui/Paper';
+import $ from 'jquery';
+import axios from 'axios';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import Graph from './components/Graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import LoginSignup from './components/previousLoginSignupForm.jsx';
-import axios from 'axios';
+import LoginSignup from './components/loginSignup.jsx';
 import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
 import NPVCalculator from './components/npvCalculator.jsx'
 import $ from 'jquery';
 import { BrowserRouter, Route } from 'react-router-dom';
+import ForgotPassword from './components/forgotPassword.jsx';
+import ResetPassword from './components/resetPassword.jsx'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -317,54 +323,20 @@ class App extends React.Component {
     return this.state.token;
   }
 
-  getCurrentEmail(email) {
-    this.setState({ currentEmail: email });
-  }
-
-  getCurrentDate(date) {
-    this.setState({ currentDate: date });
-  }
-
-  daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-  }
-
-  setLoginState(token, email) {
-    this.setState({
-      loggedIn: true,
-      token: token,
-      currentEmail: email
-    });
-    // this.renderChart();
-    window.localStorage.setItem('wealthwatch_token', token);
-    window.localStorage.setItem('user_email', email);
-  }
-
-  setLogoutState(event) {
-    event.preventDefault();
-    this.setState({
-      loggedIn: false,
-      token: '',
-    });
-    window.localStorage.removeItem('wealthwatch_token');
-    window.localStorage.removeItem('user_email');
-  }
-
-  getAuthentication() {
-    return this.state.token;
-  }
-
   render() {
     if (!this.state.loggedIn) {
       return (
         <div>
           <MuiThemeProvider>
-            <LoginSignup
-              updateUser={this.updateUser}
-              getCurrentEmail={this.getCurrentEmail}
-              setLoginState={this.setLoginState}
-              setLogoutState={this.setLogoutState}
-            />
+            <BrowserRouter>
+              <div>
+                <Switch>
+                  <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
+                  <Route path="/forgot" component={ForgotPassword} />
+                  <Route path="/reset/:token" component={ResetPassword} />
+                </Switch>
+              </div>
+            </BrowserRouter>
           </MuiThemeProvider>
         </div>
       );
