@@ -22,13 +22,11 @@ class InputBalance extends React.Component {
     this.state = {
       budget: '',
       budgetInput: true,
-      currency: 'USD',
     };
     this.budgetToggle = this.budgetToggle.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
-    this.currencySymbols = this.currencySymbols.bind(this);
   }
 
   onInputChange(e) {
@@ -62,65 +60,6 @@ class InputBalance extends React.Component {
     });
   }
 
-  currencySymbols() {
-    switch(this.state.currency) {
-      case '':
-        return <span>&nbsp;&nbsp;</span>;
-      case 'USD':
-        return <span>&#36;</span>;
-      case 'AUD':
-        return <span>&#36;</span>;
-      case 'BRL':
-        return <span>R&#36;</span>;
-      case 'CAD':
-        return <span>&#36;</span>;
-      case 'CZK':
-        return <span>&#x4b;&#x10d;</span>;
-      case 'DKK':
-        return <span>&#x6b;&#x72;</span>;
-      case 'EUR':
-        return <span>&#x20ac;</span>;
-      case 'HKD':
-        return <span>&#36;</span>;
-      case 'HUF':
-        return <span>&#x46;&#x74;</span>;
-      case 'ILS':
-        return <span>&#x20aa;</span>;
-      case 'KOR':
-        return <span>&#x20a9;</span>;
-      case 'JPY':
-        return <span>&#xa5;</span>;
-      case 'MYR':
-        return <span>&#x52;&#x4d;</span>;
-      case 'MXN':
-        return <span>&#x24;</span>;
-      case 'NOK':
-        return <span>&#x6b;&#x72;</span>;
-      case 'NZD':
-        return <span>&#x24;</span>;
-      case 'PHP':
-        return <span>&#x20b1;</span>;
-      case 'PLN':
-        return <span>&#x7a;&#x142;</span>;
-      case 'GBP':
-        return <span>&#xa3;</span>;
-      case 'SGD':
-        return <span>&#x53;&#x24;</span>;
-      case 'SEK':
-        return <span>&#x6b;&#x72;</span>;
-      case 'CHF':
-        return <span>&#x43;&#x48;&#x46;</span>;
-      case 'TWD':
-        return <span>&#x4e;&#x54;&#x24;</span>;
-      case 'THB':
-        return <span>&#xe3f;</span>;
-      case 'TRY':
-        return <span>&#x54;&#x4c;</span>;
-      case 'CNY':
-        return <span>&#xa5;</span>;
-    }
-  }
-
   bootstrapBar() {
     return (
       <div>
@@ -128,7 +67,7 @@ class InputBalance extends React.Component {
           <h1 className="header">Balance</h1>
           <label id="label" htmlFor="inputBudget">Enter balance</label>
           <div id="inputaddon" className="input-group">
-            <div className="input-group-addon">{this.currencySymbols()}</div>
+            <div className="input-group-addon">{this.props.currencySymbols()}</div>
             <input
               value={this.state.budget}
               type="number"

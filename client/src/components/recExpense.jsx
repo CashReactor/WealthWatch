@@ -81,7 +81,10 @@ class RecExpense extends React.Component {
           <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="input" placeholder="Enter Expense"/>
           <small id="small" className="form-text text-muted">Remember this is a recurring expense.</small><br></br><br></br>
           <label id="label" for="inputAmount">Enter amount</label>
-          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="input" placeholder="Enter Amount"/>
+          <div id="inputaddon" className="input-group">
+            <div className="input-group-addon">{this.props.currencySymbols()}</div>
+            <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" placeholder="Enter Amount"/>
+          </div>
           <br></br>
           <label id="label" for="inputPeriod">Select Period</label>
           <select value={this.state.category} onChange={this.onPeriodChange} className="form-control" id="select">
