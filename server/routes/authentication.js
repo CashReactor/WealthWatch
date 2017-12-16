@@ -50,7 +50,7 @@ router.post('/signup', (req, res) => {
     })
     .then(() => {
       const token = generateToken(jwtData);
-      res.status(201).json({ message: 'Registration Successful', token, email });
+      res.status(201).json({ message: 'Registration Successful', token, email, currency });
     })
     .catch((error) => {
       res.status(500).json({ message: error });

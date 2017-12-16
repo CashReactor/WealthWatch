@@ -19,6 +19,7 @@ class App extends React.Component {
     super(props);
     const jwtToken = window.localStorage.getItem('wealthwatch_token') || '';
     const email = window.localStorage.getItem('user_email');
+    const currency = window.localStorage.getItem('currency');
     this.state = {
       budget: 7000,
       one: [],
@@ -30,6 +31,7 @@ class App extends React.Component {
       currentEmail: email,
       currentBarGraph: null,
       currentLineGraph: null,
+      currency: currency,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -224,6 +226,7 @@ class App extends React.Component {
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
     window.localStorage.setItem('user_email', email);
+    window.localStorage.setItem('currency', currency);
   }
 
   setLogoutState(event) {

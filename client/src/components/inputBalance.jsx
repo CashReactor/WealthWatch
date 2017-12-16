@@ -22,12 +22,13 @@ class InputBalance extends React.Component {
     this.state = {
       budget: '',
       budgetInput: true,
-      currency: '',
+      currency: 'USD',
     };
     this.budgetToggle = this.budgetToggle.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
+    this.currencySymbols = this.currencySymbols.bind(this);
   }
 
   onInputChange(e) {
@@ -61,8 +62,10 @@ class InputBalance extends React.Component {
     });
   }
 
-  currencySymbols(letter) {
-    switch(letter) {
+  currencySymbols() {
+    switch(this.state.currency) {
+      case '':
+        return <span>&nbsp;&nbsp;</span>;
       case 'USD':
         return <span>&#36;</span>;
       case 'AUD':
@@ -83,6 +86,8 @@ class InputBalance extends React.Component {
         return <span>&#x46;&#x74;</span>;
       case 'ILS':
         return <span>&#x20aa;</span>;
+      case 'KOR':
+        return <span>&#x20a9;</span>;
       case 'JPY':
         return <span>&#xa5;</span>;
       case 'MYR':
@@ -111,6 +116,8 @@ class InputBalance extends React.Component {
         return <span>&#xe3f;</span>;
       case 'TRY':
         return <span>&#x54;&#x4c;</span>;
+      case 'CNY':
+        return <span>&#xa5;</span>;
     }
   }
 
@@ -118,16 +125,18 @@ class InputBalance extends React.Component {
     return (
       <div>
         <div className="form-group">
-          <h1 className="header">{this.currencySymbols('TRY')}Balance</h1>
+          <h1 className="header">Balance</h1>
           <label id="label" htmlFor="inputBudget">Enter balance</label>
-          <input
-            value={this.state.budget}
-            type="number"
-            onChange={this.onInputChange}
-            className="form-control"
-            id="input"
-            placeholder="Enter Balance"
-          />
+          <div id="inputaddon" className="input-group">
+            <div className="input-group-addon">{this.currencySymbols()}</div>
+            <input
+              value={this.state.budget}
+              type="number"
+              onChange={this.onInputChange}
+              className="form-control"
+              placeholder="Enter Balance"
+            />
+          </div>
           <small id="small" className="form-text text-muted">
             We won't share your income to anyone else.
           </small>
@@ -146,6 +155,7 @@ class InputBalance extends React.Component {
             <option value="HKD">Hong Kong Dollar</option>
             <option value="HUF">Hungarian Forint </option>
             <option value="ILS">Israeli New Sheqel</option>
+            <option value="KOR">South Korean Won</option>
             <option value="JPY">Japanese Yen</option>
             <option value="MYR">Malaysian Ringgit</option>
             <option value="MXN">Mexican Peso</option>
@@ -160,6 +170,7 @@ class InputBalance extends React.Component {
             <option value="TWD">Taiwan New Dollar</option>
             <option value="THB">Thai Baht</option>
             <option value="TRY">Turkish Lira</option>
+            <option value="CNY">Chinese Yuan Renminbi</option>
           </select>
           <a
             id="btn"
