@@ -11,8 +11,8 @@ import LoginSignup from './components/loginSignup.jsx';
 import axios from 'axios';
 import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
+import NPVCalculator from './components/npvCalculator.jsx'
 import $ from 'jquery';
-
 
 class App extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class App extends React.Component {
       currentEmail: email,
       currentBarGraph: null,
       currentLineGraph: null,
+      currency: '',
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -38,11 +39,11 @@ class App extends React.Component {
     this.renderGraph = this.renderGraph.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.resetUser = this.resetUser.bind(this);
+    this.currencySymbols = this.currencySymbols.bind(this);
+    this.updateCurrency = this.updateCurrency.bind(this);
   }
 
   componentDidMount() {
-    // this.renderGraph();
-    // this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function (event) {
@@ -52,6 +53,9 @@ class App extends React.Component {
           scrollTop: $($.attr(this, 'href')).offset().top
       }, 700);
     });
+    console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
+    console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
+
     // this.updateUser();
   }
 
@@ -62,6 +66,10 @@ class App extends React.Component {
     })
   }
 
+  updateCurrency(currency) {
+    this.setState({ currency: currency });
+  }
+
   updateUser() {
     axios.post('/user', { email: this.state.currentEmail })
     .then((response) => {
@@ -69,10 +77,8 @@ class App extends React.Component {
       if (!response.data.budget) {
         response.data.budget = "7777";
       }
-      this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring });
-      console.log('THIS IS THE CURRENT BUDGET', this.state.budget);
-      console.log('THIS IS THE BAR GRAPH ONETIME EXPENSES', this.state.one);
-      console.log('THIS IS THE BAR GRAPH RECURRING EXPENSES', this.state.rec);
+      this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring, currency: response.data.currency });
+      console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
       this.renderGraph();
     })
   }
@@ -150,7 +156,7 @@ class App extends React.Component {
         labels: days,
         datasets: [
           {
-            label: 'Current Monthly Expenditure ($)',
+            label: `Current Monthly Expenditure (${this.state.currency})`,
             data: expenses,
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
             borderColor: 'rgba(255, 0, 0, 0.5)',
@@ -178,7 +184,7 @@ class App extends React.Component {
         labels: days,
         datasets: [
           {
-            label: 'Current Monthly Balance ($)',
+            label: `Current Monthly Balance (${this.state.currency})`,
             data: updatedBudgets,
             backgroundColor: color,
             borderColor: color,
@@ -202,6 +208,65 @@ class App extends React.Component {
     this.setState({ currentLineGraph: lineGraph });
   }
 
+  currencySymbols() {
+    switch(this.state.currency) {
+      case '':
+        return <span>&nbsp;&nbsp;</span>;
+      case 'USD':
+        return <span>&#36;</span>;
+      case 'AUD':
+        return <span>&#36;</span>;
+      case 'BRL':
+        return <span>R&#36;</span>;
+      case 'CAD':
+        return <span>&#36;</span>;
+      case 'CZK':
+        return <span>&#x4b;&#x10d;</span>;
+      case 'DKK':
+        return <span>&#x6b;&#x72;</span>;
+      case 'EUR':
+        return <span>&#x20ac;</span>;
+      case 'HKD':
+        return <span>&#36;</span>;
+      case 'HUF':
+        return <span>&#x46;&#x74;</span>;
+      case 'ILS':
+        return <span>&#x20aa;</span>;
+      case 'KOR':
+        return <span>&#x20a9;</span>;
+      case 'JPY':
+        return <span>&#xa5;</span>;
+      case 'MYR':
+        return <span>&#x52;&#x4d;</span>;
+      case 'MXN':
+        return <span>&#x24;</span>;
+      case 'NOK':
+        return <span>&#x6b;&#x72;</span>;
+      case 'NZD':
+        return <span>&#x24;</span>;
+      case 'PHP':
+        return <span>&#x20b1;</span>;
+      case 'PLN':
+        return <span>&#x7a;&#x142;</span>;
+      case 'GBP':
+        return <span>&#xa3;</span>;
+      case 'SGD':
+        return <span>&#x53;&#x24;</span>;
+      case 'SEK':
+        return <span>&#x6b;&#x72;</span>;
+      case 'CHF':
+        return <span>&#x43;&#x48;&#x46;</span>;
+      case 'TWD':
+        return <span>&#x4e;&#x54;&#x24;</span>;
+      case 'THB':
+        return <span>&#xe3f;</span>;
+      case 'TRY':
+        return <span>&#x54;&#x4c;</span>;
+      case 'CNY':
+        return <span>&#xa5;</span>;
+    }
+  }
+
   getCurrentEmail(email) {
     this.setState({ currentEmail: email })
   }
@@ -223,6 +288,7 @@ class App extends React.Component {
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
     window.localStorage.setItem('user_email', email);
+    window.localStorage.setItem('currency', currency);
   }
 
   setLogoutState(event) {
@@ -258,10 +324,11 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
-            <InputBalance updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-            <Expenses updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
+          <NPVCalculator/>
 
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>

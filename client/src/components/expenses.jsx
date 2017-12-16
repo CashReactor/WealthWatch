@@ -25,8 +25,8 @@ class Expenses extends React.Component {
   render(){
     return (
       <div>
-        <OneExpense updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
-        <RecExpense updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
+        <OneExpense currencySymbols={this.props.currencySymbols} updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
+        <RecExpense currencySymbols={this.props.currencySymbols} updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
       </div>
     )
   }

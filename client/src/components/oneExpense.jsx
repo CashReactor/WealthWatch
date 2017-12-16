@@ -72,7 +72,10 @@ class OneExpense extends React.Component {
           <input value={this.state.expense} type="text" onChange={this.onInputChange} className="form-control" id="input" placeholder="Enter Expense"/>
           <small id="small" className="form-text text-muted">Remember this is a one-time expense.</small><br></br><br></br>
           <label id="label" htmlFor="inputAmount">Enter amount</label>
-          <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" id="input" placeholder="Enter Amount"/>
+          <div id="inputaddon" className="input-group">
+            <div className="input-group-addon">{this.props.currencySymbols()}</div>
+            <input value={this.state.amount} type="number" onChange={this.onAmountChange} className="form-control" placeholder="Enter Amount"/>
+          </div>
           <br></br>
           <label id="label" htmlFor="inputCurrency">Select Category</label>
           <select value={this.state.category} onChange={this.onCategoryChange} className="form-control" id="select">
@@ -80,7 +83,8 @@ class OneExpense extends React.Component {
             <option value={1}>Entertainment</option>
             <option value={2}>Food</option>
             <option value={3}>Rent</option>
-            <option value={4}>Others</option>
+            <option value={4}>Utilities</option>
+            <option value={5}>Others</option>
           </select>
           <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-warning">Submit</a>
         </div>
