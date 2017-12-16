@@ -19,7 +19,6 @@ class App extends React.Component {
     super(props);
     const jwtToken = window.localStorage.getItem('wealthwatch_token') || '';
     const email = window.localStorage.getItem('user_email');
-    const currency = window.localStorage.getItem('currency');
     this.state = {
       budget: 7000,
       one: [],
@@ -31,7 +30,7 @@ class App extends React.Component {
       currentEmail: email,
       currentBarGraph: null,
       currentLineGraph: null,
-      currency: currency || 'USD',
+      currency: '',
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -79,9 +78,7 @@ class App extends React.Component {
         response.data.budget = "7777";
       }
       this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring, currency: response.data.currency });
-      console.log('THIS IS THE CURRENT BUDGET', this.state.budget);
-      console.log('THIS IS THE BAR GRAPH ONETIME EXPENSES', this.state.one);
-      console.log('THIS IS THE BAR GRAPH RECURRING EXPENSES', this.state.rec);
+      console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
       this.renderGraph();
     })
   }
@@ -327,7 +324,7 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
-            <InputBalance updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>

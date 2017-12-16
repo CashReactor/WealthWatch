@@ -22,11 +22,15 @@ class InputBalance extends React.Component {
     this.state = {
       budget: '',
       budgetInput: true,
+      currency: '',
     };
     this.budgetToggle = this.budgetToggle.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
+  }
+
+  componentDidMount() {
   }
 
   onInputChange(e) {
@@ -83,7 +87,7 @@ class InputBalance extends React.Component {
           <br />
           <br />
           <label id="label" htmlFor="inputCurrency">Select currency</label>
-          <select value={this.state.currency} onChange={this.onCurrencyChange} className="form-control" id="select">
+          <select value={this.props.currency} onChange={this.onCurrencyChange} className="form-control" id="select">
             <option value="">Select Currency</option>
             <option value="USD">U.S. Dollar</option>
             <option value="AUD">Australian Dollar</option>
