@@ -49,6 +49,7 @@
     "webpack-hot-middleware": "^2.21.0"
   },
   "dependencies": {
+    "babel-loader": "^7.1.2",
     "@sendgrid/mail": "^6.1.4",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
