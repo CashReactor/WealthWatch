@@ -171,9 +171,9 @@ class LoginSignup extends React.Component {
         <button id="btns" type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
           Login
         </button>
-        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg">
+        {/*<a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg">
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
-        </a>
+        </a>*/}
         {this.state.loginWarning}
       </div>
     );

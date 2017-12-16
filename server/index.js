@@ -99,12 +99,12 @@ app.post('/reset', function(req, res) {
   })
 })
 
-app.post('/user', function(req, res) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    res.send(user);
-    res.end();
-  })
-})
+// app.post('/user', function(req, res) {
+//   User.findOne({ email: req.body.email }, (err, user) => {
+//     res.send(user);
+//     res.end();
+//   })
+// })
 
 app.post('/fetchBudget', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {
