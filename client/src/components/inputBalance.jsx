@@ -41,6 +41,7 @@ class InputBalance extends React.Component {
     this.setState({
       currency: e.target.value,
     });
+    this.props.updateCurrency(e.target.value);
   }
 
   onSubmit(e) {

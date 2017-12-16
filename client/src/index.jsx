@@ -41,6 +41,7 @@ class App extends React.Component {
     this.updateUser = this.updateUser.bind(this);
     this.resetUser = this.resetUser.bind(this);
     this.currencySymbols = this.currencySymbols.bind(this);
+    this.updateCurrency = this.updateCurrency.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +65,10 @@ class App extends React.Component {
     .then((response) => {
       this.updateUser();
     })
+  }
+
+  updateCurrency(currency) {
+    this.setState({ currency: currency });
   }
 
   updateUser() {
@@ -322,7 +327,7 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br/>
-            <InputBalance currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <InputBalance updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
           </MuiThemeProvider>
           <br/>
