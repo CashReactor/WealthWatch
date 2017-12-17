@@ -13,10 +13,7 @@ import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
 import LoginSignup from './components/loginSignup.jsx';
 import Expenses from './components/expenses.jsx'
-import Paper from 'material-ui/Paper';
 import NPVCalculator from './components/npvCalculator.jsx'
-import $ from 'jquery';
-import { BrowserRouter, Route } from 'react-router-dom';
 import ForgotPassword from './components/forgotPassword.jsx';
 import ResetPassword from './components/resetPassword.jsx'
 
@@ -51,7 +48,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {

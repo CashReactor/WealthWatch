@@ -72,6 +72,10 @@ class LoginSignup extends React.Component {
       signupPassword: '',
       signupImageUrl: '',
       signupWarning: '',
+      style: {
+        fullWidth: true,
+        secondary: true,
+      },
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onSignupSubmit = this.onSignupSubmit.bind(this);
@@ -133,7 +137,6 @@ class LoginSignup extends React.Component {
           this.props.getCurrentEmail(this.state.loginEmail);
           this.props.updateUser();
 
-          console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token, response.data.email);
           }
@@ -172,23 +175,54 @@ class LoginSignup extends React.Component {
   }
 
   loginForm() {
-    console.log(style.paper);
     return (
       <div className="loginForm-edit">
         <form style={style.form}>
           <div style={style.textContainer}>
-            <TextField inputStyle={style.input} fullWidth={true} type="text" value={this.state.loginEmail} onChange={this.onInputChange} id="loginEmail" floatingLabelText="Email Address" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="text"
+              value={this.state.loginEmail}
+              onChange={this.onInputChange}
+              id="loginEmail"
+              floatingLabelText="Email Address"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
             <br />
             <small id="emailHelp" className="form-text text-muted">
               We'll never share your email to anyone else.
             </small>
           </div>
           <div style={style.textContainer}>
-            <TextField inputStyle={style.input} fullWidth={true} type="password" value={this.state.loginPassword} onChange={this.onInputChange} id="loginPassword" floatingLabelText="Password" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="password"
+              value={this.state.loginPassword}
+              onChange={this.onInputChange}
+              id="loginPassword"
+              floatingLabelText="Password"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
           </div>
         </form>
-        <RaisedButton label="Login" type="submit" onClick={this.onSignupSubmit} fullWidth={true} secondary={true} />
-        <a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg" style={style.side}>
+        <RaisedButton
+          label="Login"
+          type="submit"
+          onClick={this.onLoginSubmit}
+          fullWidth={this.state.style.fullWidth}
+          secondary={this.state.style.secondary}
+        />
+        <a
+          href="auth/google"
+          title="Google+"
+          onClick={this.googleAuth}
+          className="btn btn-googleplus btn-lg"
+          style={style.side}
+        >
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
         </a>
         <br />
@@ -204,22 +238,67 @@ class LoginSignup extends React.Component {
       <div className="signupForm-edit">
         <form style={style.form}>
           <div style={style.textContainer}>
-            <TextField style={style.input} fullWidth={true} type="text" value={this.state.signupName} onChange={this.onInputChange} id="signupName" floatingLabelText="Name" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="text"
+              value={this.state.signupName}
+              onChange={this.onInputChange}
+              id="signupName"
+              floatingLabelText="Name"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
           </div>
           <div style={style.textContainer}>
-            <TextField inputStyle={style.input} fullWidth={true} type="text" value={this.state.signupEmail} onChange={this.onInputChange} id="signupEmail" floatingLabelText="Email" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
-            <small className="form-text text-muted">
-              This email account will be used for logging in.
-            </small>
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="text"
+              value={this.state.signupEmail}
+              onChange={this.onInputChange}
+              id="signupEmail"
+              floatingLabelText="Email"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
+            <small className="form-text text-muted">This email account will be used for logging in.</small>
           </div>
           <div style={style.textContainer}>
-            <TextField inputStyle={style.input} fullWidth={true} type="password" value={this.state.signupPassword} onChange={this.onInputChange} id="signupPassword" floatingLabelText="Password" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="password"
+              value={this.state.signupPassword}
+              onChange={this.onInputChange}
+              id="signupPassword"
+              floatingLabelText="Password"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
           </div>
           <div style={style.textContainer}>
-            <TextField style={style.input} fullWidth={true} type="text" value={this.state.signupImageUrl} onChange={this.onInputChange} id="signupImageUrl" floatingLabelText="Profile Image URL" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+            <TextField
+              inputStyle={style.input}
+              fullWidth={this.state.style.fullWidth}
+              type="text"
+              value={this.state.signupImageUrl}
+              onChange={this.onInputChange}
+              id="signupImageUrl"
+              floatingLabelText="Profile Image URL"
+              floatingLabelStyle={style.label}
+              floatingLabelFocusStyle={style.label}
+            />
             <small className="form-text text-muted">A profile image will further personalize your account!</small>
           </div>
-          <RaisedButton style={style.button} label="Sign Up" type="submit" onClick={this.onSignupSubmit} fullWidth={true} secondary={true} />
+          <RaisedButton
+            style={style.button}
+            label="Sign Up"
+            type="submit"
+            onClick={this.onSignupSubmit}
+            fullWidth={this.state.style.fullWidth}
+            secondary={this.state.style.secondary}
+          />
         </form>
       </div>
     );
@@ -230,8 +309,12 @@ class LoginSignup extends React.Component {
       <div className="login-container">
         <Paper style={style.paper}>
           <Tabs tabItemContainerStyle={style.headline}>
-            <Tab style={style.tab} label="Login">{this.loginForm()}</Tab>
-            <Tab style={style.tab} label="Register">{this.signupForm()}</Tab>
+            <Tab style={style.tab} label="Login">
+              {this.loginForm()}
+            </Tab>
+            <Tab style={style.tab} label="Register">
+              {this.signupForm()}
+            </Tab>
           </Tabs>
         </Paper>
       </div>
