@@ -23,7 +23,7 @@ class NPVCalculator extends React.Component {
       discountRate: '',
       initialInvestment: '',
       currentCashFlow: '',
-      cashFlow: [],
+      cashFlow: {},
       counter: 1,
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -42,14 +42,12 @@ class NPVCalculator extends React.Component {
 
   onCashFlow(e) {
     this.setState({
-      currentCashFlow: e.target.value
+      cashFlow: Object.assign(this.state.cashFlow, {[e.target.id]: e.target.value})
     })
   }
 
   addCashFlow() {
     this.setState({ counter: this.state.counter + 1 });
-    // var element = `<div id="inputaddon" className="input-group"><div className="input-group-addon">${this.props.currency}</div><input onChange={this.onCashFlow} type="number" className="form-control" id="cashFlow"></input><button onClick={this.addCashFlow} className="btn btn-primary">Add cashflow</button></div><br></br>`
-    // $('#NPV').append(element);
   }
 
   subtractCashFlow() {
@@ -68,7 +66,7 @@ class NPVCalculator extends React.Component {
             <div>
             <div id="inputaddon" className="input-group">
               <div className="input-group-addon">Year {index+1}-{this.props.currency}</div>
-              <input onChange={this.onCashFlow} type="number" className="form-control" id="cashFlow"></input>
+              <input onChange={this.onCashFlow} type="number" className="form-control" id="index+1"></input>
               <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
             </div><br></br><br></br>
             </div>
@@ -86,7 +84,7 @@ class NPVCalculator extends React.Component {
     return (
       <div>
         <div className="form-group" id="NPV">
-          <h2 className="header">Analyze Net Present Value (NPV) of your investment or project</h2>
+          <h2 style={{color: 'white'}}className="header">Analyze Net Present Value (NPV) of your investment or project</h2>
           <label id="label">Initial investment:</label>
           <div id="inputaddon" className="input-group">
             <div className="input-group-addon">{this.props.currency}</div>
@@ -108,7 +106,7 @@ class NPVCalculator extends React.Component {
   render() {
     return (
       <div>
-        <Paper style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")', backgroundSize:'cover', color: 'white', paddingTop: '7px', width: '50%', marginLeft: '25%', marginRight: '25%' }}>
+        <Paper style={style}>
           {this.inputForm()}
         </Paper>
       </div>

@@ -78,6 +78,17 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.post('/calculateNPV', function(req, res) {
+  var { initialInvestment, discountRate, cashFlow } = req.body;
+  var result = initialInvestment * -1;
+  Object.keys(cashFlow).forEach((year) => {
+    result += Math.pow(discountRate, year) * cashFlow[year];
+  })
+
+  res.send(result);
+  res.end();
+})
+
 app.post('/updateBalance', function(req, res) {
   User.findOneAndUpdate({ email: req.body.email },
     {
