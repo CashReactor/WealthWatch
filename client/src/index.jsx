@@ -3,16 +3,20 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
+import Paper from 'material-ui/Paper';
+import $ from 'jquery';
+import axios from 'axios';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import Graph from './components/Graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import LoginSignup from './components/previousLoginSignupForm.jsx';
-import axios from 'axios';
+import LoginSignup from './components/loginSignup.jsx';
 import Expenses from './components/expenses.jsx'
-import Paper from 'material-ui/Paper';
 import NPVCalculator from './components/npvCalculator.jsx'
-import $ from 'jquery';
+import ForgotPassword from './components/forgotPassword.jsx';
+import ResetPassword from './components/resetPassword.jsx'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -44,7 +48,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.renderGraph();
     this.updateUser();
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
@@ -321,12 +324,15 @@ class App extends React.Component {
       return (
         <div>
           <MuiThemeProvider>
-            <LoginSignup
-              updateUser={this.updateUser}
-              getCurrentEmail={this.getCurrentEmail}
-              setLoginState={this.setLoginState}
-              setLogoutState={this.setLogoutState}
-            />
+            <BrowserRouter>
+              <div>
+                <Switch>
+                  <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
+                  <Route path="/forgot" component={ForgotPassword} />
+                  <Route path="/reset/:token" component={ResetPassword} />
+                </Switch>
+              </div>
+            </BrowserRouter>
           </MuiThemeProvider>
         </div>
       );
@@ -355,3 +361,4 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
+

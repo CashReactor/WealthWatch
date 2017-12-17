@@ -134,3 +134,32 @@ i {
 
 /*         <img className="logo" src="https://i.imgur.com/wnAg9hG.png"></img>
  */
+
+/* Login Page Styling */
+.login-container {
+  height: 100vh;
+  background-image: url('https://images.unsplash.com/uploads/14131528357928cb9c5b5/220ec369?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1600&h=900&fit=crop&s=06d1006e051dc5789e4140c14e9de8a6');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: inset 0 0 0px 9999px #102847;
+  -webkit-text-fill-color: #fff !important;
+  border: none !important;
+  color: #fff;
+}
+
+.loginForm-edit{
+  padding: 17px;
+  background-color: #102847;
+  text-decoration-color: #fff;
+  color: #fff;
+}
+
+.signupForm-edit{
+  padding: 17px;
+  background-color: #102847;
+  color: #fff;
+}

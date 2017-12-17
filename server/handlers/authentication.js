@@ -121,7 +121,7 @@ module.exports.forgotPassword = (req, res, next) => {
     })
     .then((data) => {
       const { email, resetPasswordToken } = data;
-      const resetURL = `http://${req.headers.host}/auth/reset/${resetPasswordToken}`;
+      const resetURL = `http://${req.headers.host}/reset/${resetPasswordToken}`;
       mail.send({
         email,
         filename: 'password-reset',

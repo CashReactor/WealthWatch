@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import Paper from 'material-ui/Paper';
 
 
 const style = {
@@ -51,35 +50,30 @@ const style = {
   },
 };
 
-export default class ForgotPassword extends React.Component {
+
+export default class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: '',
-      emailStatus: false,
       password: '',
       passwordConfirm: '',
     };
-
+    this.resetPasswordForm = this.resetPasswordForm.bind(this);
+    this.onPasswordSubmit = this.onPasswordSubmit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
-    this.onEmailmeSubmit = this.onEmailmeSubmit.bind(this);
-    this.forgotPasswordForm = this.forgotPasswordForm.bind(this);
   }
 
-  onInputChange(e) {
-    this.setState({
-      [e.target.id]: e.target.value,
-    });
-  }
-
-  onEmailmeSubmit(e) {
+  onPasswordSubmit(e) {
     e.preventDefault();
+    const token = this.props.match.params.token;
+    const data = { email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm };
     axios
-      .post('auth/forgot', { email: this.state.email })
+      .post(`/auth/reset/${token}`, data)
       .then((response) => {
         if (response.status === 201) {
-          this.setState({ emailStatus: true });
+          this.props.history.push('/');
         }
       })
       .catch((error) => {
@@ -87,14 +81,28 @@ export default class ForgotPassword extends React.Component {
       });
   }
 
-  forgotPasswordForm() {
+  onInputChange(e) {
+    console.log(e.target.id);
+    console.log(e.target.value);
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
+  }
+
+  resetPasswordForm() {
     return (
-      <div>
-        <form>
-          <div>
+      <div className="loginForm-edit">
+        <form style={style.form}>
+          <div style={style.textContainer}>
             <TextField inputStyle={style.input} fullWidth={true} type="text" value={this.state.email} onChange={this.onInputChange} id="email" floatingLabelText="Email Address" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
           </div>
-          <RaisedButton label="Email Me" type="submit" onClick={this.onEmailmeSubmit} fullWidth={true} secondary={true} />
+          <div>
+            <TextField inputStyle={style.input} fullWidth={true} type="password" value={this.state.password} onChange={this.onInputChange} id="password" floatingLabelText="Password" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+          </div>
+          <div>
+            <TextField inputStyle={style.input} fullWidth={true} type="password" value={this.state.passwordConfirm} onChange={this.onInputChange} id="passwordConfirm" floatingLabelText="Confirm Password" floatingLabelStyle={style.label} floatingLabelFocusStyle={style.label} />
+          </div>
+          <RaisedButton label="Update Password" type="submit" onClick={this.onPasswordSubmit} fullWidth={true} secondary={true} />
         </form>
       </div>
     );
@@ -104,7 +112,7 @@ export default class ForgotPassword extends React.Component {
     return (
       <div className="login-container">
         <Paper style={style.paper}>
-          {this.forgotPasswordForm()}
+          {this.resetPasswordForm()}
         </Paper>
       </div>
     );
