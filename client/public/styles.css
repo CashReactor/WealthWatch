@@ -22,6 +22,10 @@ img {
   margin-right: 11.5%;
 }
 
+i {
+  height: 2px !important;
+}
+
 .header {
   font-size: 27px;
   color: #0288D1;

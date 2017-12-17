@@ -63,12 +63,13 @@ class NPVCalculator extends React.Component {
     }
     return (
       <div>
-        {array.map((element) => {
+        {array.map((element, index) => {
           return (
             <div>
             <div id="inputaddon" className="input-group">
-              <div className="input-group-addon">{this.props.currency}</div>
+              <div className="input-group-addon">Year {index+1}-{this.props.currency}</div>
               <input onChange={this.onCashFlow} type="number" className="form-control" id="cashFlow"></input>
+              <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
             </div><br></br><br></br>
             </div>
           )
@@ -88,12 +89,13 @@ class NPVCalculator extends React.Component {
           <h2 className="header">Analyze Net Present Value (NPV) of your investment or project</h2>
           <label id="label">Initial investment:</label>
           <div id="inputaddon" className="input-group">
+            <div className="input-group-addon">{this.props.currency}</div>
             <input onChange={this.onInputChange} type="number" className="form-control" id="initialInvestment"></input>
           </div><br></br>
           <label id="label">Discount rate:</label>
           <div id="inputaddon" className="input-group">
-            <div className="input-group-addon">{this.props.currency}</div>
             <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
+            <div className="input-group-addon">%</div>
           </div><br></br>
           <label id="label">Cash Flow:</label>
           {this.cashFlowInput()}
