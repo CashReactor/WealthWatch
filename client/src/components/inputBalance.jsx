@@ -101,6 +101,7 @@ class InputBalance extends React.Component {
             <option value="ILS">Israeli New Sheqel</option>
             <option value="KOR">South Korean Won</option>
             <option value="JPY">Japanese Yen</option>
+            <option value="IDR">Indonesian Rupiah</option>
             <option value="MYR">Malaysian Ringgit</option>
             <option value="MXN">Mexican Peso</option>
             <option value="NOK">Norwegian Krone</option>

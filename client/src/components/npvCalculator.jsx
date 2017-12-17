@@ -4,6 +4,17 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import $ from 'jquery';
+
+const style = {
+  backgroundImage: 'linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)),url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")',
+  backgroundSize:'cover',
+  color: 'white',
+  paddingTop: '7px',
+  width: '50%',
+  marginLeft: '25%',
+  marginRight: '25%'
+}
 
 class NPVCalculator extends React.Component {
   constructor(props) {
@@ -11,16 +22,59 @@ class NPVCalculator extends React.Component {
     this.state = {
       discountRate: '',
       initialInvestment: '',
+      currentCashFlow: '',
       cashFlow: [],
+      counter: 1,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    this.onCashFlow = this.onCashFlow.bind(this);
+    this.addCashFlow = this.addCashFlow.bind(this);
+    this.cashFlowInput = this.cashFlowInput.bind(this);
+    this.subtractCashFlow = this.subtractCashFlow.bind(this);
   }
 
   onInputChange(e) {
     this.setState({
       [e.target.id]: e.target.value
     })
+  }
+
+  onCashFlow(e) {
+    this.setState({
+      currentCashFlow: e.target.value
+    })
+  }
+
+  addCashFlow() {
+    this.setState({ counter: this.state.counter + 1 });
+    // var element = `<div id="inputaddon" className="input-group"><div className="input-group-addon">${this.props.currency}</div><input onChange={this.onCashFlow} type="number" className="form-control" id="cashFlow"></input><button onClick={this.addCashFlow} className="btn btn-primary">Add cashflow</button></div><br></br>`
+    // $('#NPV').append(element);
+  }
+
+  subtractCashFlow() {
+    this.setState({ counter: this.state.counter - 1});
+  }
+
+  cashFlowInput() {
+    const array = Array(this.state.counter);
+    for (var i = 0; i < this.state.counter; i++) {
+      array[i] = 1;
+    }
+    return (
+      <div>
+        {array.map((element) => {
+          return (
+            <div>
+            <div id="inputaddon" className="input-group">
+              <div className="input-group-addon">{this.props.currency}</div>
+              <input onChange={this.onCashFlow} type="number" className="form-control" id="cashFlow"></input>
+            </div><br></br><br></br>
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
   onSubmit(e) {
@@ -30,21 +84,21 @@ class NPVCalculator extends React.Component {
   inputForm() {
     return (
       <div>
-        <form>
-          <div className="form-row">
-            <div className="col">
-              <label>Initial investment:</label>
-              <input onChange={this.onInputChange} type="number" className="form-control" id="initialInvestment"></input>
-            </div>
-            <div className="col">
-              <label>Discount rate:</label>
-              <div className="input-group">
-              <div className="input-group-addon">@</div>
-              <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
-              </div>
-            </div>
-          </div>
-        </form>
+        <div className="form-group" id="NPV">
+          <h2 className="header">Analyze Net Present Value (NPV) of your investment or project</h2>
+          <label id="label">Initial investment:</label>
+          <div id="inputaddon" className="input-group">
+            <input onChange={this.onInputChange} type="number" className="form-control" id="initialInvestment"></input>
+          </div><br></br>
+          <label id="label">Discount rate:</label>
+          <div id="inputaddon" className="input-group">
+            <div className="input-group-addon">{this.props.currency}</div>
+            <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
+          </div><br></br>
+          <label id="label">Cash Flow:</label>
+          {this.cashFlowInput()}
+          <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-primary">Add cashflow</button>
+        </div>
       </div>
     );
   }
@@ -52,7 +106,9 @@ class NPVCalculator extends React.Component {
   render() {
     return (
       <div>
-        {this.inputForm()}
+        <Paper style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")', backgroundSize:'cover', color: 'white', paddingTop: '7px', width: '50%', marginLeft: '25%', marginRight: '25%' }}>
+          {this.inputForm()}
+        </Paper>
       </div>
     );
   }

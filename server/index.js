@@ -99,12 +99,12 @@ app.post('/reset', function(req, res) {
   })
 })
 
-// app.post('/user', function(req, res) {
-//   User.findOne({ email: req.body.email }, (err, user) => {
-//     res.send(user);
-//     res.end();
-//   })
-// })
+app.post('/user', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user);
+    res.end();
+  })
+})
 
 app.post('/fetchBudget', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {
@@ -114,7 +114,6 @@ app.post('/fetchBudget', function(req, res) {
 })
 
 app.get('/logout', function(req, res) {
-  console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {
     if (err) throw err;
   })
