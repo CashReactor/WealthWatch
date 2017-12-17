@@ -35,13 +35,14 @@ class NPVCalculator extends React.Component {
   }
 
   calculateNPV() {
+    console.log('THIS IS THE DISCOUNT RATE', this.state.discountRate, 'THIS IS THE INITIAL INVESTMENT', this.state.initialInvestment, 'THIS IS THE CASHFLOW', this.state.cashFlow);
     axios.post('/calculateNPV', {
       discountRate: this.state.discountRate,
       initialInvestment: this.state.initialInvestment,
       cashFlow: this.state.cashFlow,
     })
     .then((response) => {
-      console.log(response.data);
+      console.log(JSON.parse(response.data));
     })
   }
 
@@ -77,7 +78,7 @@ class NPVCalculator extends React.Component {
             <div>
             <div id="inputaddon" className="input-group">
               <div className="input-group-addon">Year {index+1}-{this.props.currency}</div>
-              <input onChange={this.onCashFlow} type="number" className="form-control" id="index+1"></input>
+              <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
               <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
             </div><br></br><br></br>
             </div>

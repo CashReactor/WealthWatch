@@ -110,11 +110,11 @@ app.use('/api/expense', expense);
 app.post('/calculateNPV', function(req, res) {
   var { initialInvestment, discountRate, cashFlow } = req.body;
   var result = initialInvestment * -1;
-  Object.keys(cashFlow).forEach((year) => {
-    result += Math.pow(discountRate * 0.01, year) * cashFlow[year];
+  Object.keys(cashFlow).forEach(year => {
+    result += Math.pow((100-discountRate) * 0.01, Number(year)) * cashFlow[year];
   })
 
-  res.send(JSON.stringify(result));
+  res.send(JSON.stringify(Math.round(result)));
   res.end();
 })
 
