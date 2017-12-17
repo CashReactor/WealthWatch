@@ -78,6 +78,17 @@ app.use('/auth', auth); // Authentication route
 //   imageUrl: String
 // });
 
+app.post('/calculateNPV', function(req, res) {
+  var { initialInvestment, discountRate, cashFlow } = req.body;
+  var result = initialInvestment * -1;
+  Object.keys(cashFlow).forEach((year) => {
+    result += Math.pow(discountRate * 0.01, year) * cashFlow[year];
+  })
+
+  res.send(JSON.stringify(result));
+  res.end();
+})
+
 app.post('/updateBalance', function(req, res) {
   User.findOneAndUpdate({ email: req.body.email },
     {
@@ -114,7 +125,6 @@ app.post('/fetchBudget', function(req, res) {
 })
 
 app.get('/logout', function(req, res) {
-  console.log('JETLKWKLTJWELTJLWEKJTLKWEJ', req.session);
   req.session.destroy((err) => {
     if (err) throw err;
   })

@@ -7,7 +7,7 @@ import Graph from './components/Graph.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import LoginSignup from './components/loginSignup.jsx';
+import LoginSignup from './components/previousLoginSignupForm.jsx';
 import axios from 'axios';
 import Expenses from './components/expenses.jsx'
 import Paper from 'material-ui/Paper';
@@ -240,6 +240,8 @@ class App extends React.Component {
         return <span>&#x52;&#x4d;</span>;
       case 'MXN':
         return <span>&#x24;</span>;
+      case 'IDR':
+        return <span>&#x52;&#x70;</span>;
       case 'NOK':
         return <span>&#x6b;&#x72;</span>;
       case 'NZD':
@@ -326,9 +328,9 @@ class App extends React.Component {
             <br/>
             <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
           </MuiThemeProvider>
           <br/>
-          <NPVCalculator/>
 
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>

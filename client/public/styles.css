@@ -22,6 +22,10 @@ img {
   margin-right: 11.5%;
 }
 
+i {
+  height: 2px !important;
+}
+
 .header {
   font-size: 27px;
   color: #0288D1;
@@ -75,6 +79,7 @@ img {
   margin-left: 1.5% !important;
   width: 97% !important;
 }
+
 .header {
   margin-top: 1.7% !important;
   margin-left: 1.5% !important;
@@ -83,6 +88,7 @@ img {
 #label {
   margin-left: 1.5% !important;
 }
+
 .loginForm{
   color: white;
   border-style: solid;

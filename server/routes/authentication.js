@@ -1,8 +1,8 @@
 const {
   localAuth,
   jwtAuth,
-  googleAuth,
-  googleAuthCallback,
+  // googleAuth,
+  // googleAuthCallback,
   forgotPassword,
   resetPassword,
   confirmedPassword,
@@ -57,11 +57,11 @@ router.post('/signup', (req, res) => {
     });
 });
 
-router.get('/google', googleAuth());
+// router.get('/google', googleAuth());
 
-router.get('/google/callback', googleAuthCallback(), (req, res) => {
-  res.redirect('/');
-});
+// router.get('/google/callback', googleAuthCallback(), (req, res) => {
+//   res.redirect('/');
+// });
 
 router.post('/forgot', forgotPassword, (req, res) => {
   res.status(201).json({ message: 'Email Sent' });

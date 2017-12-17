@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
-    "seed" : "node ./database/seed.js"
+    "seed": "node ./database/seed.js"
   },
   "repository": {
     "type": "git",
@@ -56,6 +56,7 @@
     "jquery": "^3.2.1",
     "jsonwebtoken": "^8.1.0",
     "juice": "^4.2.2",
+    "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.0",
     "mongoose": "^4.13.6",
     "morgan": "^1.9.0",
