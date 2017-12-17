@@ -22,7 +22,6 @@ class NPVCalculator extends React.Component {
     this.state = {
       discountRate: '',
       initialInvestment: '',
-      currentCashFlow: '',
       cashFlow: {},
       counter: 1,
     };
@@ -32,6 +31,18 @@ class NPVCalculator extends React.Component {
     this.addCashFlow = this.addCashFlow.bind(this);
     this.cashFlowInput = this.cashFlowInput.bind(this);
     this.subtractCashFlow = this.subtractCashFlow.bind(this);
+    this.calculateNPV = this.calculateNPV.bind(this);
+  }
+
+  calculateNPV() {
+    axios.post('/calculateNPV', {
+      discountRate: this.state.discountRate,
+      initialInvestment: this.state.initialInvestment,
+      cashFlow: this.state.cashFlow,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
   }
 
   onInputChange(e) {
@@ -98,6 +109,7 @@ class NPVCalculator extends React.Component {
           <label id="label">Cash Flow:</label>
           {this.cashFlowInput()}
           <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-primary">Add cashflow</button>
+          <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-info">Calculate</button>
         </div>
       </div>
     );
