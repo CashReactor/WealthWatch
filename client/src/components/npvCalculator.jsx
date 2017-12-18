@@ -24,6 +24,7 @@ class NPVCalculator extends React.Component {
       initialInvestment: '',
       cashFlow: {},
       counter: 1,
+      NPVresult: '',
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -42,7 +43,9 @@ class NPVCalculator extends React.Component {
       cashFlow: this.state.cashFlow,
     })
     .then((response) => {
-      console.log(JSON.parse(response.data));
+      this.setState({
+        NPVresult: JSON.parse(response.data)
+      })
     })
   }
 
@@ -96,7 +99,7 @@ class NPVCalculator extends React.Component {
     return (
       <div>
         <div className="form-group" id="NPV">
-          <h2 style={{color: 'white'}}className="header">Analyze Net Present Value (NPV) of your investment or project</h2>
+          <h2 style={{color: 'white'}}className="header">Analyze Net Present Value (NPV) of your investment or project <span className="npv">{this.state.NPVresult}</span></h2>
           <label id="label">Initial investment:</label>
           <div id="inputaddon" className="input-group">
             <div className="input-group-addon">{this.props.currency}</div>

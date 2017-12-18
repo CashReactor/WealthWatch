@@ -114,6 +114,10 @@ i {
   padding-bottom: 27px;
 }
 
+.npv {
+  color: lightgreen;
+}
+
 .btn-googleplus {
     margin: 0;
     display: inline-block;
