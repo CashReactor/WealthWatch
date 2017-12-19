@@ -42,3 +42,14 @@ function getAccounts() {
     })
 }
 
+function getTransactions(accountId, fromDate, toDate) {
+  return yodlee.getTransactions(cobSessionToken, userSessionToken, accountId, fromDate, toDate)
+    .then(function(data){
+      return JSON.parse(data);
+    })
+}
+
+function getCategorySpending(transactionObj) {
+  return yodlee.getCategorySpending(transactionObj);
+}
+
