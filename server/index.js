@@ -108,9 +108,12 @@ app.use('/api/expense', expense);
 // });
 
 app.post('/calculateNPV', function(req, res) {
-  var { initialInvestment, discountRate, cashFlow } = req.body;
+  var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;
   var result = initialInvestment * -1;
   Object.keys(cashFlow).forEach(year => {
+    // if (infinityArray.includes()) {
+
+    // }
     var earning;
     if (cashFlow[year][1] === '%') {
       earning = initialInvestment * cashFlow[year][0] * 0.01;

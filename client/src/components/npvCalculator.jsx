@@ -26,6 +26,7 @@ class NPVCalculator extends React.Component {
       cashFlowType: true,
       counter: 1,
       NPVresult: '',
+      infinityArray: [],
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -36,6 +37,8 @@ class NPVCalculator extends React.Component {
     this.calculateNPV = this.calculateNPV.bind(this);
     this.inputAddon = this.inputAddon.bind(this);
     this.switchCashFlowType = this.switchCashFlowType.bind(this);
+    this.addInfinityCashFlow = this.addInfinityCashFlow.bind(this);
+    this.subtractInfinityCashFlow = this.subtractInfinityCashFlow.bind(this);
   }
 
   calculateNPV() {
@@ -44,6 +47,7 @@ class NPVCalculator extends React.Component {
       discountRate: this.state.discountRate,
       initialInvestment: this.state.initialInvestment,
       cashFlow: this.state.cashFlow,
+      infinityArray: this.state.infinityArray,
     })
     .then((response) => {
       this.setState({
@@ -87,22 +91,30 @@ class NPVCalculator extends React.Component {
     }
   }
 
-  onPerpetualCashFlow(e) {
-    this.setState({
-
-    })
-  }
-
   addCashFlow() {
     this.setState({ counter: this.state.counter + 1 });
+  }
+
+  addInfinityCashFlow() {
+    var counter = this.state.counter;
+    this.addCashFlow();
+    this.setState({ infinityArray: this.state.infinityArray.concat(counter + 1) });
   }
 
   subtractCashFlow() {
     this.setState({ counter: this.state.counter - 1 });
   }
 
+  subtractInfinityCashFlow() {
+    this.subtractCashFlow();
+    var index = this.state.infinityArray.indexOf(e.target.id);
+    var array = this.state.infinityArray.slice();
+    array.splice(index, 1);
+    this.setState({ infinityArray: array });
+  }
+
   inputAddon(index) {
-    if (this.state.cashFlowType) {
+    if (this.state.cashFlowType && this.state.cashFlowType[index+1][1] !== '%') {
       return(
         <div onClick={this.switchCashFlowType} className="input-group-addon">Year {index+1}-{this.props.currency}</div>
       )
@@ -122,26 +134,51 @@ class NPVCalculator extends React.Component {
     return (
       <div>
         {array.map((element, index) => {
-          if (this.state.cashFlow[i] && this.state.cashFlow[i][1] === '%') {
-            return (
-              <div>
-                <div id="inputaddon" className="input-group">
-                  <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">Year {index+1}-%</div>
-                  <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
-                  <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
-                </div><br></br><br></br>
-              </div>
-            )
+          var indexMinusInfinity = index + 1 - this.state.infinityArray.filter((element) => index + 1 > element).length;
+          if (this.state.cashFlow[index+1] && this.state.cashFlow[index+1][1] === '%') {
+            if (this.state.infinityArray.includes(index + 1)) {
+              return (
+                <div>
+                  <div id="inputaddon" className="input-group">
+                    <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">&#8734;-%</div>
+                    <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
+                    <div onClick={this.subtractInfinityCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
+                  </div><br></br><br></br>
+                </div>
+              )
+            } else {
+              return (
+                <div>
+                  <div id="inputaddon" className="input-group">
+                    <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">Year {indexMinusInfinity}-%</div>
+                    <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
+                    <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
+                  </div><br></br><br></br>
+                </div>
+              )
+            }
           } else {
-            return (
-              <div>
-                <div id="inputaddon" className="input-group">
-                  <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">Year {index+1}-{this.props.currency}</div>
-                  <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
-                  <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
-                </div><br></br><br></br>
-              </div>
-            )
+            if (this.state.infinityArray.includes(index + 1)) {
+              return (
+                <div>
+                  <div id="inputaddon" className="input-group">
+                    <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">&#8734;-{this.props.currency}</div>
+                    <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
+                    <div onClick={this.subtractInfinityCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
+                  </div><br></br><br></br>
+                </div>
+              )
+            } else {
+              return (
+                <div>
+                  <div id="inputaddon" className="input-group">
+                    <div id={index+1} onClick={this.switchCashFlowType} className="input-group-addon">Year {indexMinusInfinity}-{this.props.currency}</div>
+                    <input onChange={this.onCashFlow} type="number" className="form-control" id={index+1}></input>
+                    <div onClick={this.subtractCashFlow} className="input-group-addon"><span class="glyphicon glyphicon-ban-circle"></span></div>
+                  </div><br></br><br></br>
+                </div>
+              )
+            }
           }
         })}
       </div>
@@ -172,9 +209,12 @@ class NPVCalculator extends React.Component {
             <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
             <div className="input-group-addon">%</div>
           </div><br></br>*/}
+
           <label id="label">Cash Flow:</label>
           {this.cashFlowInput()}
+          <h5 style={{color: 'lightblue', fontWeight: '700'}} id="label">// Click on year to change cash flow from currency {this.props.currency} to %<br></br></h5>
           <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-primary">Add cashflow</button>
+          <button style={{margin: '0 5% 0 5%'}} className="btn btn-warning" onClick={this.addInfinityCashFlow}>Add perpetual dividends</button>
           <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-info">Calculate</button>
         </div>
       </div>
