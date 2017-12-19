@@ -56,7 +56,21 @@ class ExpenseTable extends React.Component {
     return res;
   }
 
-
+    convertCategory(x) {
+    if (x == '1') {
+      return 'Entertainment';
+    } else if (x == '2') {
+      return 'Food';
+    } else if (x == '3') {
+      return 'Rent';
+    } else if (x == '4') {
+      return 'Utilities';
+    } else if (x == '5') {
+      return 'Others';
+    } else {
+      return 'No Category Specified';
+    }
+  }
 
 
   render() {
