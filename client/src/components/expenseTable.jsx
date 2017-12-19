@@ -39,7 +39,7 @@ class ExpenseTable extends React.Component {
     return res;
   }
 
-    convertCategory(x) {
+  convertCategory(x) {
     if (x == '1') {
       return 'Entertainment';
     } else if (x == '2') {
@@ -76,15 +76,15 @@ class ExpenseTable extends React.Component {
               enableSelectAll={this.state.enableSelectAll}
             >
               <TableRow>
-                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center'}}>
+                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', fontVariant: 'small-caps'}}>
                   Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
-                <TableRowColumn>Date</TableRowColumn>
-                <TableRowColumn>Recurring Expense</TableRowColumn>
-                <TableRowColumn>Category</TableRowColumn>
-                <TableRowColumn>Amount</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Date:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Recurring Expense:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Category:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Amount:</TableRowColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -116,15 +116,15 @@ class ExpenseTable extends React.Component {
               enableSelectAll={this.state.enableSelectAll}
             >
               <TableRow>
-                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center', , font-weight: 'bold'}}>
+                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', fontVariant: 'small-caps'}}>
                   Non-Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
-                <TableRowColumn>Date</TableRowColumn>
-                <TableRowColumn>Expense</TableRowColumn>
-                <TableRowColumn>Category</TableRowColumn>
-                <TableRowColumn>Amount</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Date:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Expense:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Category:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Amount:</TableRowColumn>
               </TableRow>
             </TableHeader>
             <TableBody
