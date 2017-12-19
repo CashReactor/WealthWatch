@@ -8,6 +8,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import Graph from './components/Graph.jsx';
+import ExpenseTable from './components/expenseTable.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
@@ -345,9 +346,13 @@ class App extends React.Component {
           </div>
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-            <br/>
+            <br /><br /><br /><br />
+            <ExpenseTable one={this.state.one} rec={this.state.rec} />
+            <br/><br /><br />
             <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <br />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+            <br /><br />
             <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
           </MuiThemeProvider>
           <br/>
