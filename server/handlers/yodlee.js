@@ -29,3 +29,16 @@ function generateUserToken(userName, userPassword){
   }
 }
 
+function getAccounts() {
+  return yodlee.getAccounts(cobSessionToken, userSessionToken)
+    .then(function(data){
+      var dataObj = JSON.parse(data);
+      accounts = [] //clearing it out kind of
+      for (var k in dataObj){
+        if (dataObj.hasOwnProperty(k)){
+          accounts.push(dataObj[k]);
+        }
+      }
+    })
+}
+
