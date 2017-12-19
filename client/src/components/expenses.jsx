@@ -26,6 +26,7 @@ class Expenses extends React.Component {
     return (
       <div>
         <OneExpense currencySymbols={this.props.currencySymbols} updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
+        <br />
         <RecExpense currencySymbols={this.props.currencySymbols} updateUser={this.props.updateUser} currentEmail={this.props.currentEmail}/>
       </div>
     )
