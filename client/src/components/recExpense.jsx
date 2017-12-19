@@ -149,7 +149,7 @@ export default class RecExpense extends React.Component {
           <br />
           <label id="label" htmlFor="">Enter transaction date</label>
           <br />
-          <DayPickerInput value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter transaction date" />
+          <DayPickerInput value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
           <br />
           <a
             href="#widget"

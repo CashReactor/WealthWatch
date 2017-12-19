@@ -168,26 +168,6 @@ app.post('/fetchOneExpenses', function(req, res) {
   })
 })
 
-app.post('/oneExpense', function(req, res) {
-  var email = req.body.email;
-  User.findOne({ email: email }, function(err, user) {
-    if (err) throw err;
-    var oneExpenses = user.oneTime;
-    var oneExpense = new One({
-      expense: req.body.expense,
-      amount: req.body.amount,
-      date: new Date(),
-      category: req.body.category
-    })
-    oneExpenses.push(oneExpense);
-    User.findOneAndUpdate({ email: email }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
-      if (err) throw err;
-      res.send(updatedUser);
-      res.end();
-    })
-  })
-})
-
 app.post('/fetchRecExpenses', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {
     res.send(user.recurring);
