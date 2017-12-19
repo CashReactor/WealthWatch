@@ -6,7 +6,8 @@ var APP_DIR = path.resolve(__dirname, 'client/src');
 
 module.exports = {
   context: APP_DIR,
-  entry: './index.jsx',
+  devtool: 'inline-source-map',
+  entry: ['webpack-hot-middleware/client?reload=true', './index.jsx'],
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',
@@ -35,4 +36,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
 };

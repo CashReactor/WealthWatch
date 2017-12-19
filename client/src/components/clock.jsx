@@ -1,11 +1,11 @@
 import React from 'react';
 
 class Clock extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      time: new Date()
-    }
+      time: new Date(),
+    };
     this.timer = this.timer.bind(this);
   }
 
@@ -18,25 +18,31 @@ class Clock extends React.Component {
   }
 
   timer() {
-    var date = new Date();
-    this.setState({ time: date })
-    this.props.getCurrentDate(date);
+    const date = new Date();
+    this.setState({ time: date });
   }
 
-  render(){
-    var hours = this.state.time.getHours();
-    var minutes = this.state.time.getMinutes();
-    var seconds = this.state.time.getSeconds();
-    if (hours < 10) { hours = '0' + hours; }
-    if (minutes < 10) { minutes = '0' + minutes; }
-    if (seconds < 10) { seconds = '0' + seconds; }
+  render() {
+    let hours = this.state.time.getHours();
+    let minutes = this.state.time.getMinutes();
+    let seconds = this.state.time.getSeconds();
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
 
-    return(
+    return (
       <div id="clock">
-        Time: {hours}:{minutes}:{seconds}<br></br>
+        Time: {hours}:{minutes}:{seconds}
+        <br />
         Date: {this.state.time.toDateString()}
       </div>
-    )
+    );
   }
 }
 

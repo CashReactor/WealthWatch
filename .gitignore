@@ -1,5 +1,7 @@
 node_modules
 .floo
 .flooignore
-client/public/bundle.js
 .env
+/client/public/bundle.js
+/client/src/components/Graph_d3.jsx
+npm-debug.log

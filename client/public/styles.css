@@ -6,28 +6,160 @@ img {
 /* blue architecture https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D */
 
 .widget {
-  border-style: solid;
-  border-width: 7px;
-  border-color: grey;
-  font-size: 3.7vh;
+  border-style: none;
+  border-width: 3.7px;
+  border-color: #0D47A1;
+  font-size: 2.7vh;
   color: white;
   font-weight: 900;
-  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1504247025080-d81dd33c7faf?auto=format&fit=crop&w=1950&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-size: cover;
   background-position: center;
+  padding: 17px;
+  height: 197px;
   width: 77%;
   margin-left: 11.5%;
   margin-right: 11.5%;
-  padding: 0;
-/*   margin-left: 5%;
-  margin-right: 5%; */
-  height: 197px;
 }
 
+i {
+  height: 2px !important;
+}
+
+.header {
+  font-size: 27px;
+  color: #0288D1;
+  font-weight: 700;
+/*   font-family: 'Pacifico', sans-serif;
+ */}
+
+.jumbotron {
+  padding: 17px;
+  color: white !important;
+  background-image: linear-gradient(rgba(0,0,0, 0.7), rgba(0,0,0, 0.7)), url('https://images.unsplash.com/photo-1495511623436-ba44aaee07cf?auto=format&fit=crop&w=1951&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#btn, #btn:visited {
+  margin-right: 77%;
+  margin-left: 1.5% !important;
+  margin-bottom: 1.7% !important;
+  margin-top: 1.7% !important;
+}
+
+
+
+#btns {
+  margin-right: 77%;
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
 
 .weather {
   text-align: right;
 }
 
+#small {
+  margin-left: 1.5% !important;
+}
+
+.signupImageUrl
+
+.space {
+  margin: 17px;
+}
+
+#input, #select {
+  width: 97% !important;
+  margin-left: 1.5% !important;
+}
+
+#inputaddon {
+  margin-left: 1.5% !important;
+  width: 97% !important;
+}
+
+.header {
+  margin-top: 1.7% !important;
+  margin-left: 1.5% !important;
+}
+
+#label {
+  margin-left: 1.5% !important;
+}
+
+.loginForm{
+  color: white;
+  border-style: solid;
+  border-width: 7px;
+  border-color: lightblue;
+  margin-bottom: 30px;
+  background-color: white;
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-size: cover;
+  background-position: bottom;
+  padding: 17px;
+}
+
+.signupForm{
+  border-style: solid;
+  border-width: 7px;
+  border-color: lightblue;
+  color: white;
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  border-style: solid;
+  background-color: lightgreen;
+  padding: 17px;
+  padding-bottom: 27px;
+}
+
+.btn-googleplus {
+    margin: 0;
+    display: inline-block;
+    border-radius: 0;
+    color: #fff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #b72213;
+  }
+  .btn-googleplus:link, .btn-googleplus:visited {
+    color: #fff;
+  }
+  .btn-googleplus:active, .btn-googleplus:hover {
+    color: #fff;
+  }
+
+
+
 /*         <img className="logo" src="https://i.imgur.com/wnAg9hG.png"></img>
  */
+
+/* Login Page Styling */
+.login-container {
+  height: 100vh;
+  background-image: url('https://images.unsplash.com/uploads/14131528357928cb9c5b5/220ec369?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1600&h=900&fit=crop&s=06d1006e051dc5789e4140c14e9de8a6');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: inset 0 0 0px 9999px #102847;
+  -webkit-text-fill-color: #fff !important;
+  border: none !important;
+  color: #fff;
+}
+
+.loginForm-edit{
+  padding: 17px;
+  background-color: #102847;
+  text-decoration-color: #fff;
+  color: #fff;
+}
+
+.signupForm-edit{
+  padding: 17px;
+  background-color: #102847;
+  color: #fff;
+}

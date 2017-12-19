@@ -1,43 +1,84 @@
-const { localAuth } = require('../authentication/authentication');
+const {
+  localAuth,
+  jwtAuth,
+  // googleAuth,
+  // googleAuthCallback,
+  forgotPassword,
+  resetPassword,
+  confirmedPassword,
+  updatePassword,
+} = require('../handlers/authentication');
+
 const express = require('express');
+
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const User = require('../../database/models/user');
+const { User } = require('../../database/models/user');
 const { _secret } = require('../../config');
 
-
 // Helper functions
-const generateToken = user => {
-  return jwt.sign(user, _secret, { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 });
-};
-/*********************************************************/
+const generateToken = user => jwt.sign(user, _secret, { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 });
+/* ******************************************************* */
 
-router.post('/login', localAuth, (req, res) => {
-  const token = generateToken(req.body.username);
-  res.json({ message: 'Login successful', token });
+// Test route: The purpose of this route is only to test JWT authentication
+router.get('/', jwtAuth(), (req, res, next) => {
+  res.json('Authentication Route');
+});
+/* ******************************************************* */
+
+router.post('/login', localAuth(), (req, res) => {
+  console.log('THIS IS THE EMAILLLLL', req.body.email)
+  console.log('THIS IS THE USERRRRRR', req.user);
+  const { _id, email, name } = req.user;
+  const user = { _id, email, name };
+  const token = generateToken(user);
+  res.status(200).json({ message: 'Login successful', token, email });
 });
 
 router.post('/signup', (req, res) => {
-  const email = req.body.email;
-  const name = req.body.name;
-  const password = req.body.password;
-  const newUser = { email, name, password };
+  const { email, name, password } = req.body;
+  const budget = 0;
+  const jwtData = { email, name };
+  const newUser = new User({ email, name, password, budget });
 
   User.findOne({ email })
-    .then(user => {
+    .then((user) => {
       if (user) {
         res.status(409).json({ message: 'Email taken' });
-      } else {
-        User.create(newUser).then(user => {
-          const token = generateToken(user);
-          res.status(201).json({ message: 'Registration succcessful', token });
-        });
       }
+      return newUser.save();
     })
-    .catch(error => {
+    .then(() => {
+      const token = generateToken(jwtData);
+      res.status(201).json({ message: 'Registration Successful', token, email });
+    })
+    .catch((error) => {
       res.status(500).json({ message: error });
     });
 });
 
-module.exports = router;
+// router.get('/google', googleAuth());
+
+// router.get('/google/callback', googleAuthCallback(), (req, res) => {
+//   res.redirect('/');
+// });
+
+router.post('/forgot', forgotPassword, (req, res) => {
+  res.status(201).json({ message: 'Email Sent' });
+});
+
+router.get('/reset/:token', resetPassword, (req, res) => {
+  const resLen = !Object.keys(res.body).length;
+  if (resLen) {
+    res.status(400).json({ message: 'Link Expired' });
+  } else {
+    res.status(200).json({ message: 'Valid Link' });
+  }
+});
+
+router.post('/reset/:token', confirmedPassword, updatePassword, (req, res) => {
+  res.status(201).json({ message: 'Password Updated' });
+});
+
+module.exports.auth = router;
+

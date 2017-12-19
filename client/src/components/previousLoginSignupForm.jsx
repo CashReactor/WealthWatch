@@ -1,55 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Paper from 'material-ui/Paper';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const style = {
   paper: {
     height: '50%',
+    length: '50%',
     margin: '0 auto',
     textAlign: 'center',
-    width: '25%',
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: 'none',
-    boxShadow: 'none',
-  },
-  headline: {
-    fontSize: 16,
-    fontWeight: 400,
-    backgroundColor: '#102847',
-  },
-  tab: {
-    backgroundColor: '#102847',
-  },
-  textContainer: {
-    width: '100%',
-    backgroundColor: '#102847',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  label: {
-    color: '#fff',
-  },
-  input: {
-    color: '#fff',
-  },
-  side: {
-    marginLeft: '0',
-    paddingLeft: '0',
-  },
-  button: {
-    marginTop: '2em',
-    backgroundColor: 'none',
+    width: '70%',
   },
 };
 
@@ -72,10 +34,6 @@ class LoginSignup extends React.Component {
       signupPassword: '',
       signupImageUrl: '',
       signupWarning: '',
-      style: {
-        fullWidth: true,
-        secondary: true,
-      },
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onSignupSubmit = this.onSignupSubmit.bind(this);
@@ -125,6 +83,10 @@ class LoginSignup extends React.Component {
     }
   }
 
+  // googleAuth(e) {
+
+  // }
+
   onLoginSubmit(e) {
     e.preventDefault();
     if (this.validateLoginForm()) {
@@ -137,6 +99,7 @@ class LoginSignup extends React.Component {
           this.props.getCurrentEmail(this.state.loginEmail);
           this.props.updateUser();
 
+          console.log('successful login search');
           if (response.status === 200) {
             this.props.setLoginState(response.data.token, response.data.email);
           }
@@ -176,129 +139,102 @@ class LoginSignup extends React.Component {
 
   loginForm() {
     return (
-      <div className="loginForm-edit">
-        <form style={style.form}>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="text"
+      <div className="loginForm">
+        <form>
+          <div className="form-group col-xs-4">
+            <label htmlFor="inputEmail">Email Address</label>
+            <input
+              type="email"
               value={this.state.loginEmail}
               onChange={this.onInputChange}
+              className="form-control"
               id="loginEmail"
-              floatingLabelText="Email Address"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
             />
-            <br />
             <small id="emailHelp" className="form-text text-muted">
               We'll never share your email to anyone else.
             </small>
           </div>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="password"
+          <div className="form-group col-xs-4">
+            <label htmlFor="inputPassword">Password</label>
+            <input
               value={this.state.loginPassword}
               onChange={this.onInputChange}
+              type="password"
+              className="form-control"
               id="loginPassword"
-              floatingLabelText="Password"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              placeholder="Password"
             />
           </div>
         </form>
-        <RaisedButton
-          label="Login"
-          type="submit"
-          onClick={this.onLoginSubmit}
-          fullWidth={this.state.style.fullWidth}
-          secondary={this.state.style.secondary}
-        />
-        <a
-          href="auth/google"
-          title="Google+"
-          onClick={this.googleAuth}
-          className="btn btn-googleplus btn-lg"
-          style={style.side}
-        >
+        <button id="btns" type="submit" onClick={this.onLoginSubmit} className="btn btn-primary">
+          Login
+        </button>
+        {/*<a href="auth/google" title="Google+" onClick={this.googleAuth} className="btn btn-googleplus btn-lg">
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
-        </a>
-        <br />
-        <Link style={style.side} to={{ pathname: '/forgot' }}>
-          Forgot password?
-        </Link>
+        </a>*/}
+        {this.state.loginWarning}
       </div>
     );
   }
 
   signupForm() {
     return (
-      <div className="signupForm-edit">
-        <form style={style.form}>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="text"
+      <div className="signupForm">
+        <form>
+          <div className="form-group col-xs-4">
+            <label htmlFor="inputName">Name</label>
+            <input
               value={this.state.signupName}
               onChange={this.onInputChange}
+              type="text"
+              className="form-control"
               id="signupName"
-              floatingLabelText="Name"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              placeholder="Name"
             />
           </div>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="text"
+          <div className="form-group col-xs-4">
+            <label htmlFor="inputEmail">Email</label>
+            <input
               value={this.state.signupEmail}
               onChange={this.onInputChange}
+              type="email"
+              className="form-control"
               id="signupEmail"
-              floatingLabelText="Email"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              placeholder="Email"
             />
-            <small className="form-text text-muted">This email account will be used for logging in.</small>
+            <small className="form-text text-muted">
+              This email account will be used for logging in.
+            </small>
           </div>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="password"
+          <div className="form-group col-xs-8">
+            <label htmlFor="inputPassword">Password</label>
+            <input
               value={this.state.signupPassword}
               onChange={this.onInputChange}
+              type="password"
+              className="form-control"
               id="signupPassword"
-              floatingLabelText="Password"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              placeholder="Password"
             />
           </div>
-          <div style={style.textContainer}>
-            <TextField
-              inputStyle={style.input}
-              fullWidth={this.state.style.fullWidth}
-              type="text"
+          <div className="form-group col-xs-8">
+            <label htmlFor="inputName">Profile Image</label>
+            <input
               value={this.state.signupImageUrl}
               onChange={this.onInputChange}
+              type="text"
+              className="form-control"
               id="signupImageUrl"
-              floatingLabelText="Profile Image URL"
-              floatingLabelStyle={style.label}
-              floatingLabelFocusStyle={style.label}
+              placeholder="Image Url"
             />
             <small className="form-text text-muted">A profile image will further personalize your account!</small>
           </div>
-          <RaisedButton
-            style={style.button}
-            label="Sign Up"
-            type="submit"
-            onClick={this.onSignupSubmit}
-            fullWidth={this.state.style.fullWidth}
-            secondary={this.state.style.secondary}
-          />
+          <button type="submit" id="btns" onClick={this.onSignupSubmit} className="btn btn-primary">
+            Sign Up
+          </button>
+          {this.state.signupWarning}
         </form>
       </div>
     );
@@ -306,17 +242,18 @@ class LoginSignup extends React.Component {
 
   render() {
     return (
-      <div className="login-container">
-        <Paper style={style.paper}>
-          <Tabs tabItemContainerStyle={style.headline}>
-            <Tab style={style.tab} label="Login">
-              {this.loginForm()}
-            </Tab>
-            <Tab style={style.tab} label="Register">
-              {this.signupForm()}
-            </Tab>
-          </Tabs>
-        </Paper>
+      <div>
+        <div className="jumbotron">
+          <h1 className="display-3">Welcome to WealthWatch</h1>
+          <p className="lead">
+            This app is designed for people who need a simple interface to manage budgetary concerns.
+          </p>
+          <hr className="my-4" />
+          <p>It uses Graph.js for rendering data and JWT Tokens for authentication.</p>
+          <p className="lead" />
+        </div>
+        {this.loginForm()}
+        {this.signupForm()}
       </div>
     );
   }

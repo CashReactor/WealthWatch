@@ -2,51 +2,48 @@ import React from 'react';
 import axios from 'axios';
 
 class Weather extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       state: '',
       weather: '',
-      temperature: ''
-    }
+      temperature: '',
+    };
   }
 
   makeCelcius(number) {
     var number = Math.round(Number(number));
-    return String(Math.round(number-273.1));
+    return String(Math.round(number - 273.1));
   }
 
   componentDidMount() {
     var scope = this;
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition(function (position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
-      axios.post('/weather', {
-        lat: lat,
-        lon: lon
-      }).then(function(response) {
-        console.log(response.data);
-        var weather = response.data;
-        scope.setState(weather);
-      })
-    })
+      const data = { lat, lon };
+      axios
+        .post('/weather', data)
+        .then(function (response) {
+          var weather = response.data;
+          scope.setState(weather);
+        });
+    });
   }
 
-  render(){
+  render() {
     if (this.state.state) {
-      return(
+      return (
         <div className="weather">
-          {this.state.state}<br></br>
-          {this.makeCelcius(this.state.temperature)} &#8451;<br></br>
-          {this.state.weather}<br></br>
+          {this.state.state}
+          <br />
+          {this.makeCelcius(this.state.temperature)} &#8451;<br />
+          {this.state.weather}
+          <br />
         </div>
-      )
+      );
     } else {
-      return(
-        <div className="weather">
-        Loading weather...
-        </div>
-      )
+      return <div className="weather">Loading weather...</div>;
     }
   }
 }

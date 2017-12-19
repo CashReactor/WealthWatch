@@ -1,76 +1,221 @@
-//Import your routes here
-const auth = require('./routes/authentication');
-var axios = require('axios');
-var GoogleStrategy = require('passport-google-oauth2').Strategy;
+// Import your routes here
+const { auth } = require('./routes/authentication.js');
+const { User } = require('../database/models/user.js');
+const { Rec } = require('../database/models/recurring.js');
+const { One } = require('../database/models/oneTime.js');
+const { jwtAuth } = require('./handlers/authentication.js');
+
+// ***********************
+const path = require('path');
+const axios = require('axios');
 const passport = require('passport');
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { User } = require('../database/models/user.js');
+const morgan = require('morgan');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-require('dotenv').config();
+const { NODE_ENV } = process.env;
+
+let webpackConfig;
+if (NODE_ENV === 'development') {
+  webpackConfig = '../webpack.config.dev';
+} else {
+  webpackConfig = '../webpack.config';
+}
+
+const config = require(webpackConfig);
 
 const app = express();
-const morgan = require('morgan');
+
+require('dotenv').config();
 
 app.set('port', process.env.PORT || 1337);
 const port = app.get('port');
 
-app.use('/auth', auth);
+const compiler = webpack(config);
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+  noInfo: true,
+  hot: true,
+  historyApiFallback: true,
+  stats: {
+    colors: true,
+  },
+}));
+app.use(webpackHotMiddleware(compiler));
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(express.static(__dirname + '/../client/public'));
 
-// GOOGLE AUTH STRATEGY
+// Routes
+app.use('/auth', auth); // Authentication route
+/* **************************************************** */
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/',
-  passReqToCallback: true
-},
-  function(request, accessToken, refreshToken, profile, done) {
-    User.findOne({ googleId: profile.id }, function(err, user) {
-      if (err) throw err;
-      if (user) {
-        return done(err, user);
-      } else {
-        var data = {};
-        data.imageUrl = '';
-        data.email = profile.emails[0].value;
-        data.name = profile.displayName;
-        if (profile.photos && profile.photos.length) {
-          data.imageUrl = profilephotos[0].value;
-        }
-        var newUser = new User(data);
-        newUser.save(function(err) {
-          if (err) throw err;
-          return done(null, newUser);
-        })
-      }
-    })
-  }
-))
+/* ****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE**** */
+// const recurringSchema = new mongoose.Schema({
+//   expense: {
+//     type: String,
+//     unique: true
+//   },
+//   amount: Number,
+//   period: String,
+//   category: String,
+//   startDate: Date
+// });
 
-app.get('/auth/google', passport.authenticate('google',
-  { scope: ['profile'] }));
+/* ****DATABASE SCHEMA FOR ONE-TIME EXPENSE FOR REFERENCE**** */
+// const oneTimeSchema = new mongoose.Schema({
+//   expense: String,
+//   amount: Number,
+//   date: Date,
+//   category: String
+// });
 
-app.get('/auth/google/callback', passport.authenticate('google', { failureRediret: '/login'}), function(req, res) {
-  res.redirect('/');
+// const userSchema = new mongoose.Schema({
+//   //user has email, name, password, budget, and recurring/onetime as arrays of expense models
+//   email: {
+//     type: String,
+//     unique: true,
+//     lowercase: true,
+//     trim: true,
+//     validate: [{ isAsync: false, validator: isEmail, msg: 'Invalid Email Address' }],
+//     required: 'Please supply an email address'
+//   },
+//   name: {
+//     type: String,
+//     required: 'Please supply a name',
+//     trim: true
+//   },
+//   password: {
+//     type: String,
+//     required: 'Please supply a password'
+//   },
+//   resetPasswordToken: String,
+//   resetPasswordExpires: Date,
+//   budget: Number,
+//   googleId: String,
+//   googleToken: String,
+//   recurring: [recurringSchema],
+//   oneTime: [oneTimeSchema],
+//   imageUrl: String
+// });
+
+app.post('/calculateNPV', function(req, res) {
+  var { initialInvestment, discountRate, cashFlow } = req.body;
+  var result = initialInvestment * -1;
+  Object.keys(cashFlow).forEach((year) => {
+    result += Math.pow(discountRate * 0.01, year) * cashFlow[year];
+  })
+
+  res.send(JSON.stringify(result));
+  res.end();
 })
 
-// GOOGLE AUTH STRATEGY
+app.post('/updateBalance', function(req, res) {
+  User.findOneAndUpdate({ email: req.body.email },
+    {
+      $set: { budget: req.body.budget, currency: req.body.currency }
+    }, (err, user) => {
+      console.log(user);
+      res.send('success')
+      res.end();
+    }
+  )
+})
 
-app.use(express.static(__dirname + '/../client/public'));
-// Use Routes here.....
+app.post('/reset', function(req, res) {
+  User.findOneAndUpdate({ email: req.body.email }, {
+    $set: { oneTime: [], recurring: [] }
+  }, (err, user) => {
+    res.send('success');
+    res.end();
+  })
+})
 
-app.get('/', (req, res) => {
-  res.json('Hello World');
-});
+app.post('/user', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user);
+    res.end();
+  })
+})
 
-app.listen(port, () => {
-  console.log('Express is listening on port 1337');
-});
+app.post('/fetchBudget', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(String(user.budget));
+    res.end();
+  })
+})
+
+app.get('/logout', function(req, res) {
+  req.session.destroy((err) => {
+    if (err) throw err;
+  })
+  res.send('success');
+  res.end();
+})
+
+app.post('/fetchOneExpenses', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.oneTime);
+    res.end();
+  })
+})
+
+app.post('/oneExpense', function(req, res) {
+  var email = req.body.email;
+  User.findOne({ email: email }, function(err, user) {
+    if (err) throw err;
+    var oneExpenses = user.oneTime;
+    var oneExpense = new One({
+      expense: req.body.expense,
+      amount: req.body.amount,
+      date: new Date(),
+      category: req.body.category
+    })
+    oneExpenses.push(oneExpense);
+    User.findOneAndUpdate({ email: email }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
+      if (err) throw err;
+      res.send(updatedUser);
+      res.end();
+    })
+  })
+})
+
+app.post('/fetchRecExpenses', function(req, res) {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.recurring);
+    res.end();
+  })
+})
+
+app.post('/recExpense', function(req, res) {
+  console.log('THIS IS THE PERIOOODDD', req.body.period);
+  console.log('adding recurring expense');
+  var email = req.body.email;
+  User.findOne({ email: email }, function(err, user) {
+    if (err) throw err;
+    var recExpenses = user.recurring;
+    var recExpense = new Rec({
+      expense: req.body.expense,
+      amount: req.body.amount,
+      period: req.body.period,
+      category: req.body.category,
+      startDate: new Date()
+    })
+    recExpenses.push(recExpense);
+    User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
+      if (err) throw err;
+      console.log(updatedUser);
+      res.send(updatedUser);
+      res.end();
+    })
+  })
+})
 
 //weather-map API
 app.post('/weather', function(req, res) {
@@ -81,12 +226,20 @@ app.post('/weather', function(req, res) {
   axios.get(url).then(function(response) {
     var data = response.data;
     console.log('THIS IS THE WEATHER', response.data);
-    var  weather = {
+    var weather = {
       state: data.name,
       weather: data.weather[0].main + ' (' + data.weather[0].description + ')',
       temperature: data.main.temp
-    }
+    };
     res.send(weather);
     res.end();
-  })
-})
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
+app.listen(port, () => {
+  console.log('Express is listening hard on port 1337');
+});
