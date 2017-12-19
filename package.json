@@ -9,11 +9,9 @@
     "test-coverage": "jest --coverage",
     "start-server-dev": "NODE_ENV=development nodemon server/index.js --inspect",
     "start": "node server/index.js",
-    "build": "webpack --config ./webpack.config.js --progress --colors",
-    "start": "node ./server/index.js",
-    "test": "",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
+    "build": "NODE_ENV=production webpack --config ./webpack.config.js --progress --colors",
     "postinstall": "npm run build",
     "seed" : "node ./database/seed.js"
   },
