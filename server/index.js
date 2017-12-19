@@ -109,18 +109,30 @@ app.use('/api/expense', expense);
 
 app.post('/calculateNPV', function(req, res) {
   var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;
+  console.log('THIS IS THE DISCOUNT RATE', discountRate);
   var result = initialInvestment * -1;
+  console.log('INFINITY ARRAY', infinityArray);
   Object.keys(cashFlow).forEach(year => {
-    // if (infinityArray.includes()) {
-
-    // }
-    var earning;
-    if (cashFlow[year][1] === '%') {
-      earning = initialInvestment * cashFlow[year][0] * 0.01;
+    console.log('THIS IS THE YEAR EVALUATED', year);
+    if (infinityArray.includes(Number(year))) {
+      console.log('THIS GETS HIT');
+      if (cashFlow[year][1] === '%') {
+        result += initialInvestment * cashFlow[year][0] * 0.01 / (discountRate * 0.01);
+      } else {
+        result += cashFlow[year][0] / (discountRate * 0.01);
+        console.log('THIS GETS HITTTT', cashFlow[year][0], '/////' ,1 - discountRate * 0.01);
+      }
+      console.log('THIS IS THE RESULT', result);
     } else {
-      earning = cashFlow[year][0];
+      var earning;
+      var yearMinusInfinity = year - infinityArray.filter((element) => year > element).length;
+      if (cashFlow[year][1] === '%') {
+        earning = initialInvestment * cashFlow[year][0] * 0.01;
+      } else {
+        earning = cashFlow[year][0];
+      }
+      result += Math.pow((100 - discountRate) * 0.01, Number(yearMinusInfinity)) * earning;
     }
-    result += Math.pow((100-discountRate) * 0.01, Number(year)) * earning;
   })
 
   res.send(JSON.stringify(Math.round(result)));
