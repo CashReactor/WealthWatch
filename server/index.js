@@ -1,5 +1,6 @@
 // Import your routes here
 const { auth } = require('./routes/authentication.js');
+const { expense } = require('./routes/expense.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
 const { One } = require('../database/models/oneTime.js');
@@ -54,6 +55,7 @@ app.use(express.static(__dirname + '/../client/public'));
 
 // Routes
 app.use('/auth', auth); // Authentication route
+app.use('/api/expense', expense);
 /* **************************************************** */
 
 /* ****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE**** */
@@ -166,54 +168,10 @@ app.post('/fetchOneExpenses', function(req, res) {
   })
 })
 
-app.post('/oneExpense', function(req, res) {
-  var email = req.body.email;
-  User.findOne({ email: email }, function(err, user) {
-    if (err) throw err;
-    var oneExpenses = user.oneTime;
-    var oneExpense = new One({
-      expense: req.body.expense,
-      amount: req.body.amount,
-      date: new Date(),
-      category: req.body.category
-    })
-    oneExpenses.push(oneExpense);
-    User.findOneAndUpdate({ email: email }, { oneTime: oneExpenses}, { new: true }, (err, updatedUser) => {
-      if (err) throw err;
-      res.send(updatedUser);
-      res.end();
-    })
-  })
-})
-
 app.post('/fetchRecExpenses', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {
     res.send(user.recurring);
     res.end();
-  })
-})
-
-app.post('/recExpense', function(req, res) {
-  console.log('THIS IS THE PERIOOODDD', req.body.period);
-  console.log('adding recurring expense');
-  var email = req.body.email;
-  User.findOne({ email: email }, function(err, user) {
-    if (err) throw err;
-    var recExpenses = user.recurring;
-    var recExpense = new Rec({
-      expense: req.body.expense,
-      amount: req.body.amount,
-      period: req.body.period,
-      category: req.body.category,
-      startDate: new Date()
-    })
-    recExpenses.push(recExpense);
-    User.findOneAndUpdate({ email: email }, { recurring: recExpenses }, {new: true }, (err, updatedUser) => {
-      if (err) throw err;
-      console.log(updatedUser);
-      res.send(updatedUser);
-      res.end();
-    })
   })
 })
 
