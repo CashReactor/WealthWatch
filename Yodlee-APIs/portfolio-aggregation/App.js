@@ -29,7 +29,7 @@ globalApp.properties.options.json = configApp.properties.cobrandParam
 //Invoking Cobrand login API
 request(
 		globalApp.properties.options,
-		
+
 		function(error, response, body) {
 			//console.log("form"+JSON.stringify(response));
 			if (error) {
@@ -38,16 +38,16 @@ console("error");
 
 			}
 			if (!error && response.statusCode == 200) {
-				
+
 				//Setting input parameters for user login API call
 				globalApp.properties.cobSessionToken = body.session.cobSession;
 				globalApp.properties.options.url = configApp.properties.baseURL+globalApp.properties.userLoginURL;
-                                 
+
 				globalApp.properties.options.method = globalApp.properties.post;
 				globalApp.properties.headers.Authorization = 'cobSession='
 						+ globalApp.properties.cobSessionToken;
 				globalApp.properties.options.json = configApp.properties.userParam;
-				
+
 				//Invoking user login API
 				request(
 						globalApp.properties.options,
@@ -62,15 +62,15 @@ console("error");
 								//var jsonObj = JSON.parse(body);
 
 								globalApp.properties.userSessionToken = body.user.session.userSession;
-								
+
 								MainApp();
-                                                      
+
 							}
-                                                
+
 						})
 			}
 		})
-		
+
 function MainApp() {
 	console.log('-----------------------------------------------');
 	console.log('YSL PFM/Aggregation Sample Apps');
