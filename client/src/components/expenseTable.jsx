@@ -10,13 +10,54 @@ import {
 } from 'material-ui/Table';
 
 
+const styles = {
+  propContainer: {
+    width: 200,
+    overflow: 'hidden',
+    margin: '20px auto 0',
+  },
+  propToggleHeader: {
+    margin: '20px auto 10px',
+  },
+};
 
 class ExpenseTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      fixedHeader: true,
+      fixedFooter: true,
+      stripedRows: false,
+      showRowHover: false,
+      selectable: false,
+      multiSelectable: false,
+      enableSelectAll: false,
+      deselectOnClickaway: false,
+      showCheckboxes: false,
+      height: '300px',
     };
+
+    this.convertDate = this.convertDate.bind(this);
+    this.convertCategory = this.convertCategory.bind(this);
   }
+
+   // <option value={1}>Entertainment</option>
+   //          <option value={2}>Food</option>
+   //          <option value={3}>Rent</option>
+   //          <option value={4}>Utilities</option>
+   //          <option value={5}>Others</option>
+
+
+  convertDate(x) {
+    let str = '' + new Date(x);
+    let arr = str.split('');
+    arr.splice(25, 9);
+    let res = arr.join('');
+    return res;
+  }
+
+
+
 
   render() {
 
@@ -40,11 +81,11 @@ class ExpenseTable extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-            {this.props.rec.map( (expense) => (
-              <TableRow>
-                <TableRowColumn>{expense.date}</TableRowColumn>
+            {this.props.rec.map( (expense, index) => (
+              <TableRow key={index}>
+                <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
                 <TableRowColumn>{expense.expense}</TableRowColumn>
-                <TableRowColumn>{expense.category}</TableRowColumn>
+                <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
                 <TableRowColumn>{expense.amount}</TableRowColumn>
               </TableRow>
               ))}
@@ -68,11 +109,11 @@ class ExpenseTable extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-            {this.props.one.map( (expense) => (
-              <TableRow>
-                <TableRowColumn>{expense.date}</TableRowColumn>
+            {this.props.one.map( (expense, index) => (
+              <TableRow key={index}>
+                <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
                 <TableRowColumn>{expense.expense}</TableRowColumn>
-                <TableRowColumn>{expense.category}</TableRowColumn>
+                <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
                 <TableRowColumn>{expense.amount}</TableRowColumn>
               </TableRow>
               ))}
