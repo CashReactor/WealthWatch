@@ -1,8 +1,8 @@
 const {
   localAuth,
   jwtAuth,
-  // googleAuth,
-  // googleAuthCallback,
+  googleAuth,
+  googleAuthCallback,
   forgotPassword,
   resetPassword,
   confirmedPassword,
@@ -27,8 +27,6 @@ router.get('/', jwtAuth(), (req, res, next) => {
 /* ******************************************************* */
 
 router.post('/login', localAuth(), (req, res) => {
-  console.log('THIS IS THE EMAILLLLL', req.body.email)
-  console.log('THIS IS THE USERRRRRR', req.user);
   const { _id, email, name } = req.user;
   const user = { _id, email, name };
   const token = generateToken(user);
@@ -39,7 +37,9 @@ router.post('/signup', (req, res) => {
   const { email, name, password } = req.body;
   const budget = 0;
   const jwtData = { email, name };
-  const newUser = new User({ email, name, password, budget });
+  const newUser = new User({
+    email, name, password, budget,
+  });
 
   User.findOne({ email })
     .then((user) => {
@@ -57,11 +57,12 @@ router.post('/signup', (req, res) => {
     });
 });
 
-// router.get('/google', googleAuth());
+router.get('/google', googleAuth);
 
-// router.get('/google/callback', googleAuthCallback(), (req, res) => {
-//   res.redirect('/');
-// });
+router.get('/google/callback', googleAuthCallback, (req, res) => {
+  console.log(req.body);
+  res.redirect('/');
+});
 
 router.post('/forgot', forgotPassword, (req, res) => {
   res.status(201).json({ message: 'Email Sent' });

@@ -60,7 +60,7 @@ const muiTheme = getMuiTheme({
   },
 });
 
-class LoginSignup extends React.Component {
+export default class LoginSignup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,19 +88,6 @@ class LoginSignup extends React.Component {
     this.setState({
       [e.target.id]: e.target.value,
     });
-  }
-
-  onSubmitSignup(e) {
-    e.preventDefault();
-    if (this.validateSignupForm()) {
-      axios
-        .post('/signup', {
-          email: this.state.signupEmail,
-          name: this.state.signupName,
-          password: this.state.signupPassword,
-        })
-        .then(response => {});
-    }
   }
 
   onSignupSubmit(e) {
@@ -216,15 +203,14 @@ class LoginSignup extends React.Component {
           fullWidth={this.state.style.fullWidth}
           secondary={this.state.style.secondary}
         />
-        <a
-          href="auth/google"
+        <Link
+          to={{ pathname: 'auth/google' }}
           title="Google+"
-          onClick={this.googleAuth}
           className="btn btn-googleplus btn-lg"
           style={style.side}
         >
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
-        </a>
+        </Link>
         <br />
         <Link style={style.side} to={{ pathname: '/forgot' }}>
           Forgot password?
@@ -321,5 +307,3 @@ class LoginSignup extends React.Component {
     );
   }
 }
-
-export default LoginSignup;
