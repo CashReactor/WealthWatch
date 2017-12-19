@@ -18,3 +18,14 @@ function generateCobToken(cobrandUser, cobrandPassword){
     });
 }
 
+function generateUserToken(userName, userPassword){
+  return function(cobSessionToken){
+    return yodlee.getUserSession(cobSessionToken, userName, userPassword)
+      .then(function(user){
+        var userObj = JSON.parse(user);
+        userSessionToken = userObj.session.userSession;
+        return userSessionToken;
+      });
+  }
+}
+
