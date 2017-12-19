@@ -53,3 +53,11 @@ function getCategorySpending(transactionObj) {
   return yodlee.getCategorySpending(transactionObj);
 }
 
+
+generateCobToken(cobrandUser, cobrandPassword)
+  .then(generateUserToken(userName, userPassword))
+  .then(function(){
+    getAccounts();
+    getTransactions()
+      .then(getCategorySpending);
+  })
