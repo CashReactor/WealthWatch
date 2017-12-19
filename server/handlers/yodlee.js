@@ -1,5 +1,5 @@
 var yTrans = require('yodlee-transactions');
-var yodlee = require("./index");
+var yodlee = require('yodlee.js');
 var cobrandUser = ""; //example format in sbCobxxxxx
 var cobrandPassword = ""; //format is xxxx-xxx-xxx-xxx-xxxx the number of x is not accurate
 var userName = ""; //example formats are sbMemxxxxx
