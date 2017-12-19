@@ -161,6 +161,7 @@ export default class RecExpense extends React.Component {
           >
             Submit
           </a>
+          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-primary">Submit</a>
         </div>
       </div>
     );

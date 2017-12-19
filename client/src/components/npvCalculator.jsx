@@ -204,18 +204,12 @@ class NPVCalculator extends React.Component {
             <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
             <div className="input-group-addon">%</div>
           </div><br></br>
-          {/*<label id="label">Cash Flow (perpetuity):</label>
-          <div id="inputaddon" className="input-group">
-            <input onChange={this.onInputChange} type="number" className="form-control" id="discountRate"></input>
-            <div className="input-group-addon">%</div>
-          </div><br></br>*/}
-
           <label id="label">Cash Flow:</label>
           {this.cashFlowInput()}
-          <h5 style={{color: 'lightblue', fontWeight: '700'}} id="label">// Click on year to change cash flow from currency {this.props.currency} to %<br></br></h5>
-          <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-primary">Add cashflow</button>
-          <button style={{margin: '0 5% 0 5%'}} className="btn btn-warning" onClick={this.addInfinityCashFlow}>Add perpetual dividends</button>
-          <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-info">Calculate</button>
+          <h5 style={{color: 'white', fontWeight: '700'}} id="label"># Click on year/&#8734; to change cash flow from currency {this.props.currency} to %<br></br></h5>
+          <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-default">Add cashflow</button>
+          <button /*id="pinkbutton" style={{backgroundColor: '#EC407A', borderColor: '#E91E63', margin: '0 5% 0 1.7%'}} */className="btn btn-default" onClick={this.addInfinityCashFlow}>Add &#8734; dividends</button>
+          <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-primary">Calculate</button>
         </div>
       </div>
     );

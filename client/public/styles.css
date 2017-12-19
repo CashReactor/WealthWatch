@@ -89,6 +89,10 @@ i {
   margin-left: 1.5% !important;
 }
 
+#pinkbutton:hover {
+  background-color: #E91E63 !important;
+}
+
 .loginForm{
   color: white;
   border-style: solid;
