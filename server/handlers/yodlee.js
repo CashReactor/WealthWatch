@@ -8,3 +8,13 @@ var cobSessionToken = "";
 var userSessionToken = "";
 var accounts = [];
 
+
+function generateCobToken(cobrandUser, cobrandPassword){
+  return yodlee.getCobSession(cobrandUser, cobrandPassword)
+    .then(function(data){
+      var dataObj = JSON.parse(data);
+      cobSessionToken = dataObj.session.cobSession;
+      return cobSessionToken;
+    });
+}
+
