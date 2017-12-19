@@ -82,7 +82,7 @@ class ExpenseTable extends React.Component {
               </TableRow>
               <TableRow>
                 <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Date:</TableRowColumn>
-                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Recurring Expense:</TableRowColumn>
+                <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Expense:</TableRowColumn>
                 <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Category:</TableRowColumn>
                 <TableRowColumn style={{fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline'}}>Amount:</TableRowColumn>
               </TableRow>
