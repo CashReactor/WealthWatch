@@ -10,23 +10,12 @@ import {
 } from 'material-ui/Table';
 
 
-const styles = {
-  propContainer: {
-    width: 200,
-    overflow: 'hidden',
-    margin: '20px auto 0',
-  },
-  propToggleHeader: {
-    margin: '20px auto 10px',
-  },
-};
-
 class ExpenseTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fixedHeader: true,
-      fixedFooter: true,
+      fixedFooter: false,
       stripedRows: false,
       showRowHover: false,
       selectable: false,
@@ -40,12 +29,6 @@ class ExpenseTable extends React.Component {
     this.convertDate = this.convertDate.bind(this);
     this.convertCategory = this.convertCategory.bind(this);
   }
-
-   // <option value={1}>Entertainment</option>
-   //          <option value={2}>Food</option>
-   //          <option value={3}>Rent</option>
-   //          <option value={4}>Utilities</option>
-   //          <option value={5}>Others</option>
 
 
   convertDate(x) {
@@ -80,10 +63,20 @@ class ExpenseTable extends React.Component {
       <div>
 
         <div>
-          <Table>
-            <TableHeader>
+          <Table
+            height={this.state.height}
+            fixedHeader={this.state.fixedHeader}
+            fixedFooter={this.state.fixedFooter}
+            selectable={this.state.selectable}
+            multiSelectable={this.state.multiSelectable}
+            >
+            <TableHeader
+              displaySelectAll={this.state.showCheckboxes}
+              adjustForCheckbox={this.state.showCheckboxes}
+              enableSelectAll={this.state.enableSelectAll}
+            >
               <TableRow>
-                <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
+                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center'}}>
                   Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
@@ -94,7 +87,9 @@ class ExpenseTable extends React.Component {
                 <TableRowColumn>Amount</TableRowColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody
+              displayRowCheckbox={this.state.showCheckboxes}
+            >
             {this.props.rec.map( (expense, index) => (
               <TableRow key={index}>
                 <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
@@ -108,10 +103,20 @@ class ExpenseTable extends React.Component {
         </div>
 
         <div>
-          <Table>
-            <TableHeader>
+          <Table
+            height={this.state.height}
+            fixedHeader={this.state.fixedHeader}
+            fixedFooter={this.state.fixedFooter}
+            selectable={this.state.selectable}
+            multiSelectable={this.state.multiSelectable}
+            >
+            <TableHeader
+              displaySelectAll={this.state.showCheckboxes}
+              adjustForCheckbox={this.state.showCheckboxes}
+              enableSelectAll={this.state.enableSelectAll}
+            >
               <TableRow>
-                <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
+                <TableHeaderColumn colSpan="4" tooltip="Super Header" style={{textAlign: 'center', , font-weight: 'bold'}}>
                   Non-Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
@@ -122,7 +127,9 @@ class ExpenseTable extends React.Component {
                 <TableRowColumn>Amount</TableRowColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody
+              displayRowCheckbox={this.state.showCheckboxes}
+            >
             {this.props.one.map( (expense, index) => (
               <TableRow key={index}>
                 <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
