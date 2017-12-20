@@ -39,6 +39,9 @@ i {
   background-image: linear-gradient(rgba(0,0,0, 0.7), rgba(0,0,0, 0.7)), url('https://images.unsplash.com/photo-1495511623436-ba44aaee07cf?auto=format&fit=crop&w=1951&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-attachment: fixed;
   background-size: cover;
+  /* width: 77%;
+  margin-left: 11.5%;
+  margin-right: 11.5%; */
 }
 
 #btn, #btn:visited {
@@ -89,10 +92,14 @@ i {
   margin-left: 1.5% !important;
 }
 
+#pinkbutton:hover {
+  background-color: #E91E63 !important;
+}
+
 .loginForm{
   color: white;
   border-style: solid;
-  border-width: 7px;
+  border-width: 1.7px;
   border-color: lightblue;
   margin-bottom: 30px;
   background-color: white;
@@ -100,18 +107,29 @@ i {
   background-size: cover;
   background-position: bottom;
   padding: 17px;
+ /*  width: 77%;
+  margin-left: 11.5%;
+  margin-right: 11.5%; */
 }
 
 .signupForm{
   border-style: solid;
-  border-width: 7px;
+  border-width: 1.7px;
   border-color: lightblue;
   color: white;
   background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-size: cover;
   border-style: solid;
-  background-color: lightgreen;
   padding: 17px;
   padding-bottom: 27px;
+  background-attachment: fixed;
+  /* width: 77%;
+  margin-left: 11.5%;
+  margin-right: 11.5%; */
+}
+
+.npv {
+  color: lightgreen;
 }
 
 .btn-googleplus {
@@ -144,7 +162,7 @@ i {
   background-repeat: no-repeat;
 }
 
-input:-webkit-autofill {
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
   -webkit-box-shadow: inset 0 0 0px 9999px #102847;
   -webkit-text-fill-color: #fff !important;
   border: none !important;
@@ -166,8 +184,8 @@ input:-webkit-autofill {
 
 /* recurring expense */
 .DayPickerInput {
-  width: 99%;
-  padding-left: 2em;
+  width: 97% !important;
+  margin-left: 1.5% !important;
 }
 
 .DayPickerInput > input {

@@ -16,6 +16,9 @@ const morgan = require('morgan');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+var plaid = require('plaid');
+var moment = require('moment');
+var envvar = require('envvar');
 
 const { NODE_ENV } = process.env;
 
@@ -27,7 +30,6 @@ if (NODE_ENV === 'development') {
 }
 
 const config = require(webpackConfig);
-
 const app = express();
 
 require('dotenv').config();
@@ -107,14 +109,44 @@ app.use('/api/expense', expense);
 //   imageUrl: String
 // });
 
+//PLAID FINANCE API ROUTES
+
+
+
+
+
+
+//PLAID FINANCE API ROUTSE
+
 app.post('/calculateNPV', function(req, res) {
-  var { initialInvestment, discountRate, cashFlow } = req.body;
+  var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;
+  console.log('THIS IS THE DISCOUNT RATE', discountRate);
   var result = initialInvestment * -1;
-  Object.keys(cashFlow).forEach((year) => {
-    result += Math.pow(discountRate * 0.01, year) * cashFlow[year];
+  console.log('INFINITY ARRAY', infinityArray);
+  Object.keys(cashFlow).forEach(year => {
+    console.log('THIS IS THE YEAR EVALUATED', year);
+    if (infinityArray.includes(Number(year))) {
+      console.log('THIS GETS HIT');
+      if (cashFlow[year][1] === '%') {
+        result += initialInvestment * cashFlow[year][0] * 0.01 / (discountRate * 0.01);
+      } else {
+        result += cashFlow[year][0] / (discountRate * 0.01);
+        console.log('THIS GETS HITTTT', cashFlow[year][0], '/////' ,1 - discountRate * 0.01);
+      }
+      console.log('THIS IS THE RESULT', result);
+    } else {
+      var earning;
+      var yearMinusInfinity = year - infinityArray.filter((element) => year > element).length;
+      if (cashFlow[year][1] === '%') {
+        earning = initialInvestment * cashFlow[year][0] * 0.01;
+      } else {
+        earning = cashFlow[year][0];
+      }
+      result += Math.pow((100 - discountRate) * 0.01, Number(yearMinusInfinity)) * earning;
+    }
   })
 
-  res.send(JSON.stringify(result));
+  res.send(JSON.stringify(Math.round(result)));
   res.end();
 })
 
@@ -201,3 +233,122 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log('Express is listening hard on port 1337');
 });
+
+//PLAID API-------------------------------------------------------------
+var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', process.env.PLAID_CLIENT_ID);
+var PLAID_SECRET = envvar.string('PLAID_SECRET', process.env.PLAID_SECRET);
+var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY', process.env.PLAID_PUBLIC_KEY);
+var PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
+
+var client = new plaid.Client(
+  PLAID_CLIENT_ID,
+  PLAID_SECRET,
+  PLAID_PUBLIC_KEY,
+  plaid.environments[PLAID_ENV]
+);
+
+app.post('/get_access_token', function(req, res, next) {
+  var email = req.body.email;
+  var PUBLIC_TOKEN = request.body.public_token;
+  client.exchangePublicToken(PUBLIC_TOKEN, function(error, tokenResponse) {
+    if (error != null) {
+      var msg = 'Could not exchange public_token!';
+      console.log(msg + '\n' + error);
+      return res.json({
+        error: msg
+      });
+    }
+    var ACCESS_TOKEN = tokenResponse.access_token;
+    var ITEM_ID = tokenResponse.item_id;
+    console.log('Access Token: ' + ACCESS_TOKEN);
+    console.log('Item ID: ' + ITEM_ID);
+    User.findOneAndUpdate({ email: req.body.email },
+      {
+        $set: { plaidAccessToken: ACCESS_TOKEN, plaidItemId: ITEM_ID }
+      }, (err, user) => {
+        console.log(user);
+        res.json({
+          'error': false
+        })
+      }
+    )
+  });
+});
+
+app.post('/accounts', function(req, res, next) {
+  // Retrieve high-level account information and account and routing numbers
+  // for each account associated with the Item.
+  var email = req.body.email;
+  User.findOne({ email: email }, (err, user) => {
+    if (err) throw err;
+    var ACCESS_TOKEN = user.plaidAccessToken;
+    client.getAuth(ACCESS_TOKEN, function(err, authResponse) {
+      if (error != null) {
+        var msg = 'Unable to pull accounts from the Plaid API.';
+        console.log(msg + '\n' + err);
+        return response.json({
+          error: msg
+        });
+      }
+
+      response.json({
+        error: false,
+        accounts: authResponse.accounts,
+        numbers: authResponse.numbers,
+      });
+    });
+  });
+});
+
+app.post('/item', function(req, res, next) {
+  var email = req.body.email;
+  User.findOne({ email: email }, (err, user) => {
+    if (err) throw err;
+    var ACCESS_TOKEN = user.plaidAccessToken;
+    client.getItem(ACCESS_TOKEN, function(err, itemResponse) {
+      if (err != null) {
+        return response.json({
+          error: err
+        });
+      }
+      client.getInstitutionById(itemResponse.item.institution_id, function(err, instRes) {
+        if (err != null) {
+          var msg = 'Unable to pull institution information from the Plaid API.';
+          console.log(msg + '\n' + err);
+          return response.json({
+            error: msg
+          });
+        } else {
+          response.json({
+            item: itemResponse.item,
+            institution: instRes.institution,
+          });
+        }
+      });
+    });
+  });
+});
+
+app.post('/transactions', function(req, res, next) {
+  var email = req.body.email;
+  User.findOne({ email: email }, (err, user) => {
+    if (err) throw err;
+    var ACCESS_TOKEN = user.plaidAccessToken;
+    var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    var endDate = moment().format('YYYY-MM-DD');
+    client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
+      count: 250,
+      offset: 0,
+    }, function(err, transactionsResponse) {
+      if (error != null) {
+        return response.json({
+          error: err
+        });
+      }
+      console.log('pulled ' + transactionsResponse.transactions.length + ' transactions');
+      response.json(transactionsResponse);
+    });
+  });
+});
+
+//PLAID API-------------------------------------------------------------

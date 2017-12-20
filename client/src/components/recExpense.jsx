@@ -149,7 +149,7 @@ export default class RecExpense extends React.Component {
           <br />
           <label id="label" htmlFor="">Enter transaction date</label>
           <br />
-          <DayPickerInput value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
+          <DayPickerInput id="inputaddon" value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
           <br />
           <a
             href="#widget"
@@ -157,7 +157,7 @@ export default class RecExpense extends React.Component {
             style={{ margin: '1vh' }}
             type="submit"
             id="btn"
-            className="btn btn-success"
+            className="btn btn-primary"
           >
             Submit
           </a>

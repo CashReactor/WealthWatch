@@ -253,6 +253,8 @@ class App extends React.Component {
         return <span>&#x52;&#x4d;</span>;
       case 'MXN':
         return <span>&#x24;</span>;
+      case 'VND':
+        return <span>&#x20ab;</span>;
       case 'IDR':
         return <span>&#x52;&#x70;</span>;
       case 'NOK':
@@ -347,8 +349,9 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br /><br /><br /><br />
+            {/*
             <ExpenseTable one={this.state.one} rec={this.state.rec} />
-            <br/><br /><br />
+            <br/><br /><br />*/}
             <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
             <br />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />

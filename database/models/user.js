@@ -45,6 +45,8 @@ const userSchema = new Schema({
   recurring: [recurringSchema],
   oneTime: [oneTimeSchema],
   imageUrl: String,
+  plaidAccessToken: String,
+  plaidItemId: String,
 });
 
 userSchema.methods.comparePassword = function (password, callback) {
