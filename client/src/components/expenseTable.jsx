@@ -2,6 +2,24 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
+const styles = theme => ({
+  // backgroundImage: 'linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)),url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")',
+  // backgroundSize:'cover',
+  standard: {
+    color: 'white',
+    paddingTop: '7px',
+    width: '80%',
+    marginLeft: '10%',
+    marginRight: '10%'
+  },
+  paper: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+
+});
+
 class ExpenseTable extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +34,8 @@ class ExpenseTable extends React.Component {
       deselectOnClickaway: false,
       showCheckboxes: false,
       height: '300px',
-    };
+      width: '75%'
+    }
 
     this.convertDate = this.convertDate.bind(this);
     this.convertCategory = this.convertCategory.bind(this);
@@ -50,6 +69,7 @@ class ExpenseTable extends React.Component {
     return (
       <div>
         <div>
+        <Paper>
           <Table
             height={this.state.height}
             fixedHeader={this.state.fixedHeader}
@@ -97,10 +117,12 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
+        </Paper>
         </div>
 
         <div>
-          <Table
+        <Paper style={styles.paper}>
+          <Table style={styles.standard}
             height={this.state.height}
             fixedHeader={this.state.fixedHeader}
             fixedFooter={this.state.fixedFooter}
@@ -147,6 +169,7 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
+        </Paper>
         </div>
       </div>
     );
