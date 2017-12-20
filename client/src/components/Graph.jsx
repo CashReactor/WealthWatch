@@ -67,6 +67,7 @@ class Graph extends React.Component {
         {/*<Paper style={styles.paper}>
           <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
           <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
+<<<<<<< 44e5cf9165893bd6020d5a839ecc790c61af91d9
 <<<<<<< 65cdde2d146e6a38e87e423184c30b0496d0c24b
         </Paper>*/}
       </div>
