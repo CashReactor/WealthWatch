@@ -12,6 +12,8 @@
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
     "postinstall": "npm run build",
+    "start-server": "nodemon server/index.js --inspect",
+    "start-client": "./node_modules/.bin/webpack -d --watch",
     "seed" : "node ./database/seed.js"
   },
   "repository": {
