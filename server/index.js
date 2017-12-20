@@ -16,6 +16,9 @@ const morgan = require('morgan');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+var plaid = require('plaid');
+var moment = require('moment');
+var envvar = require('envvar');
 
 const { NODE_ENV } = process.env;
 
@@ -106,6 +109,15 @@ app.use('/api/expense', expense);
 //   oneTime: [oneTimeSchema],
 //   imageUrl: String
 // });
+
+//PLAID FINANCE API ROUTES
+
+
+
+
+
+
+//PLAID FINANCE API ROUTSE
 
 app.post('/calculateNPV', function(req, res) {
   var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;

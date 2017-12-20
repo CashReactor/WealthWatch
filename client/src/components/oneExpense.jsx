@@ -124,11 +124,10 @@ export default class OneExpense extends React.Component {
             style={{ margin: '1vh' }}
             type="submit"
             id="btn"
-            className="btn btn-warning"
+            className="btn btn-primary"
           >
             Submit
           </a>
-          <a href="#widget" onClick={this.onSubmit} style={{margin: '1vh'}} type="submit" id="btn" className="btn btn-primary">Submit</a>
         </div>
       </div>
     );
