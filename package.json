@@ -11,7 +11,6 @@
     "start": "node server/index.js",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
-    "build": "NODE_ENV=production webpack --config ./webpack.config.js --progress --colors",
     "postinstall": "npm run build",
     "seed" : "node ./database/seed.js"
   },
