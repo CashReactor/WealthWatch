@@ -225,7 +225,7 @@ app.post('/accounts', function(req, res, next) {
     if (err) throw err;
     var ACCESS_TOKEN = user.plaidAccessToken;
     client.getAuth(ACCESS_TOKEN, function(err, authResponse) {
-      if (error != null) {
+      if (err != null) {
         var msg = 'Unable to pull accounts from the Plaid API.';
         console.log(msg + '\n' + err);
         return res.json({

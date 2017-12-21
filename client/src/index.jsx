@@ -14,7 +14,7 @@ import ExpenseTable from './components/expenseTable.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import LoginSignup from './components/loginSignup.jsx';
+import LoginSignup from './components/previousLoginSignupForm.jsx';
 import Expenses from './components/expenses.jsx'
 import NPVCalculator from './components/npvCalculator.jsx'
 import ForgotPassword from './components/forgotPassword.jsx';
