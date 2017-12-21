@@ -1,24 +1,47 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Pacifico|Rubik+Mono+One|Shadows+Into+Light" rel="stylesheet">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+import React from 'react';
+import $ from 'jquery';
 
-  </head>
-  <style>
-  </style>
-  <body>
-    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-    <div id='app'></div>
- <!--  <script>
-  (function($) {
-    var handler = Plaid.create({
+class Plaid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      handler: '',
+    };
+    // this.createHandler = this.createHandler.bind(this);
+    // this.clickHandler = this.clickHandler.bind(this);
+  }
+
+  // createHandler() {
+  //   var handler = Plaid.create({
+  //     apiVersion: 'v2',
+  //     clientName: 'Plaid Walkthrough Demo',
+  //     env: 'sandbox',
+  //     product: ['transactions'],
+  //     key: '695c129b2e8fade400802d3ee42a9b',
+  //     onSuccess: function(public_token) {
+  //       $.post('/get_access_token', {
+  //         email: this.props.email,
+  //         public_token: public_token
+  //       }, function() {
+  //         $('#container').fadeOut('fast', function() {
+  //           $('#intro').hide();
+  //           $('#app, #steps').fadeIn('slow');
+  //         });
+  //       });
+  //     }
+  //   });
+  //   this.setState({ handler: handler });
+  // }
+
+  // clickHandler() {
+  //   this.createHandler();
+  //   this.state.handler.open();
+  // }
+
+  componentDidMount() {
+    var that = this;
+
+    var handler = window.Plaid.create({
       apiVersion: 'v2',
       clientName: 'Plaid Walkthrough Demo',
       env: 'sandbox',
@@ -26,7 +49,8 @@
       key: '695c129b2e8fade400802d3ee42a9b',
       onSuccess: function(public_token) {
         $.post('/get_access_token', {
-          public_token: public_token
+          public_token: public_token,
+          email: that.props.email
         }, function() {
           $('#container').fadeOut('fast', function() {
             $('#intro').hide();
@@ -41,7 +65,7 @@
     });
 
     $('#get-accounts-btn').on('click', function(e) {
-      $.get('/accounts', function(data) {
+      $.post('/accounts', { email: that.props.email }, function(data) {
         $('#get-accounts-data').slideUp(function() {
           var html = '';
           data.accounts.forEach(function(account, idx) {
@@ -58,7 +82,7 @@
     });
 
     $('#get-item-btn').on('click', function(e) {
-      $.post('/item', function(data) {
+      $.post('/item', { email: that.props.email }, function(data) {
         $('#get-item-data').slideUp(function() {
           if (data.error)
             $(this).html('<p>' + data.error + '</p>').slideDown();
@@ -77,7 +101,7 @@
     });
 
     $('#get-transactions-btn').on('click', function(e) {
-      $.post('/transactions', function(data) {
+      $.post('/transactions', { email: that.props.email }, function(data) {
         if (data.error != null) {
           // Format the error
           var errorHtml = '<div class="inner"><p>' +
@@ -116,8 +140,40 @@
         }
       });
     });
-  })(jQuery);
-  </script> -->
-    <script type='text/javascript' src='/bundle.js'></script>
-  </body>
-</html>
+  }
+
+  render() {
+    return (
+      <div>
+        <div id="container">
+          <p>
+            Click the button below to open a list of Institutions - after you select one,
+            you'll be guided through an authentication process. The public_token will be passed
+            back to the example server, which will then exchange it for an access token and log it
+            to your console.
+          </p>
+          <button id="link-btn">Link Account</button>
+        </div>
+
+        <div id="app2">
+          <div class="box">
+            <button id="get-accounts-btn">Get Accounts</button>
+            <div id="get-accounts-data"></div>
+          </div>
+
+          <div class="box">
+            <button id="get-item-btn">Get Item</button>
+            <div id="get-item-data"></div>
+          </div>
+
+          <div class="box">
+            <button id="get-transactions-btn">Get Transactions</button>
+            <div id="get-transactions-data"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Plaid;

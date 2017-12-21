@@ -105,7 +105,7 @@ class NPVCalculator extends React.Component {
     this.setState({ counter: this.state.counter - 1 });
   }
 
-  subtractInfinityCashFlow() {
+  subtractInfinityCashFlow(e) {
     this.subtractCashFlow();
     var index = this.state.infinityArray.indexOf(e.target.id);
     var array = this.state.infinityArray.slice();
