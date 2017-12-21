@@ -349,9 +349,8 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br /><br /><br /><br />
-            {/*
             <ExpenseTable one={this.state.one} rec={this.state.rec} />
-            <br/><br /><br />*/}
+            <br/><br /><br />
             <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
             <br />
             <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
