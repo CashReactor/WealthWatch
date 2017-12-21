@@ -14,7 +14,7 @@ import ExpenseTable from './components/expenseTable.jsx';
 import InputBalance from './components/inputBalance.jsx';
 import Clock from './components/clock.jsx';
 import Weather from './components/weather.jsx';
-import LoginSignup from './components/previousLoginSignupForm.jsx';
+import LoginSignup from './components/LoginSignup.jsx';
 import Expenses from './components/expenses.jsx'
 import NPVCalculator from './components/npvCalculator.jsx'
 import ForgotPassword from './components/forgotPassword.jsx';
@@ -29,8 +29,11 @@ class App extends React.Component {
     const email = window.localStorage.getItem('user_email');
     this.state = {
       budget: 7000,
+      bankBudget: '',
       one: [],
+      bankOne: [],
       rec: [],
+      bankName: '',
       budgetInput: false,
       currentDate: new Date(),
       token: jwtToken,
@@ -39,6 +42,7 @@ class App extends React.Component {
       currentBarGraph: null,
       currentLineGraph: null,
       currency: '',
+      bank: false,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -49,6 +53,7 @@ class App extends React.Component {
     this.resetUser = this.resetUser.bind(this);
     this.currencySymbols = this.currencySymbols.bind(this);
     this.updateCurrency = this.updateCurrency.bind(this);
+    this.updateBudget = this.updateBudget.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +73,24 @@ class App extends React.Component {
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
 
     // this.updateUser();
+  }
+
+  updateBankBudget(budget) {
+    this.setState({
+      bankBudget: budget
+    })
+  }
+
+  updateBankName(name) {
+    this.setState({
+      bankName: name
+    })
+  }
+
+  updateBankOne(transactions) {
+    this.setState({
+      bankOne: transactions
+    })
   }
 
   resetUser() {
@@ -93,6 +116,35 @@ class App extends React.Component {
     })
   }
 
+  renderBankGraph() {
+    if (this.state.currentBarGraph) {
+      this.state.currentBarGraph.destroy();
+    }
+
+    if (this.state.currentLineGraph) {
+      this.state.currentLineGraph.destroy();
+    }
+
+    let days = [];
+    let budget = [];
+    let expenses = [];
+    let day = this.state.currentDate.getDate();
+    let month = this.state.currentDate.getMonth() + 1;
+    let year = this.state.currentDate.getFullYear();
+    let daysInMonth = this.daysInMonth(month, year);
+    for (let i = 0; i <= daysInMonth; i++) {
+      days.push(i);
+    }
+    for (let i = 0; i <= daysInMonth; i++) {
+      budget.push(this.state.bankBudget);
+      expenses.push(0);
+    }
+    for (let i = 0; i < this.state.bankOne.length; i++) {
+
+    }
+
+  }
+
   renderGraph() {
     if (this.state.currentBarGraph) {
       this.state.currentBarGraph.destroy();
@@ -113,7 +165,7 @@ class App extends React.Component {
       days.push(i);
     }
     for (let i = 0; i <= daysInMonth; i++) {
-      budget.push(this.state.budget)
+      budget.push(this.state.budget);
       expenses.push(0);
     }
     for (let i = 0; i < this.state.one.length; i++) {
@@ -361,9 +413,6 @@ class App extends React.Component {
             <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
           </MuiThemeProvider>
           <br/>
-          <Plaid email={this.state.currentEmail} />
-
-
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
         </div>

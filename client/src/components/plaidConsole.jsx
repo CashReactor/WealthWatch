@@ -10,6 +10,7 @@ class Plaid extends React.Component {
       accounts: [],
       transactions: [],
       item: '',
+      link: false,
     };
    this.onClick = this.onClick.bind(this);
   }
@@ -28,10 +29,10 @@ class Plaid extends React.Component {
           public_token: public_token,
           email: that.props.email
         }, function() {
-          $('#container').fadeOut('fast', function() {
-            $('#intro').hide();
-            $('#app2, #steps').fadeIn('slow');
-          });
+          // $('#container').fadeOut('fast', function() {
+          //   $('#intro').hide();
+          //   $('#app2, #steps').fadeIn('slow');
+          // });
         });
       },
     });
@@ -85,14 +86,15 @@ class Plaid extends React.Component {
 
   render() {
     return (
-      <div id="app2">
-        <button onClick={this.onClick} className="btn btn-info" id="link-btn">Link Account</button>
-        <button className="btn btn-info" id="get-accounts-btn">Get Accounts</button>
-        <div id="get-accounts-data"></div>
-        <button  className="btn btn-info" id="get-item-btn">Get Item</button>
-        <div id="get-item-data"></div>
-        <button className="btn btn-info" id="get-transactions-btn">Get Transactions</button>
-        <div id="get-transactions-data"></div>
+      <div style={{ width:'70%', margin:'auto'}}>
+        <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
+        <canvas id="bankChart" />
+
+        {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
+          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
+          <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>
+          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Transactions</button>
+        </div>*/}
       </div>
     );
   }

@@ -188,6 +188,12 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   margin-left: 1.5% !important;
 }
 
+#get-btn {
+  flex-grow: 3;
+  display: ms-flex;
+  display: -webkit-flex;
+}
+
 .DayPickerInput > input {
   display: block;
     width: 100%;

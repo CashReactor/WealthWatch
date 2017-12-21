@@ -7,9 +7,9 @@ import MenuItem from 'material-ui/MenuItem';
 import $ from 'jquery';
 
 const style = {
-  backgroundImage: 'linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)),url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")',
+  backgroundImage: '',
   backgroundSize:'cover',
-  color: 'white',
+  color: 'black',
   paddingTop: '7px',
   width: '50%',
   marginLeft: '25%',
@@ -193,7 +193,7 @@ class NPVCalculator extends React.Component {
     return (
       <div>
         <div className="form-group" id="NPV">
-          <h2 style={{color: 'white'}} className="header">Analyze Net Present Value (NPV) of your investment or project <span className="npv">{this.state.NPVresult}</span></h2>
+          <h2 className="header">Analyze Net Present Value (NPV) of your investment or project <span className="npv">{this.state.NPVresult}</span></h2>
           <label id="label">Initial investment:</label>
           <div id="inputaddon" className="input-group">
             <div className="input-group-addon">{this.props.currency}</div>
@@ -206,7 +206,7 @@ class NPVCalculator extends React.Component {
           </div><br></br>
           <label id="label">Cash Flow:</label>
           {this.cashFlowInput()}
-          <h5 style={{color: 'white', fontWeight: '700'}} id="label"># Click on year/&#8734; to change cash flow from currency {this.props.currency} to %<br></br></h5>
+          <h5 style={{color: 'black', fontWeight: '300'}} id="label"># Click on year/&#8734; to change cash flow from currency {this.props.currency} to %<br></br></h5>
           <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-default">Add cashflow</button>
           <button /*id="pinkbutton" style={{backgroundColor: '#EC407A', borderColor: '#E91E63', margin: '0 5% 0 1.7%'}} */className="btn btn-default" onClick={this.addInfinityCashFlow}>Add &#8734; dividends</button>
           <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-primary">Calculate</button>
