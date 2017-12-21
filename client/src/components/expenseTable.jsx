@@ -1,6 +1,37 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn
+} from 'material-ui/Table';
+import ScrollArea from 'react-scrollbar';
+
+const styles = {
+  // backgroundImage: 'linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)),url("https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")',
+  // backgroundSize:'cover',
+  standard: {
+    color: 'white',
+    paddingTop: '7px',
+    width: '80%',
+    height: '300px',
+    marginLeft: '10%',
+    marginRight: '10%',
+    overflowX: 'auto',
+  },
+  paper: {
+    height: '460px',
+    width: '77%',
+    textAlign: 'center',
+    marginLeft: '11.5%',
+    marginRight: '11.5%',
+    display: 'inline-block',
+    marginTop: '10px',
+  },
+}
 
 class ExpenseTable extends React.Component {
   constructor(props) {
@@ -10,13 +41,16 @@ class ExpenseTable extends React.Component {
       fixedFooter: false,
       stripedRows: false,
       showRowHover: false,
-      selectable: false,
-      multiSelectable: false,
+      selectable: true,
+      multiSelectable: true,
       enableSelectAll: false,
       deselectOnClickaway: false,
       showCheckboxes: false,
       height: '300px',
-    };
+      width: '80%',
+      marginLeft: '10%',
+      marginRight: '10%'
+    }
 
     this.convertDate = this.convertDate.bind(this);
     this.convertCategory = this.convertCategory.bind(this);
@@ -50,8 +84,14 @@ class ExpenseTable extends React.Component {
     return (
       <div>
         <div>
-          <Table
+        <Paper
+          style={styles.paper}
+        >
+          <Table style={{width: '80%', margin:'auto'}}
             height={this.state.height}
+            width={this.state.width}
+            marginRight={this.state.marginRight}
+            marginLeft={this.state.marginLeft}
             fixedHeader={this.state.fixedHeader}
             fixedFooter={this.state.fixedFooter}
             selectable={this.state.selectable}
@@ -97,11 +137,20 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
+        </Paper>
         </div>
 
+        <br /><br /><br />
+
         <div>
-          <Table
+        <Paper
+          style={styles.paper}
+        >
+          <Table style={{width: '80%', margin:'auto'}}
             height={this.state.height}
+            width={this.state.width}
+            marginRight={this.state.marginRight}
+            marginLeft={this.state.marginLeft}
             fixedHeader={this.state.fixedHeader}
             fixedFooter={this.state.fixedFooter}
             selectable={this.state.selectable}
@@ -147,6 +196,7 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
+          </Paper>
         </div>
       </div>
     );
