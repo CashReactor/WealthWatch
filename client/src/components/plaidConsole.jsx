@@ -13,6 +13,7 @@ class Plaid extends React.Component {
       link: false,
     };
    this.onClick = this.onClick.bind(this);
+   this.getTransactions = this.getTransactions.bind(this);
   }
 
   componentDidMount() {
@@ -33,10 +34,19 @@ class Plaid extends React.Component {
           //   $('#intro').hide();
           //   $('#app2, #steps').fadeIn('slow');
           // });
+          var promises = [];
+          promises.push(that.getTransactions());
+          promises.push(that.getAccounts());
+          promises.push(that.getItem());
+          Promise.all(promises)
+          .then(() => {
+            that.props.updateBankInfo(that.state.accounts, that.state.item, that.state.transactions);
+            that.props.renderBankGraph();
+          })
         });
       },
     });
-    this.setState({ handler: handler });
+    that.setState({ handler: handler });
   }
 
   onClick() {
@@ -47,10 +57,11 @@ class Plaid extends React.Component {
     axios.post('/accounts', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
-        console.log(data.error.error_code + ':' + data.error.error_message);
+        // console.log(data.error.error_code + ':' + data.error.error_message);
       }
+      console.log('THIS IS THE ACCOUNTS WE RECEIVE', data.data.accounts);
       this.setState({
-        accounts: data.accounts,
+        accounts: data.data.accounts,
         //data.accounts.forEach((account, idx) {account.name, if (account.balances.available) account.balances.available else account.balances.current})
       })
     })
@@ -60,10 +71,11 @@ class Plaid extends React.Component {
     axios.post('/item', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
-        console.log(data.error.error_code + ':' + data.error.error_message);
+        // console.log(data.error.error_code + ':' + data.error.error_message);
       }
+      console.log('THIS IS THE ITEM WE RECEIVE', data.data);
       this.setState({
-        items: data
+        items: data.data
         //data.institution.name (bank name)
         //data.item.billed_products.join(', ')
         //data.item.available_products.join(', ')
@@ -71,15 +83,17 @@ class Plaid extends React.Component {
     })
   }
 
-  getTransactios() {
+  getTransactions() {
     axios.post('/transactions', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
-        console.log(data.error.error_code + ':' + data.error.error_message);
+        // console.log(data.error.error_code + ':' + data.error.error_message);
       }
+      console.log('THIS IS THE TRANSACTIONS WE RECEIVE', data.data.transactions);
       this.setState({
-        transactions: data.transactions
+        transactions: data.data.transactions
       })
+      console.log('THIS IS THE TRANSACTIONS THAT WE RECEIVE', data.data.transactions, 'AND THIS IS THE FIRST ELEMENT OF THE TRANSACTIONS');
       //data.transactions.forEach((transaction) => { transaction.name, transaction.amount, transaction.date })
     })
   }
@@ -88,8 +102,8 @@ class Plaid extends React.Component {
     return (
       <div style={{ width:'70%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
-        <canvas id="bankChart" />
-
+        <canvas id='bankBarChart'/>
+        <canvas id='bankLineChart'/>
         {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
           <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
           <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>

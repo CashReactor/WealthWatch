@@ -192,10 +192,10 @@ var client = new plaid.Client(
 app.post('/get_access_token', function(req, res, next) {
   var email = req.body.email;
   var PUBLIC_TOKEN = req.body.public_token;
-  client.exchangePublicToken(PUBLIC_TOKEN, function(error, tokenResponse) {
-    if (error != null) {
+  client.exchangePublicToken(PUBLIC_TOKEN, function(err, tokenResponse) {
+    if (err != null) {
       var msg = 'Could not exchange public_token!';
-      console.log(msg + '\n' + error);
+      console.log(msg + '\n' + err);
       return res.json({
         error: msg
       });
@@ -204,10 +204,11 @@ app.post('/get_access_token', function(req, res, next) {
     var ITEM_ID = tokenResponse.item_id;
     console.log('Access Token: ' + ACCESS_TOKEN);
     console.log('Item ID: ' + ITEM_ID);
+    console.log('THIS IS THE EMAIL BEING USED FOR THE SEARCH');
     User.findOneAndUpdate({ email: email },
       {
         $set: { plaidAccessToken: ACCESS_TOKEN, plaidItemId: ITEM_ID }
-      }, (err, user) => {
+      }, {new: true}, (err, user) => {
         console.log(user);
         res.json({
           'error': false
@@ -275,7 +276,9 @@ app.post('/transactions', function(req, res, next) {
   var email = req.body.email;
   User.findOne({ email: email }, (err, user) => {
     if (err) throw err;
+    console.log(user);
     var ACCESS_TOKEN = user.plaidAccessToken;
+    console.log('THIS IS THE ACCESS_TOKEN BEING USED FOR TRANSACTIONS', ACCESS_TOKEN);
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
     client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
@@ -287,8 +290,9 @@ app.post('/transactions', function(req, res, next) {
           error: err
         });
       }
-      console.log('pulled ' + transactionsResponse.transactions.length + ' transactions');
-      res.json(transactionsResponse);
+      console.log('pulled ' + transactionsResponse.transactions.length + ' transactions and this is the transactions', transactionsResponse.transactions);
+      res.send(transactionsResponse);
+      res.end();
     });
   });
 });

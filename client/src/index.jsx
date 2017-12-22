@@ -53,7 +53,8 @@ class App extends React.Component {
     this.resetUser = this.resetUser.bind(this);
     this.currencySymbols = this.currencySymbols.bind(this);
     this.updateCurrency = this.updateCurrency.bind(this);
-    this.updateBudget = this.updateBudget.bind(this);
+    this.updateBankInfo = this.updateBankInfo.bind(this);
+    this.renderBankGraph = this.renderBankGraph.bind(this);
   }
 
   componentDidMount() {
@@ -75,23 +76,33 @@ class App extends React.Component {
     // this.updateUser();
   }
 
-  updateBankBudget(budget) {
+  updateBankInfo(budget, name, transactions) {
     this.setState({
-      bankBudget: budget
+      bankBudget: budget,
+      bankName: name,
+      bankOne: transactions,
     })
+    console.log('the bank information is updated');
+    console.log()
   }
 
-  updateBankName(name) {
-    this.setState({
-      bankName: name
-    })
-  }
+  // updateBankName(name) {
+  //   this.setState({
+  //     bankName: name
+  //   })
+  // }
 
-  updateBankOne(transactions) {
-    this.setState({
-      bankOne: transactions
-    })
-  }
+  // updateBankBudget(budget) {
+  //   this.setState({
+  //     bankBudget: budget
+  //   })
+  // }
+
+  // updateBankOne(transactions) {
+  //   this.setState({
+  //     bankOne: transactions
+  //   })
+  // }
 
   resetUser() {
     axios.post('/reset', { email: this.state.currentEmail })
@@ -125,6 +136,15 @@ class App extends React.Component {
       this.state.currentLineGraph.destroy();
     }
 
+    var bankBudget = 0;
+    this.state.bankBudget.forEach(function(account) {
+      if (account.balances.available !== null) {
+        bankBudget += account.balances.available;
+      } else {
+        bankBudget += account.balances.current;
+      }
+    })
+
     let days = [];
     let budget = [];
     let expenses = [];
@@ -136,13 +156,97 @@ class App extends React.Component {
       days.push(i);
     }
     for (let i = 0; i <= daysInMonth; i++) {
-      budget.push(this.state.bankBudget);
+      budget.push(bankBudget);
       expenses.push(0);
     }
     for (let i = 0; i < this.state.bankOne.length; i++) {
-
+      var expenseAmount = this.state.bankOne[i].amount;
+      var date = this.state.bankOne[i].date.split('-');
+      var expenseYear = Number(date[0]);
+      var expenseMonth = Number(date[1]);
+      var expenseDay = Number(date[2]);
+      if (expenseYear === year && expenseMonth === month) {
+        expenses[expenseDay] += expenseAmount;
+        for (let j = expenseDay; j <= daysInMonth; j++) {
+          budget[j] = budget[j] - expenseAmount;
+        }
+      }
     }
+    let barCtx = document.getElementById('bankBarChart');
+    let lineCtx = document.getElementById('bankLineChart');
 
+    // console.log(barCtx)
+    let updatedBudgets = budget;
+    let positiveColor = 'rgba(54, 162, 235, 0.7)';
+
+    let color = updatedBudgets.map((budget, index) => {
+      if (budget > 0) {
+        if (index <= this.state.currentDate.getDate()) {
+          return positiveColor;
+        } else {
+          return 'rgb(0, 128, 128, 0.7)';
+        }
+      } else {
+        return 'rgba(255, 0, 0, 0.5)';
+      }
+    });
+
+    var lineGraph = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Expenditure (${this.state.currency})`,
+            data: expenses,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 1,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    var barGraph = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Balance (${this.state.currency})`,
+            data: updatedBudgets,
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+    // this.setState({ currentBarGraph: barGraph });
+    // this.setState({ currentLineGraph: lineGraph });
   }
 
   renderGraph() {
@@ -402,7 +506,7 @@ class App extends React.Component {
             <Weather getAuthentication={this.getAuthentication} />
           </div>
           <MuiThemeProvider>
-            <Graph one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+            <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br /><br /><br /><br />
             <ExpenseTable one={this.state.one} rec={this.state.rec} />
             <br/><br /><br />
