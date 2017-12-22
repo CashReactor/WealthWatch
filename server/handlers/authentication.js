@@ -1,5 +1,4 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local');
 const passportJWT = require('passport-jwt');
 
@@ -9,64 +8,8 @@ const mail = require('./mail');
 
 const { _secret } = require('../../config');
 const { User } = require('../../database/models/user');
-// JWT login strategy options configuration
 
-const googleOptions = {
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:1337/auth/google/callback',
-  passReqToCallback: true,
-};
-
-// passport.serializeUser(function(user, done) {
-//   done(null, user);
-// });
-
-// passport.deserializeUser(function(user, done) {
-//   done(null, user);
-// });
-
-passport.use(new GoogleStrategy(googleOptions, (request, accessToken, refreshToken, profile, done) => {
-  const email = profile.emails[0].value;
-  const googleId = profile.id;
-  const name = profile.displayName;
-  const newUser = {
-    email,
-    name,
-    googleId,
-    googleToken: accessToken,
-    new: true,
-  };
-  let profilePic = null;
-  if (profile.photos) {
-    profilePic = profile.photos[0].value;
-    newUser.imageUrl = profilePic;
-  }
-  User.findOne({ googleId }).then((user) => {
-    if (user) {
-      user.update({ googleToken: accessToken }).then((user) => done(null, profile));
-    } else {
-      User.findOne({ email }).then((user) => {
-        if (user) {
-          const googleUser = { googleId, googleToken: accessToken };
-          if (!user.profilePic) {
-            googleUser.imageUrl = profilePic;
-          }
-          user.update(googleUser).then(user => done(null, profile));
-        } else {
-          User.create(newUser)
-            .then(() => done(null, profile))
-            .catch((error) => {
-              done(error);
-            });
-        }
-      });
-    }
-  });
-}));
-
-module.exports.googleAuth = () => passport.authenticate('google', { scope: ['profile email'] });
-module.exports.googleAuthCallback = () => passport.authenticate('google', { failureRediret: '/login' });
+require('dotenv').config();
 
 // JWT login strategy options configuration
 const jwtOptions = {
@@ -141,6 +84,7 @@ module.exports.forgotPassword = (req, res, next) => {
     .catch((error) => next(error));
 };
 
+// Utility functions
 module.exports.resetPassword = (req, res, next) => {
   User.findOne({
     resetPasswordToken: req.params.token,

@@ -43,7 +43,7 @@ const style = {
   input: {
     color: '#fff',
   },
-  side: {
+  link: {
     marginLeft: '0',
     paddingLeft: '0',
   },
@@ -82,6 +82,15 @@ export default class LoginSignup extends React.Component {
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
     this.validateLoginForm = this.validateLoginForm.bind(this);
     this.validateSignupForm = this.validateSignupForm.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location.search) {
+      const params = this.props.location.search.split('?');
+      const token = params[1];
+      const email = params[2];
+      this.props.setLoginState(token, email);
+    }
   }
 
   onInputChange(e) {
@@ -134,6 +143,22 @@ export default class LoginSignup extends React.Component {
           }
         });
     }
+  }
+
+  googleLogin(e) {
+    e.preventDefault();
+    axios
+      .get('auth/google/')
+      .then((response) => {
+        if (response.status === 200) {
+          this.props.setLoginState(response.data.token, response.data.email);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          this.setState({ loginWarning: 'Incorrect username or password' });
+        }
+      });
   }
 
   validateLoginForm() {
@@ -203,16 +228,17 @@ export default class LoginSignup extends React.Component {
           fullWidth={this.state.style.fullWidth}
           secondary={this.state.style.secondary}
         />
-        <Link
-          to={{ pathname: 'auth/google' }}
+        <a
+          href="auth/google"
           title="Google+"
+          onClick={this.googleAuth}
           className="btn btn-googleplus btn-lg"
-          style={style.side}
+          style={style.link}
         >
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
-        </Link>
+        </a>
         <br />
-        <Link style={style.side} to={{ pathname: '/forgot' }}>
+        <Link style={style.link} to={{ pathname: '/forgot' }}>
           Forgot password?
         </Link>
       </div>
@@ -291,6 +317,7 @@ export default class LoginSignup extends React.Component {
   }
 
   render() {
+    console.log(this.props.location);
     return (
       <div className="login-container">
         <Paper style={style.paper}>

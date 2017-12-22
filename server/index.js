@@ -60,64 +60,6 @@ app.use('/auth', auth); // Authentication route
 app.use('/api/expense', expense);
 /* **************************************************** */
 
-/* ****DATABASE SCHEMA FOR RECURRING EXPENSE FOR REFERENCE**** */
-// const recurringSchema = new mongoose.Schema({
-//   expense: {
-//     type: String,
-//     unique: true
-//   },
-//   amount: Number,
-//   period: String,
-//   category: String,
-//   startDate: Date
-// });
-
-/* ****DATABASE SCHEMA FOR ONE-TIME EXPENSE FOR REFERENCE**** */
-// const oneTimeSchema = new mongoose.Schema({
-//   expense: String,
-//   amount: Number,
-//   date: Date,
-//   category: String
-// });
-
-// const userSchema = new mongoose.Schema({
-//   //user has email, name, password, budget, and recurring/onetime as arrays of expense models
-//   email: {
-//     type: String,
-//     unique: true,
-//     lowercase: true,
-//     trim: true,
-//     validate: [{ isAsync: false, validator: isEmail, msg: 'Invalid Email Address' }],
-//     required: 'Please supply an email address'
-//   },
-//   name: {
-//     type: String,
-//     required: 'Please supply a name',
-//     trim: true
-//   },
-//   password: {
-//     type: String,
-//     required: 'Please supply a password'
-//   },
-//   resetPasswordToken: String,
-//   resetPasswordExpires: Date,
-//   budget: Number,
-//   googleId: String,
-//   googleToken: String,
-//   recurring: [recurringSchema],
-//   oneTime: [oneTimeSchema],
-//   imageUrl: String
-// });
-
-//PLAID FINANCE API ROUTES
-
-
-
-
-
-
-//PLAID FINANCE API ROUTSE
-
 app.post('/calculateNPV', function(req, res) {
   var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;
   console.log('THIS IS THE DISCOUNT RATE', discountRate);
