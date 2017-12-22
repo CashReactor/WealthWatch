@@ -41,6 +41,8 @@ class App extends React.Component {
       currentEmail: email,
       currentBarGraph: null,
       currentLineGraph: null,
+      currentBankGraph: null,
+      currentBankLineGraph: null,
       currency: '',
       bank: false,
     };
@@ -129,11 +131,11 @@ class App extends React.Component {
 
   renderBankGraph() {
     if (this.state.currentBarGraph) {
-      this.state.currentBarGraph.destroy();
+      this.state.currentBankGraph.destroy();
     }
 
     if (this.state.currentLineGraph) {
-      this.state.currentLineGraph.destroy();
+      this.state.currentBankLineGraph.destroy();
     }
 
     var bankBudget = 0;
@@ -245,8 +247,8 @@ class App extends React.Component {
         },
       },
     });
-    // this.setState({ currentBarGraph: barGraph });
-    // this.setState({ currentLineGraph: lineGraph });
+    this.setState({ currentBankGraph: barGraph });
+    this.setState({ currentBankLineGraph: lineGraph });
   }
 
   renderGraph() {
