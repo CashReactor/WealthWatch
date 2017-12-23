@@ -5,3 +5,4 @@ node_modules
 /client/public/bundle.js
 /client/src/components/Graph_d3.jsx
 npm-debug.log
+package-lock.json

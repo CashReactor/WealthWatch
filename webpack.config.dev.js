@@ -6,7 +6,7 @@ var APP_DIR = path.resolve(__dirname, 'client/src');
 
 module.exports = {
   context: APP_DIR,
-  devtool: 'inline-source-map',
+  devtool: 'cheap-eval-source-map',
   entry: ['webpack-hot-middleware/client?reload=true', './index.jsx'],
   output: {
     path: BUILD_DIR,
