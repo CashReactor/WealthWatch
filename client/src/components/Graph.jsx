@@ -21,6 +21,12 @@ const styles = {
     marginLeft: '11.5%',
     marginRight: '11.5%',
   },
+  grid: {
+    height: '50%',
+    width: '100%',
+    // backgroundColor: 'rgba(144,164,174 ,0.17)',
+    color: 'white',
+  }
 };
 
 class Graph extends React.Component {
@@ -37,7 +43,15 @@ class Graph extends React.Component {
   render() {
     return (
       <div>
-        <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+
+        <div className="grid-container">
+          <div className="item1">
+              <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
+          </div>
+          <div className="item2">
+              <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
+          </div>
+        </div>
         <Plaid renderBankGraph={this.props.renderBankGraph} updateBankInfo={this.props.updateBankInfo} email={ this.props.currentEmail }/>
         <Paper style={styles.paper}>
           <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />

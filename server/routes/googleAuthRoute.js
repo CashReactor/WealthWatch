@@ -19,14 +19,14 @@ googleRouter.route('/')
     scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/contacts.readonly']
   }));
 
-googleRouter.get(
-  '/callback',
-  passport.authenticate('google', { failureRedirect: '/', session: false }),
-  googleUserLogin,
-  (req, res) => {
-    const { token, email } = res.body;
-    res.redirect(`/?${token}?${email}`);
-  },
-);
+// googleRouter.get(
+//   '/callback',
+//   passport.authenticate('google', { failureRedirect: '/', session: false }),
+//   googleUserLogin,
+//   (req, res) => {
+//     const { token, email } = res.body;
+//     res.redirect(`/?${token}?${email}`);
+//   },
+// );
 
 module.exports = googleRouter;

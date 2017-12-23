@@ -5,6 +5,13 @@ img {
 
 /* blue architecture https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D */
 
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  padding: 10px;
+}
+
 .widget {
   border-style: none;
   border-width: 3.7px;
