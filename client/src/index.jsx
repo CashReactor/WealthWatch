@@ -84,7 +84,7 @@ class App extends React.Component {
       bankName: name,
       bankOne: transactions,
     })
-    console.log('the bank information is updated');
+    console.log('the bank information is updated', this.state.bankBudget, this.state.bankOne, this.state.bankName);
     console.log()
   }
 
@@ -130,16 +130,18 @@ class App extends React.Component {
   }
 
   renderBankGraph() {
-    if (this.state.currentBarGraph) {
+    if (this.state.currentBankGraph) {
       this.state.currentBankGraph.destroy();
     }
 
-    if (this.state.currentLineGraph) {
+    if (this.state.currentBankLineGraph) {
       this.state.currentBankLineGraph.destroy();
     }
 
     var bankBudget = 0;
+    var that = this;
     this.state.bankBudget.forEach(function(account) {
+      // console.log('THIS IS THE STATE BANKBUDGET', that.state.bankBudget);
       if (account.balances.available !== null) {
         bankBudget += account.balances.available;
       } else {
@@ -247,8 +249,10 @@ class App extends React.Component {
         },
       },
     });
-    this.setState({ currentBankGraph: barGraph });
-    this.setState({ currentBankLineGraph: lineGraph });
+    this.setState({
+      currentBankGraph: barGraph,
+      currentBankLineGraph: lineGraph
+    });
   }
 
   renderGraph() {

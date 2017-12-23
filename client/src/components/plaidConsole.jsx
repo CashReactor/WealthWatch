@@ -14,6 +14,7 @@ class Plaid extends React.Component {
     };
    this.onClick = this.onClick.bind(this);
    this.getTransactions = this.getTransactions.bind(this);
+   this.getBankInfo = this.getBankInfo.bind(this);
   }
 
   componentDidMount() {
@@ -30,19 +31,7 @@ class Plaid extends React.Component {
           public_token: public_token,
           email: that.props.email
         }, function() {
-          // $('#container').fadeOut('fast', function() {
-          //   $('#intro').hide();
-          //   $('#app2, #steps').fadeIn('slow');
-          // });
-          var promises = [];
-          promises.push(that.getTransactions());
-          promises.push(that.getAccounts());
-          promises.push(that.getItem());
-          Promise.all(promises)
-          .then(() => {
-            that.props.updateBankInfo(that.state.accounts, that.state.item, that.state.transactions);
-            that.props.renderBankGraph();
-          })
+          that.getBankInfo()
         });
       },
     });
@@ -53,7 +42,20 @@ class Plaid extends React.Component {
     this.state.handler.open();
   }
 
-  getAccounts() {
+  getBankInfo() {
+    var that = this;
+    that.getAccounts(() => {
+      that.getItem(()=> {
+        that.getTransactions(() => {
+          console.log('these are the states', that.state.accounts, that.state.item, that.state.transactions);
+          that.props.updateBankInfo(that.state.accounts, that.state.item, that.state.transactions);
+          that.props.renderBankGraph();
+        });
+      });
+    });
+  }
+
+  getAccounts(cb) {
     axios.post('/accounts', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
@@ -64,10 +66,11 @@ class Plaid extends React.Component {
         accounts: data.data.accounts,
         //data.accounts.forEach((account, idx) {account.name, if (account.balances.available) account.balances.available else account.balances.current})
       })
+      cb();
     })
   }
 
-  getItem() {
+  getItem(cb) {
     axios.post('/item', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
@@ -75,15 +78,16 @@ class Plaid extends React.Component {
       }
       console.log('THIS IS THE ITEM WE RECEIVE', data.data);
       this.setState({
-        items: data.data
+        item: data.data
         //data.institution.name (bank name)
         //data.item.billed_products.join(', ')
         //data.item.available_products.join(', ')
       })
+      cb();
     })
   }
 
-  getTransactions() {
+  getTransactions(cb) {
     axios.post('/transactions', { email: this.props.email })
     .then((data) => {
       if (data.error !== null) {
@@ -95,6 +99,7 @@ class Plaid extends React.Component {
       })
       console.log('THIS IS THE TRANSACTIONS THAT WE RECEIVE', data.data.transactions, 'AND THIS IS THE FIRST ELEMENT OF THE TRANSACTIONS');
       //data.transactions.forEach((transaction) => { transaction.name, transaction.amount, transaction.date })
+      cb();
     })
   }
 

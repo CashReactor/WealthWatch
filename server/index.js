@@ -234,7 +234,7 @@ app.post('/accounts', function(req, res, next) {
         });
       }
 
-      res.json({
+      res.send({
         error: false,
         accounts: authResponse.accounts,
         numbers: authResponse.numbers,
@@ -249,12 +249,14 @@ app.post('/item', function(req, res, next) {
     if (err) throw err;
     var ACCESS_TOKEN = user.plaidAccessToken;
     client.getItem(ACCESS_TOKEN, function(err, itemResponse) {
+      console.log('THIS IS THE ITEM RESPONSE', itemResponse);
       if (err != null) {
         return response.json({
           error: err
         });
       }
       client.getInstitutionById(itemResponse.item.institution_id, function(err, instRes) {
+        console.log('THIS IS THE INSTITUTION', instRes.institution);
         if (err != null) {
           var msg = 'Unable to pull institution information from the Plaid API.';
           console.log(msg + '\n' + err);
@@ -262,7 +264,8 @@ app.post('/item', function(req, res, next) {
             error: msg
           });
         } else {
-          res.json({
+          console.log('THIS IS THE INSTITUTION', instRes.institution);
+          res.send({
             item: itemResponse.item,
             institution: instRes.institution,
           });
