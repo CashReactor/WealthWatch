@@ -90,6 +90,7 @@ export default class LoginSignup extends React.Component {
       const token = params[1];
       const email = params[2];
       this.props.setLoginState(token, email);
+      this.props.updateUser();
     }
   }
 

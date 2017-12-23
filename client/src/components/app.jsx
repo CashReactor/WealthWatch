@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
 import $ from 'jquery';
 import axios from 'axios';
-import { Switch, BrowserRouter, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import Graph from './Graph.jsx';
 import ExpenseTable from './expenseTable.jsx';
 import InputBalance from './inputBalance.jsx';
@@ -295,10 +295,8 @@ export default class App extends React.Component {
       token,
       currentEmail: email,
     });
-    // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
     window.localStorage.setItem('user_email', email);
-    // window.localStorage.setItem('currency', currency);
   }
 
   setLogoutState(event) {
@@ -308,7 +306,6 @@ export default class App extends React.Component {
     });
     window.localStorage.removeItem('wealthwatch_token');
     window.localStorage.removeItem('user_email');
-    console.log('History upon logout: ', this.props.history);
   }
 
   getAuthentication() {
@@ -349,7 +346,6 @@ export default class App extends React.Component {
           <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
         </MuiThemeProvider>
         <br />
-
         <Link className="button btn btn-danger" to={{ pathname: '/', search: '' }} onClick={this.setLogoutState}>Logout</Link>
         <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
       </div>
