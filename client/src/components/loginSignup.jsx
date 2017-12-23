@@ -7,6 +7,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
+const Promise = require('bluebird');
 
 const style = {
   paper: {
@@ -43,7 +44,7 @@ const style = {
   input: {
     color: '#fff',
   },
-  side: {
+  link: {
     marginLeft: '0',
     paddingLeft: '0',
   },
@@ -60,7 +61,7 @@ const muiTheme = getMuiTheme({
   },
 });
 
-class LoginSignup extends React.Component {
+export default class LoginSignup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,23 +85,32 @@ class LoginSignup extends React.Component {
     this.validateSignupForm = this.validateSignupForm.bind(this);
   }
 
+  componentDidMount() {
+    return this.extractTokenEmail()
+      .then((tokenEmail) => {
+        const { token, email } = tokenEmail;
+        this.props.setLoginState(token, email);
+      })
+      .then(() => {
+        this.props.updateUser();
+      });
+  }
+
+  extractTokenEmail(callback) {
+    return new Promise((resolve, reject) => {
+      if (this.props.location.search) {
+        const params = this.props.location.search.split('?');
+        const token = params[1];
+        const email = params[2];
+        resolve({ token, email });
+      } 
+    });
+  }
+
   onInputChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
     });
-  }
-
-  onSubmitSignup(e) {
-    e.preventDefault();
-    if (this.validateSignupForm()) {
-      axios
-        .post('/signup', {
-          email: this.state.signupEmail,
-          name: this.state.signupName,
-          password: this.state.signupPassword,
-        })
-        .then(response => {});
-    }
   }
 
   onSignupSubmit(e) {
@@ -147,6 +157,22 @@ class LoginSignup extends React.Component {
           }
         });
     }
+  }
+
+  googleLogin(e) {
+    e.preventDefault();
+    axios
+      .get('auth/google/')
+      .then((response) => {
+        if (response.status === 200) {
+          this.props.setLoginState(response.data.token, response.data.email);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          this.setState({ loginWarning: 'Incorrect username or password' });
+        }
+      });
   }
 
   validateLoginForm() {
@@ -221,12 +247,12 @@ class LoginSignup extends React.Component {
           title="Google+"
           onClick={this.googleAuth}
           className="btn btn-googleplus btn-lg"
-          style={style.side}
+          style={style.link}
         >
           <i className="fa fa-google-plus fa-fw" /> Sign in with Google
         </a>
         <br />
-        <Link style={style.side} to={{ pathname: '/forgot' }}>
+        <Link style={style.link} to={{ pathname: '/forgot' }}>
           Forgot password?
         </Link>
       </div>
@@ -305,6 +331,7 @@ class LoginSignup extends React.Component {
   }
 
   render() {
+    console.log(this.props.location);
     return (
       <div className="login-container">
         <Paper style={style.paper}>
@@ -321,5 +348,3 @@ class LoginSignup extends React.Component {
     );
   }
 }
-
-export default LoginSignup;

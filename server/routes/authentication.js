@@ -1,8 +1,6 @@
 const {
   localAuth,
   jwtAuth,
-  // googleAuth,
-  // googleAuthCallback,
   forgotPassword,
   resetPassword,
   confirmedPassword,
@@ -15,9 +13,11 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { User } = require('../../database/models/user');
 const { _secret } = require('../../config');
+const googleRouter = require('./googleAuthRoute');
 
 // Helper functions
-const generateToken = user => jwt.sign(user, _secret, { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 });
+const generateToken = user =>
+  jwt.sign(user, _secret, { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 });
 /* ******************************************************* */
 
 // Test route: The purpose of this route is only to test JWT authentication
@@ -26,9 +26,11 @@ router.get('/', jwtAuth(), (req, res, next) => {
 });
 /* ******************************************************* */
 
+// Google Authentication Route
+router.use('/google', googleRouter);
+
+// Local Authentication Route
 router.post('/login', localAuth(), (req, res) => {
-  console.log('THIS IS THE EMAILLLLL', req.body.email)
-  console.log('THIS IS THE USERRRRRR', req.user);
   const { _id, email, name } = req.user;
   const user = { _id, email, name };
   const token = generateToken(user);
@@ -39,7 +41,9 @@ router.post('/signup', (req, res) => {
   const { email, name, password } = req.body;
   const budget = 0;
   const jwtData = { email, name };
-  const newUser = new User({ email, name, password, budget });
+  const newUser = new User({
+    email, name, password, budget,
+  });
 
   User.findOne({ email })
     .then((user) => {
@@ -56,12 +60,6 @@ router.post('/signup', (req, res) => {
       res.status(500).json({ message: error });
     });
 });
-
-// router.get('/google', googleAuth());
-
-// router.get('/google/callback', googleAuthCallback(), (req, res) => {
-//   res.redirect('/');
-// });
 
 router.post('/forgot', forgotPassword, (req, res) => {
   res.status(201).json({ message: 'Email Sent' });
@@ -81,4 +79,5 @@ router.post('/reset/:token', confirmedPassword, updatePassword, (req, res) => {
 });
 
 module.exports.auth = router;
+
 

@@ -7,16 +7,16 @@ const { oneTimeSchema } = require('./oneTime.js');
 
 const Schema = mongoose.Schema;
 
-const googleUserSchema = new Schema({
-  googleId: String,
-  googleToken: String,
-  imageUrl: String,
-  recurring: [recurringSchema],
-  oneTime: [oneTimeSchema],
-  budget: Number,
-  name: String,
-  email: String
-});
+// const googleUserSchema = new Schema({
+//   googleId: String,
+//   googleToken: String,
+//   imageUrl: String,
+//   recurring: [recurringSchema],
+//   oneTime: [oneTimeSchema],
+//   budget: Number,
+//   name: String,
+//   email: String
+// });
 
 const userSchema = new Schema({
   email: {
@@ -32,10 +32,7 @@ const userSchema = new Schema({
     required: 'Please supply a name',
     trim: true,
   },
-  password: {
-    type: String,
-    required: 'Please supply a password',
-  },
+  password: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   budget: Number,
