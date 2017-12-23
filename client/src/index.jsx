@@ -57,6 +57,7 @@ class App extends React.Component {
     this.updateCurrency = this.updateCurrency.bind(this);
     this.updateBankInfo = this.updateBankInfo.bind(this);
     this.renderBankGraph = this.renderBankGraph.bind(this);
+    this.routerGraph = this.routerGraph.bind(this);
   }
 
   componentDidMount() {
@@ -491,6 +492,12 @@ class App extends React.Component {
     return this.state.token;
   }
 
+  routerGraph() {
+    return (
+      <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+    )
+  }
+
   render() {
     if (!this.state.loggedIn) {
       return (
@@ -517,10 +524,10 @@ class App extends React.Component {
           </div>
           <MuiThemeProvider>
             <div style={{width:'70%', margin:'0 auto'}} className="w3-bar w3-border w3-light-grey">
-              <a href="#" style={{width:'25%'}} className="w3-bar-item w3-button w3-green">Home</a>
-              <a href="#" style={{width:'25%'}} className="w3-bar-item w3-button">Link 1</a>
-              <a href="#" style={{width:'25%'}} className="w3-bar-item w3-button">Link 2</a>
-              <a href="#" style={{width:'25%'}} className="w3-bar-item w3-button">Link 3</a>
+              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button w3-green">Home</a>
+              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Expenses</a>
+              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Bank</a>
+              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Investors</a>
             </div>
             <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br /><br /><br /><br />
