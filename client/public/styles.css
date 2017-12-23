@@ -189,7 +189,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 #get-btn {
-  flex-grow: 3;
+  flex-grow: ;
   display: ms-flex;
   display: -webkit-flex;
 }

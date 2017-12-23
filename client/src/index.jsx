@@ -188,7 +188,7 @@ class App extends React.Component {
         if (index <= this.state.currentDate.getDate()) {
           return positiveColor;
         } else {
-          return 'rgb(0, 128, 128, 0.7)';
+          return 'rgba(54, 162, 235, 0.3)';
         }
       } else {
         return 'rgba(255, 0, 0, 0.5)';
@@ -201,7 +201,7 @@ class App extends React.Component {
         labels: days,
         datasets: [
           {
-            label: `Current Monthly Expenditure (${this.state.currency})`,
+            label: `Current Monthly Expenditure of ${this.state.bankName.institution.name} ($)`,
             data: expenses,
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
             borderColor: 'rgba(255, 0, 0, 0.5)',
@@ -229,7 +229,7 @@ class App extends React.Component {
         labels: days,
         datasets: [
           {
-            label: `Current Monthly Balance (${this.state.currency})`,
+            label: `Current Monthly Balance of ${this.state.bankName.institution.name} ($)`,
             data: updatedBudgets,
             backgroundColor: color,
             borderColor: color,
@@ -253,6 +253,8 @@ class App extends React.Component {
       currentBankGraph: barGraph,
       currentBankLineGraph: lineGraph
     });
+    $('#bankBarChart').css('display', 'inline-block');
+    $('#bankLineChart').css('display', 'inline-block');
   }
 
   renderGraph() {
@@ -382,8 +384,10 @@ class App extends React.Component {
         },
       },
     });
-    this.setState({ currentBarGraph: barGraph });
-    this.setState({ currentLineGraph: lineGraph });
+    this.setState({
+      currentBarGraph: barGraph,
+      currentLineGraph: lineGraph
+    });
   }
 
   currencySymbols() {
