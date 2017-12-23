@@ -7,6 +7,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
+const Promise = require('bluebird');
 
 const style = {
   paper: {
@@ -85,13 +86,25 @@ export default class LoginSignup extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.location.search) {
-      const params = this.props.location.search.split('?');
-      const token = params[1];
-      const email = params[2];
-      this.props.setLoginState(token, email);
-      this.props.updateUser();
-    }
+    return this.extractTokenEmail()
+      .then((tokenEmail) => {
+        const { token, email } = tokenEmail;
+        this.props.setLoginState(token, email);
+      })
+      .then(() => {
+        this.props.updateUser();
+      });
+  }
+
+  extractTokenEmail(callback) {
+    return new Promise((resolve, reject) => {
+      if (this.props.location.search) {
+        const params = this.props.location.search.split('?');
+        const token = params[1];
+        const email = params[2];
+        resolve({ token, email });
+      } 
+    });
   }
 
   onInputChange(e) {

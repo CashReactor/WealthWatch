@@ -48,6 +48,7 @@
     "@sendgrid/mail": "^6.1.4",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
