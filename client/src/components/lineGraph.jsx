@@ -14,7 +14,7 @@ class LineGraph extends React.Component {
   render() {
     return (
       <div id="LineChart">
-        <canvas style={{'background-color': 'white'}}id="lineChart" />
+        <canvas id="lineChart" />
       </div>
     );
   }

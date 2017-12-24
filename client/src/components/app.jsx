@@ -21,6 +21,7 @@ import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
 
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class App extends React.Component {
       currentBankLineGraph: null,
       currency: '',
       bank: false,
+      loading: false,
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -72,6 +74,11 @@ class App extends React.Component {
         700
       );
     });
+
+    // $('w3-bar-item').on('click', function(event) {
+    //   $('w3-bar').children().attr('className', 'w3-bar-item w3-button');
+    //   $(this).attr('className')
+    // })
     console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
 
@@ -130,6 +137,7 @@ class App extends React.Component {
   }
 
   renderBankGraph() {
+    $('.loader').toggle();
     if (this.state.currentBankGraph) {
       this.state.currentBankGraph.destroy();
     }
@@ -313,8 +321,6 @@ class App extends React.Component {
     console.log(budget);
     let barCtx = document.getElementById('barChart');
     let lineCtx = document.getElementById('lineChart');
-
-    // console.log(barCtx)
     let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
@@ -497,6 +503,7 @@ class App extends React.Component {
     )
   }
 
+
   render() {
     if (!this.state.loggedIn) {
       return (
@@ -524,13 +531,13 @@ class App extends React.Component {
           <MuiThemeProvider>
             <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
             <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="w3-bar w3-border w3-light-grey">
-              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button w3-green">Home</a>
-              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Expenses</a>
-              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Bank</a>
-              <a href="#" style={{width:'25%', 'text-decoration': 'none'}} className="w3-bar-item w3-button">Investors</a>
+              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button w3-green">Home</a>
+              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Expenses</a>
+              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Bank</a>
+              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Investors</a>
             </div>
             <br /><br /><br /><br />
-            <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+            <Graph loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
             <br /><br /><br /><br />
             {/*<ExpenseTable one={this.state.one} rec={this.state.rec} />*/}
             <br/><br /><br />

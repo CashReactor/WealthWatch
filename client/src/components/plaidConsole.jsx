@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import CircularProgress from 'material-ui/CircularProgress';
+
 
 class Plaid extends React.Component {
   constructor(props) {
@@ -31,6 +33,7 @@ class Plaid extends React.Component {
           public_token: public_token,
           email: that.props.email
         }, function() {
+          $('.loader').toggle();
           that.getBankInfo()
         });
       },
@@ -107,6 +110,9 @@ class Plaid extends React.Component {
     return (
       <div style={{ width:'70%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
+        <div style={{margin: '0 auto'}} >
+          <div className="loader"></div>
+        </div>
         <canvas style={{display: 'none'}} id='bankBarChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
         {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>

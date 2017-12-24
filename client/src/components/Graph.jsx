@@ -8,6 +8,7 @@ import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles
 import axios from 'axios';
 import Plaid from './plaidConsole.jsx';
 
+
 const styles = {
   default_tab: {
     color: 'rgba(255, 255, 255, 0.9)',
@@ -43,7 +44,6 @@ class Graph extends React.Component {
   render() {
     return (
       <div>
-
         <div className="grid-container">
           <div className="item1">
               <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
@@ -52,11 +52,11 @@ class Graph extends React.Component {
               <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
           </div>
         </div>
-        <Plaid renderBankGraph={this.props.renderBankGraph} updateBankInfo={this.props.updateBankInfo} email={ this.props.currentEmail }/>
-        <Paper style={styles.paper}>
+        <Plaid loading={this.props.loading} renderBankGraph={this.props.renderBankGraph} updateBankInfo={this.props.updateBankInfo} email={ this.props.currentEmail }/>
+        {/*<Paper style={styles.paper}>
           <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
           <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
-        </Paper>
+        </Paper>*/}
       </div>
     );
   }
