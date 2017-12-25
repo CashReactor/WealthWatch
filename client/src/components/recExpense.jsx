@@ -3,6 +3,8 @@ import axios from 'axios';
 import Paper from 'material-ui/Paper';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 export default class RecExpense extends React.Component {
   constructor(props) {
@@ -151,8 +153,7 @@ export default class RecExpense extends React.Component {
           <br />
           <DayPickerInput id="inputaddon" value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
           <br />
-          <a
-            href="#widget"
+          <button
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
             type="submit"
@@ -160,7 +161,7 @@ export default class RecExpense extends React.Component {
             className="btn btn-primary"
           >
             Submit
-          </a>
+          </button>
         </div>
       </div>
     );

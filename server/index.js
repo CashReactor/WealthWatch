@@ -191,11 +191,11 @@ var client = new plaid.Client(
 
 app.post('/get_access_token', function(req, res, next) {
   var email = req.body.email;
-  var PUBLIC_TOKEN = request.body.public_token;
-  client.exchangePublicToken(PUBLIC_TOKEN, function(error, tokenResponse) {
-    if (error != null) {
+  var PUBLIC_TOKEN = req.body.public_token;
+  client.exchangePublicToken(PUBLIC_TOKEN, function(err, tokenResponse) {
+    if (err != null) {
       var msg = 'Could not exchange public_token!';
-      console.log(msg + '\n' + error);
+      console.log(msg + '\n' + err);
       return res.json({
         error: msg
       });
@@ -204,10 +204,11 @@ app.post('/get_access_token', function(req, res, next) {
     var ITEM_ID = tokenResponse.item_id;
     console.log('Access Token: ' + ACCESS_TOKEN);
     console.log('Item ID: ' + ITEM_ID);
-    User.findOneAndUpdate({ email: req.body.email },
+    console.log('THIS IS THE EMAIL BEING USED FOR THE SEARCH');
+    User.findOneAndUpdate({ email: email },
       {
         $set: { plaidAccessToken: ACCESS_TOKEN, plaidItemId: ITEM_ID }
-      }, (err, user) => {
+      }, {new: true}, (err, user) => {
         console.log(user);
         res.json({
           'error': false
@@ -225,15 +226,15 @@ app.post('/accounts', function(req, res, next) {
     if (err) throw err;
     var ACCESS_TOKEN = user.plaidAccessToken;
     client.getAuth(ACCESS_TOKEN, function(err, authResponse) {
-      if (error != null) {
+      if (err != null) {
         var msg = 'Unable to pull accounts from the Plaid API.';
         console.log(msg + '\n' + err);
-        return response.json({
+        return res.json({
           error: msg
         });
       }
 
-      response.json({
+      res.send({
         error: false,
         accounts: authResponse.accounts,
         numbers: authResponse.numbers,
@@ -248,12 +249,14 @@ app.post('/item', function(req, res, next) {
     if (err) throw err;
     var ACCESS_TOKEN = user.plaidAccessToken;
     client.getItem(ACCESS_TOKEN, function(err, itemResponse) {
+      console.log('THIS IS THE ITEM RESPONSE', itemResponse);
       if (err != null) {
         return response.json({
           error: err
         });
       }
       client.getInstitutionById(itemResponse.item.institution_id, function(err, instRes) {
+        console.log('THIS IS THE INSTITUTION', instRes.institution);
         if (err != null) {
           var msg = 'Unable to pull institution information from the Plaid API.';
           console.log(msg + '\n' + err);
@@ -261,7 +264,8 @@ app.post('/item', function(req, res, next) {
             error: msg
           });
         } else {
-          response.json({
+          console.log('THIS IS THE INSTITUTION', instRes.institution);
+          res.send({
             item: itemResponse.item,
             institution: instRes.institution,
           });
@@ -275,20 +279,23 @@ app.post('/transactions', function(req, res, next) {
   var email = req.body.email;
   User.findOne({ email: email }, (err, user) => {
     if (err) throw err;
+    console.log(user);
     var ACCESS_TOKEN = user.plaidAccessToken;
+    console.log('THIS IS THE ACCESS_TOKEN BEING USED FOR TRANSACTIONS', ACCESS_TOKEN);
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
     client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
       count: 250,
       offset: 0,
     }, function(err, transactionsResponse) {
-      if (error != null) {
-        return response.json({
+      if (err != null) {
+        return res.json({
           error: err
         });
       }
-      console.log('pulled ' + transactionsResponse.transactions.length + ' transactions');
-      response.json(transactionsResponse);
+      console.log('pulled ' + transactionsResponse.transactions.length + ' transactions and this is the transactions', transactionsResponse.transactions);
+      res.send(transactionsResponse);
+      res.end();
     });
   });
 });

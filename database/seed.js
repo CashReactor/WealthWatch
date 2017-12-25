@@ -23,6 +23,6 @@ fs.readFile(path.join(`${__dirname}/data.json`), 'utf8', (err, data) => {
     const {email, name, password, currency, budget, oneTime, recurring} = currentData;
     const newUser = new User({email, name, password, currency, budget, oneTime, recurring})
     newUser.save();
-    console.log('dummy database saved!');
+    console.log('database saved!');
   }
 })

@@ -118,16 +118,15 @@ class InputBalance extends React.Component {
             <option value="TRY">Turkish Lira</option>
             <option value="CNY">Chinese Yuan Renminbi</option>
           </select>
-          <a
+          <button
             id="btn"
-            href="#widget"
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
             type="submit"
             className="btn btn-responsive btn-primary"
           >
             Submit
-          </a>
+          </button>
         </div>
       </div>
     );
