@@ -127,28 +127,6 @@ app.post('/fetchBudget', function(req, res) {
   })
 })
 
-app.get('/logout', function(req, res) {
-  req.session.destroy((err) => {
-    if (err) throw err;
-  })
-  res.send('success');
-  res.end();
-})
-
-app.post('/fetchOneExpenses', function(req, res) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    res.send(user.oneTime);
-    res.end();
-  })
-})
-
-app.post('/fetchRecExpenses', function(req, res) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    res.send(user.recurring);
-    res.end();
-  })
-})
-
 //weather-map API
 app.post('/weather', function(req, res) {
   console.log(req.body);
