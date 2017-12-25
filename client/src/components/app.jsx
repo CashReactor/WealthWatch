@@ -530,11 +530,11 @@ class App extends React.Component {
           </div>
           <MuiThemeProvider>
             <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
-            <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="w3-bar w3-border w3-light-grey">
-              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button w3-green">Home</a>
-              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Expenses</a>
-              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Bank</a>
-              <a onClick={this.w3Click} href="#" style={{width:'25%', textDecoration: 'none'}} className="w3-bar-item w3-button">Investors</a>
+            <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+              <a onClick={this.w3Click} href="#" className="bar-item bar-select">Home</a>
+              <a onClick={this.w3Click} href="#" className="bar-item">Expenses</a>
+              <a onClick={this.w3Click} href="#" className="bar-item">Bank</a>
+              <a onClick={this.w3Click} href="#" className="bar-item">Investors</a>
             </div>
             <br /><br /><br /><br />
             <Graph loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />

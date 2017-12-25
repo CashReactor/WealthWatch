@@ -5,22 +5,45 @@ img {
 
 /* blue architecture https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D */
 
-.loader {
-  display: none;
-}
-
 .grid-container {
   display: grid;
   grid-template-columns: 50% 50%;
   padding: 10px;
 }
 
+.bar {
+}
+
+.bar-item:link, .bar-item:visited {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none !important;
+  width: 25%;
+  padding: 1.7%;
+  font-size: 2vh;
+  color: rgba(26,35,126 ,1);
+  background-color: rgba(187,222,251 ,0.2);
+  font-weight: 500;
+}
+
+.bar-item:hover {
+  background-color: rgba(187,222,251 ,1);
+  color: rgba(26,35,126 ,1);
+}
+
+.bar-select:link, .bar-select:visited {
+  background-color: rgba(26,35,126 ,0.9);
+  color: white;
+}
+
 .loader {
+  display: none;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }

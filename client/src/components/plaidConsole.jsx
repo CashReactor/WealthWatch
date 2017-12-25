@@ -110,7 +110,7 @@ class Plaid extends React.Component {
     return (
       <div style={{ width:'70%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
-        <div style={{margin: '0 auto'}} >
+        <div>
           <div className="loader"></div>
         </div>
         <canvas style={{display: 'none'}} id='bankBarChart'/>
