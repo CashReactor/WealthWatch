@@ -11,9 +11,6 @@ img {
   padding: 10px;
 }
 
-.bar {
-}
-
 .bar-item:link, .bar-item:visited {
   display: inline-block;
   text-align: center;

@@ -39,6 +39,7 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
+    this.props.renderGraph();
   }
 
   render() {
