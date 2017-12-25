@@ -2,9 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
-
 
 const style = {
   paper: {
@@ -80,6 +78,7 @@ export default class ForgotPassword extends React.Component {
       .then((response) => {
         if (response.status === 201) {
           this.setState({ emailStatus: true });
+          this.props.history.push('/');
         }
       })
       .catch((error) => {
