@@ -1,12 +1,12 @@
 const express = require('express');
 
-const router = express.Router();
+const expenseRouter = express.Router();
 
 const { User } = require('../../database/models/user');
 const { Rec } = require('../../database/models/recurring');
 const { One } = require('../../database/models/oneTime');
 
-router.post('/oneExpense', (req, res) => {
+expenseRouter.post('/oneExpense', (req, res) => {
   const {
     email, expense, amount, transactionDate, category,
   } = req.body;
@@ -28,7 +28,7 @@ router.post('/oneExpense', (req, res) => {
   });
 });
 
-router.post('/recExpense', (req, res) => {
+expenseRouter.post('/recExpense', (req, res) => {
   const {
     email, expense, amount, period, category, startDate,
   } = req.body;
@@ -51,4 +51,18 @@ router.post('/recExpense', (req, res) => {
   });
 });
 
-module.exports.expense = router;
+expenseRouter.post('/fetchOneExpenses', (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.oneTime);
+    res.end();
+  });
+});
+
+expenseRouter.post('/fetchRecExpenses', (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    res.send(user.recurring);
+    res.end();
+  });
+});
+
+module.exports.expense = expenseRouter;

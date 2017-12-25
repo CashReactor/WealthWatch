@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
-import Paper from 'material-ui/Paper';
 import $ from 'jquery';
 import axios from 'axios';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
@@ -12,15 +10,13 @@ import ExpenseTable from './expenseTable.jsx';
 import InputBalance from './inputBalance.jsx';
 import Clock from './clock.jsx';
 import Weather from './weather.jsx';
-import LoginSignup from './LoginSignup.jsx';
+import LoginSignup from './loginSignup.jsx';
 import Expenses from './expenses.jsx'
 import NPVCalculator from './npvCalculator.jsx'
 import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
 import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
-
-
 
 class App extends React.Component {
   constructor(props) {

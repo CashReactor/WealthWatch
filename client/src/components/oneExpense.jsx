@@ -59,7 +59,7 @@ export default class OneExpense extends React.Component {
 
   getOneExpenses() {
     axios
-      .post('/fetchOneExpenses', { email: this.props.currentEmail })
+      .post('/api/expense/fetchOneExpenses', { email: this.props.currentEmail })
       .then((response) => {
         this.setState({ one: response.data });
       })

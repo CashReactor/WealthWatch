@@ -83,7 +83,7 @@ export default class RecExpense extends React.Component {
 
   getRecExpenses() {
     axios
-      .get('/fetchRecExpenses', { email: this.props.email })
+      .get('/api/expense/fetchRecExpenses', { email: this.props.email })
       .then((response) => {
         this.setState({ rec: response.data });
       })
