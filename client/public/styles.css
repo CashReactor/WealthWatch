@@ -8,8 +8,14 @@ img {
 .grid-container {
   display: grid;
   grid-template-columns: 50% 50%;
-  padding: 10px;
+  padding: 7px;
 }
+
+/* canvas {
+  border: solid;
+  border-width: 1vmin;
+  border-color: rgba(100,181,246 ,1);
+} */
 
 .bar-item:link, .bar-item:visited {
   display: inline-block;

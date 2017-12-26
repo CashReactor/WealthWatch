@@ -78,7 +78,7 @@ class App extends React.Component {
     var url = window.location.href.split('/');
     var urlLength = url.length;
     var tab = url[urlLength - 1];
-    console.log('tab', tab);
+
     if (tab === 'expense') {
       $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
       $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
@@ -561,8 +561,9 @@ class App extends React.Component {
             )} />
             <Route path="/expense" render={() => (
               <div>
-                  <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+                <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
+                <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
               </div>
             )}/>
             <Route path="/investor" render={() => (
@@ -576,11 +577,7 @@ class App extends React.Component {
               </div>
             )} />
           </Switch>
-            {/*<Graph loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-            <br /><br /><br /><br />*/}
-            {/*<ExpenseTable one={this.state.one} rec={this.state.rec} />*/}
-            <br/><br /><br />
-          <br/>
+          <br /><br /><br /><br />
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
           </MuiThemeProvider>

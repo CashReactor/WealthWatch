@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
-import CircularProgress from 'material-ui/CircularProgress';
 
 
 class Plaid extends React.Component {

@@ -23,13 +23,11 @@ const styles = {
     overflowX: 'auto',
   },
   paper: {
-    height: '460px',
     width: '77%',
     textAlign: 'center',
-    marginLeft: '11.5%',
-    marginRight: '11.5%',
     display: 'inline-block',
-    marginTop: '10px',
+    margin: '10px 11.5% 17px 11.5%',
+    padding: '10px',
   },
 }
 
@@ -106,23 +104,23 @@ class ExpenseTable extends React.Component {
                 <TableHeaderColumn
                   colSpan="4"
                   tooltip="Super Header"
-                  style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', fontVariant: 'small-caps' }}
+                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: 'rgba(77,182,172 ,1)' }}
                 >
                   Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Date:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
+                  Date
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Expense:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
+                  Expense
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Category:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
+                  Category
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Amount:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
+                  Amount ({this.props.currencySymbols()})
                 </TableRowColumn>
               </TableRow>
             </TableHeader>
@@ -165,23 +163,23 @@ class ExpenseTable extends React.Component {
                 <TableHeaderColumn
                   colSpan="4"
                   tooltip="Super Header"
-                  style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', fontVariant: 'small-caps' }}
+                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: 'rgba(77,182,172 ,1)' }}
                 >
                   Non-Recurring Expenses
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Date:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
+                  Date
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Expense:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
+                  Expense
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Category:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
+                  Category
                 </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1.5em', textDecoration: 'underline' }}>
-                  Amount:
+                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
+                  Amount ({this.props.currencySymbols()})
                 </TableRowColumn>
               </TableRow>
             </TableHeader>
