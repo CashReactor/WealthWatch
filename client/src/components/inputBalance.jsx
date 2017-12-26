@@ -58,7 +58,6 @@ class InputBalance extends React.Component {
     axios.post('updateBalance', data).then((response) => {
       this.setState({
         budget: '',
-        currency: '',
       });
       this.props.updateUser();
       console.log('updating budget successful');
@@ -118,15 +117,16 @@ class InputBalance extends React.Component {
             <option value="TRY">Turkish Lira</option>
             <option value="CNY">Chinese Yuan Renminbi</option>
           </select>
-          <button
+          <a
             id="btn"
+            href="#widget"
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
             type="submit"
             className="btn btn-responsive btn-primary"
           >
             Submit
-          </button>
+          </a>
         </div>
       </div>
     );
