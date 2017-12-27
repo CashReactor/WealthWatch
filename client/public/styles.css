@@ -11,6 +11,16 @@ img {
   padding: 7px;
 }
 
+.plaidInfo {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  padding:  7px;
+}
+
+.list {
+
+}
+
 /* canvas {
   border: solid;
   border-width: 1vmin;

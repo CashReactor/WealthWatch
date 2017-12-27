@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import MobileTearSheet from './mobileTearSheet.jsx';
 
 
 class Plaid extends React.Component {
@@ -114,6 +115,21 @@ class Plaid extends React.Component {
         </div>
         <canvas style={{display: 'none'}} id='bankBarChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
+        <div style={{margin: '0 auto'}} className="plaidInfo">
+          <div>
+            <h2>Account information</h2>
+            <div className="list"></div>
+          </div>
+          <div style={{textAlign: 'center'}}>
+            <h2 style={{marginLeft: '17%', textAlign:'left', wordWrap: 'break-word'}}>Available balance</h2>
+            <div className="list"></div>
+          </div>
+          <div>
+            <h2>Transactions</h2>
+            <div className="list"></div>
+          </div>
+        </div>
+        <MobileTearSheet/>
         {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
           <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
           <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>
