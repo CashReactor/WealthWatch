@@ -14,6 +14,14 @@ const styles = {
     width: '70%',
     backgroundColor: '#DCEDC8',
   },
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '50%',
+    padding: '7px',
+    margin: '7px',
+  },
 };
 
 class InputBalance extends React.Component {
@@ -58,7 +66,6 @@ class InputBalance extends React.Component {
     axios.post('updateBalance', data).then((response) => {
       this.setState({
         budget: '',
-        currency: '',
       });
       this.props.updateUser();
       console.log('updating budget successful');
@@ -118,15 +125,16 @@ class InputBalance extends React.Component {
             <option value="TRY">Turkish Lira</option>
             <option value="CNY">Chinese Yuan Renminbi</option>
           </select>
-          <button
+          <a
             id="btn"
+            href="#widget"
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
             type="submit"
             className="btn btn-responsive btn-primary"
           >
             Submit
-          </button>
+          </a>
         </div>
       </div>
     );
@@ -138,10 +146,8 @@ class InputBalance extends React.Component {
 
   render() {
     return (
-      <div>
-        <Paper style={{ paddingTop: '7px', width: '77%', marginLeft: '11.5%', marginRight: '11.5%' }}>
+      <div style={styles.border}>
           {this.bootstrapBar()}
-        </Paper>
       </div>
     );
   }

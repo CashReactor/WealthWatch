@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
 import $ from 'jquery';
 import axios from 'axios';
-import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import { Switch, BrowserRouter, Route, Link } from 'react-router-dom';
 import Graph from './Graph.jsx';
 import ExpenseTable from './expenseTable.jsx';
 import InputBalance from './inputBalance.jsx';
@@ -59,6 +59,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
+    console.log('THIS IS THE WINDOW LOCATION', window.location.href);
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
@@ -71,14 +72,28 @@ class App extends React.Component {
       );
     });
 
-    // $('w3-bar-item').on('click', function(event) {
-    //   $('w3-bar').children().attr('className', 'w3-bar-item w3-button');
-    //   $(this).attr('className')
-    // })
     console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
 
-    // this.updateUser();
+    var url = window.location.href.split('/');
+    var urlLength = url.length;
+    var tab = url[urlLength - 1];
+
+    if (tab === 'expense') {
+      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+      $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
+    } else if (tab === 'bank') {
+      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+      $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
+    } else if (tab == 'investor') {
+      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+      $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
+    }
+  }
+
+  w3Click(e) {
+    $('.bar-select').toggleClass('bar-select');
+    e.target.className = 'bar-item bar-select';
   }
 
   updateBankInfo(budget, name, transactions) {
@@ -495,8 +510,14 @@ class App extends React.Component {
 
   routerGraph() {
     return (
-      <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+      <div>
+        <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+      </div>
     )
+  }
+
+  barConditional() {
+
   }
 
 
@@ -505,47 +526,61 @@ class App extends React.Component {
       return (
         <div>
           <MuiThemeProvider>
-            <BrowserRouter>
-              <div>
-                <Switch>
-                  <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
-                  <Route path="/forgot" component={ForgotPassword} />
-                  <Route path="/reset/:token" component={ResetPassword} />
-                </Switch>
-              </div>
-            </BrowserRouter>
+            <div>
+              <Switch>
+                <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
+                <Route path="/forgot" component={ForgotPassword} />
+                <Route path="/reset/:token" component={ResetPassword} />
+              </Switch>
+            </div>
           </MuiThemeProvider>
         </div>
       );
     } else {
       return (
         <div>
+          <MuiThemeProvider>
           <div id="widget" className="widget">
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-          <MuiThemeProvider>
             <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
-            <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
-              <a onClick={this.w3Click} href="#" className="bar-item bar-select">Home</a>
-              <a onClick={this.w3Click} href="#" className="bar-item">Expenses</a>
-              <a onClick={this.w3Click} href="#" className="bar-item">Bank</a>
-              <a onClick={this.w3Click} href="#" className="bar-item">Investors</a>
-            </div>
-            <br /><br /><br /><br />
-            <Graph loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-            <br /><br /><br /><br />
-            {/*<ExpenseTable one={this.state.one} rec={this.state.rec} />*/}
-            <br/><br /><br />
-            <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-            <br />
-            <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-            <br /><br />
-            <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
-          </MuiThemeProvider>
-          <br/>
+          <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+            <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
+            <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+            <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+            <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+          </div>
+          <br/><br/><br/>
+          <Switch>
+            <Route exact path="/" render={() => (
+              <div>
+              <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+                <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
+              </div>
+            )} />
+            <Route path="/expense" render={() => (
+              <div>
+                <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
+                <br /><br />
+                <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
+              </div>
+            )}/>
+            <Route path="/investor" render={() => (
+              <div>
+                <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
+              </div>
+            )}/>
+            <Route path="/bank" render={() => (
+              <div>
+                <Plaid loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+              </div>
+            )} />
+          </Switch>
+          <br /><br /><br /><br />
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
+          </MuiThemeProvider>
         </div>
       );
     }

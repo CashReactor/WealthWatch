@@ -39,6 +39,7 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
+    this.props.renderGraph();
   }
 
   render() {
@@ -52,7 +53,6 @@ class Graph extends React.Component {
               <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
           </div>
         </div>
-        <Plaid loading={this.props.loading} renderBankGraph={this.props.renderBankGraph} updateBankInfo={this.props.updateBankInfo} email={ this.props.currentEmail }/>
         {/*<Paper style={styles.paper}>
           <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
           <LineGraph currentEmail={this.props.currentEmail} one={this.props.one} rec={this.props.rec} />
