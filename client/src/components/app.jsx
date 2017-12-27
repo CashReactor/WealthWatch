@@ -18,8 +18,12 @@ import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
 import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
+<<<<<<< HEAD
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
+=======
+import CryptoCurrency from './cryptoCurrency.jsx'
+>>>>>>> add component
 
 class App extends React.Component {
   constructor(props) {
@@ -815,6 +819,7 @@ class App extends React.Component {
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
           </MuiThemeProvider>
+          <CryptoCurrency />
         </div>
       );
     }

@@ -4,11 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js --progress --colors",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "start-server-dev": "NODE_ENV=development nodemon server/index.js --inspect",
-    "start": "node server/index.js",
     "start-server": "nodemon server/index.js --inspect",
     "start-client": "./node_modules/.bin/webpack -d --watch",
     "postinstall": "npm run build",
@@ -63,6 +61,7 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
+    "csv-parse": "^2.0.0",
     "dotenv": "^4.0.0",
     "envvar": "^2.0.0",
     "es6-promisify": "^5.0.0",
@@ -99,10 +98,7 @@
     "react-youtube": "^7.5.0",
     "validator": "^9.1.2",
     "webpack": "^3.10.0",
-    "style-loader": "^0.19.0",
-    "url-loader": "^0.6.2",
-    "file-loader": "^1.1.5",
-    "webpack-dev-middleware": "^2.0.1",
-    "webpack-hot-middleware": "^2.21.0"
+    "yodlee-transactions": "^1.0.7",
+    "yodlee.js": "^1.0.0"
   }
 }

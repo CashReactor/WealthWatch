@@ -2,7 +2,6 @@ import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
-import PieGraph from './pieGraph.jsx';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
