@@ -113,12 +113,47 @@ app.post('/reset', function(req, res) {
   })
 })
 
-app.post('/user', function(req, res) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    res.send(user);
-    res.end();
-  })
-})
+app.post('/user', (req, res) => {
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      const gravatar = user.gravatar;
+      const {
+        _id,
+        email,
+        name,
+        password,
+        __v,
+        currency,
+        budget,
+        googleToken,
+        googleId,
+        oneTime,
+        recurring,
+      } = user;
+      const returnedUser = {
+        _id,
+        email,
+        name,
+        password,
+        __v,
+        currency,
+        budget,
+        googleToken,
+        googleId,
+        oneTime,
+        recurring,
+        gravatar,
+      };
+      return returnedUser;
+    })
+    .then((returnedUser) => {
+      res.send(returnedUser);
+      res.end();
+    })
+    .catch((err) => {
+      res.status(500).json({ message: `User Retrieval Error: ${err}` });
+    });
+});
 
 app.post('/fetchBudget', function(req, res) {
   User.findOne({ email: req.body.email }, (err, user) => {

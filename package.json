@@ -64,6 +64,7 @@
     "juice": "^4.2.2",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.0",
+    "md5": "^2.2.1",
     "moment": "^2.20.1",
     "mongoose": "^4.13.6",
     "morgan": "^1.9.0",

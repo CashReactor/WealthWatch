@@ -1,22 +1,12 @@
 const mongoose = require('mongoose');
-const database = require('../config');
 const bcrypt = require('bcrypt');
+const md5 = require('md5');
+const database = require('../config');
 const isEmail = require('validator/lib/isEmail');
 const { recurringSchema } = require('./recurring.js');
 const { oneTimeSchema } = require('./oneTime.js');
 
-const Schema = mongoose.Schema;
-
-// const googleUserSchema = new Schema({
-//   googleId: String,
-//   googleToken: String,
-//   imageUrl: String,
-//   recurring: [recurringSchema],
-//   oneTime: [oneTimeSchema],
-//   budget: Number,
-//   name: String,
-//   email: String
-// });
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   email: {
@@ -46,8 +36,12 @@ const userSchema = new Schema({
   plaidItemId: String,
 });
 
+userSchema.virtual('gravatar').get(function () {
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200&d=https://www.sideshowtoy.com/photo_903079_thumb.jpg`;
+});
+
 userSchema.methods.comparePassword = function (password, callback) {
-  console.log('Compare password:', this.password);
   bcrypt.compare(password, this.password, (error, isMatch) => {
     if (error) {
       return callback(error);
