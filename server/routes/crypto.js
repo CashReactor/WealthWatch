@@ -7,7 +7,7 @@ cryptoRouter.get(`/getCrypto`, (req, res) => {
   const symbol = req.query.code;
   const market = 'USD';
   const apiKey = process.env.ALPHA_VANTAGE;
-  const alphaVantage = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=${symbol}&market=${market}&apikey=${apiKey}`;
+  const alphaVantage = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=${market}&apikey=${apiKey}`;
   axios.get(alphaVantage)
     .then((response) => {
       // console.log('resp::::', response);
