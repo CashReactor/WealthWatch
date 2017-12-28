@@ -11,15 +11,32 @@ img {
   padding: 7px;
 }
 
-.plaidInfo {
+.bankInfo {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   padding:  7px;
+  margin: '7% auto';
 }
 
-.list {
-
+.bankListButton {
+  width: 80%;
+  padding: 3%;
+  margin: 0 10% 0 10%;
+  text-align: center;
+  background-color: rgba(174,213,129 ,1);
+  font-weight: 700;
+  color: white;
+  transition: background-color 0.2s;
 }
+
+.bankListButton:hover, .list-select {
+  background-color: rgba(0,121,107 ,1);
+}
+
+.accountList, .balanceList, .transactionsList {
+  display: none;
+}
+
 
 /* canvas {
   border: solid;

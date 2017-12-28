@@ -4,12 +4,13 @@ const styles = {
   root: {
     marginBottom: '7%',
     width: '100%',
+    margin: '0 auto',
   },
-  {/*container: {
+  /*container: {
     border: 'solid 1px #d9d9d9',
     borderBottom: 'none',
     height: '100%',
-  },*/}
+  },*/
   bottomTear: {
     display: 'block',
     position: 'relative',

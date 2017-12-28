@@ -13,10 +13,14 @@ class Plaid extends React.Component {
       transactions: [],
       item: '',
       link: false,
+      acPlus: false,
+      trPlus: false,
+      baPlus: false,
     };
    this.onClick = this.onClick.bind(this);
    this.getTransactions = this.getTransactions.bind(this);
    this.getBankInfo = this.getBankInfo.bind(this);
+   this.plusToggle = this.plusToggle.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +43,45 @@ class Plaid extends React.Component {
       },
     });
     that.setState({ handler: handler });
+
+    $('#acPlus').on('click', function() {
+      that.setState({
+        acPlus: !that.state.acPlus
+      })
+      $(this).toggleClass('list-select')
+      if (that.state.acPlus) {
+        $(this).text('Account information -');
+        $('.accountList').slideToggle('slow');
+      } else {
+        $(this).text('Account information +');
+      }
+    })
+
+    $('#baPlus').on('click', function() {
+      that.setState({
+        baPlus: !that.state.baPlus
+      })
+      $(this).toggleClass('list-select')
+      if (that.state.baPlus) {
+        $(this).text('Balance information -');
+        $('.accountList').slideToggle('slow');
+      } else {
+        $(this).text('Balance information +');
+      }
+    })
+
+    $('#trPlus').on('click', function() {
+      that.setState({
+        trPlus: !that.state.trPlus
+      })
+      $(this).toggleClass('list-select')
+      if (that.state.trPlus) {
+        $(this).text('Transactions -');
+        $('.accountList').slideToggle('slow');
+      } else {
+        $(this).text('Transactions +');
+      }
+    })
   }
 
   onClick() {
@@ -46,13 +89,12 @@ class Plaid extends React.Component {
   }
 
   getBankInfo() {
-    var that = this;
-    that.getAccounts(() => {
-      that.getItem(()=> {
-        that.getTransactions(() => {
-          console.log('these are the states', that.state.accounts, that.state.item, that.state.transactions);
-          that.props.updateBankInfo(that.state.accounts, that.state.item, that.state.transactions);
-          that.props.renderBankGraph();
+    this.getAccounts(() => {
+      this.getItem(()=> {
+        this.getTransactions(() => {
+          console.log('these are the states', this.state.accounts, this.state.item, this.state.transactions);
+          this.props.updateBankInfo(this.state.accounts, this.state.item, this.state.transactions);
+          this.props.renderBankGraph();
         });
       });
     });
@@ -106,27 +148,34 @@ class Plaid extends React.Component {
     })
   }
 
+  plusToggle(e) {
+    this.setState({
+      [e.target.name]: !this.state[e.target.name]
+    })
+  }
+
   render() {
     return (
-      <div style={{ width:'70%', margin:'auto'}}>
+      <div style={{ width:'100%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
         <div>
           <div className="loader"></div>
+          <br /><br />
         </div>
         <canvas style={{display: 'none'}} id='bankBarChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
-        <div style={{margin: '0 auto'}} className="plaidInfo">
+        <div className="bankInfo">
           <div>
-            <h2>Account information</h2>
-            <div className="list"></div>
+            <div onClick={this.plusToggle} id="acPlus" className="bankListButton">Account information +</div>
+            <ul className="accountList"></ul>
           </div>
           <div style={{textAlign: 'center'}}>
-            <h2 style={{marginLeft: '17%', textAlign:'left', wordWrap: 'break-word'}}>Available balance</h2>
-            <div className="list"></div>
+            <div onClick={this.plusToggle} id="baPlus" className="bankListButton">Available balance +</div>
+            <div className="balanceList"></div>
           </div>
           <div>
-            <h2>Transactions</h2>
-            <div className="list"></div>
+            <div onClick={this.plusToggle} id="trPlus" className="bankListButton">Transactions +</div>
+            <div className="transactionsList"></div>
           </div>
         </div>
         <MobileTearSheet/>
