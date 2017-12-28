@@ -42,6 +42,7 @@ class App extends React.Component {
       currency: '',
       bank: false,
       loading: false,
+      avatar: '',
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -141,7 +142,13 @@ class App extends React.Component {
       if (!response.data.budget) {
         response.data.budget = '7777';
       }
-      this.setState({ budget: Number(response.data.budget), one: response.data.oneTime, rec: response.data.recurring, currency: response.data.currency });
+      this.setState({
+        budget: Number(response.data.budget),
+        one: response.data.oneTime,
+        rec: response.data.recurring,
+        currency: response.data.currency,
+        avatar: response.data.gravatar,
+      });
       console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
       this.renderGraph();
     })
@@ -522,6 +529,7 @@ class App extends React.Component {
 
 
   render() {
+    console.log('Avatar is: ', this.state.avatar);
     if (!this.state.loggedIn) {
       return (
         <div>
@@ -544,7 +552,7 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-            <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+            <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
             <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
             <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
