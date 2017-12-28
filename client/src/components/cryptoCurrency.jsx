@@ -36,7 +36,7 @@ class CryptoCurrency extends React.Component {
         this.setState({
           cryptoData: {
             metaData: response.data.data['Meta Data'],
-            timeSeries: response.data.data['Time Series (Digital Currency Intraday)'],
+            timeSeries: response.data.data['Time Series (Digital Currency Daily)'],
           },
         });
       })
@@ -56,10 +56,16 @@ class CryptoCurrency extends React.Component {
     return (
       <div className="modal">
         <Modal show={this.state.showModal} onHide={this.toggleModal}>
-          <div>
+          <Modal.Header>
+            This is Modal Header
+          </Modal.Header>
+          <Modal.Body>
             <CryptoCurrencyDetails data={this.state.cryptoData} />
-          </div>
-          <button onClick={this.toggleModal}> Add </button>
+          </Modal.Body>
+          <Modal.Footer>
+            <button> Add </button>
+            <button> Cancel </button>
+          </Modal.Footer>
         </Modal>
       </div>
     );
