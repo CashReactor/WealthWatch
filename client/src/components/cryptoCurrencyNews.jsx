@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 class CryptoCurrencyNews extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
 
@@ -10,13 +10,17 @@ class CryptoCurrencyNews extends React.Component {
   }
 
   render() {
-    console.log('stories: ', this.props.stories);
+    // console.log('stories: ', this.props.stories);
     return (
       <div>
         <ListGroup>
           {this.props.stories.map((story) => {
             return (
-              <ListGroupItem>{story.title}</ListGroupItem>
+              <ListGroupItem header={story.title} href={story.link} target="_blank">
+                { story.summary }
+                <br />
+                { 'Sentiment: ' + story.sentiment }
+              </ListGroupItem>
             );
           })}
         </ListGroup>
