@@ -2,15 +2,17 @@ import React from 'react';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap';
 import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
-import CryptoCurrencyNews from './cryptoCurrencyNews.jsx'
-import SentimentSummary from './sentimentSummary.jsx'
+import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
+import SentimentSummary from './sentimentSummary.jsx';
+import Autosuggest from 'react-autosuggest';
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
-      symbol: '',
+      cryptoCurrencyList: [],
+      suggestions: [],
       showModal: false,
       cryptoData: {
         metaData: '',
@@ -19,44 +21,60 @@ class CryptoCurrency extends React.Component {
       cryptoNews: [],
       sentiments: {},
     };
+
     this.onChange = this.onChange.bind(this);
+    this.getSentiment = this.getSentiment.bind(this);
+    this.newsSearch = this.newsSearch.bind(this);
     this.cryptoSearch = this.cryptoSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.popOutSearch = this.popOutSearch.bind(this);
-    this.getSymbol = this.getSymbol.bind(this);
     this.close = this.close.bind(this);
-    this.getSentiment = this.getSentiment.bind(this);
+    this.getSuggestions = this.getSuggestions.bind(this)
+    this.getSuggestionValue = this.getSuggestionValue.bind(this)
+    this.renderSuggestion = this.renderSuggestion.bind(this)
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
   }
 
-  onChange(e) {
+  componentDidMount() {
+    axios
+      .get('/api/crypto/getAllCryptoCurrencies')
+      .then((response) => {
+        // console.log('all crypto currencies::: ', response.data);
+        this.setState({
+          cryptoCurrencyList: response.data,
+        });
+        console.log('Auto Complete Search ', this.state.cryptoCurrencyList);
+      });
+  }
+
+  onChange(event, { newValue, method }) {
     this.setState({
-      search: e.target.value,
+      search: newValue,
     });
   }
 
-  getSymbol() {
-
+  getSentiment() {
+    const { search } = this.state;
+    axios
+      .get(`/api/crypto/getSentiment?value=${search}`)
+      .then((response) => {
+        console.log('response:  ', response);
+        this.setState({
+          sentiments: response.data,
+        });
+      });
   }
 
   newsSearch() {
+    const { search } = this.state;
     axios
-      .get('api/crypto/getNews')
+      .get(`api/crypto/getNews?value=${search}`)
       .then((response) => {
         // console.log('news response::::', response);
         this.setState({
           cryptoNews: response.data,
         });
-      });
-  }
-
-  getSentiment() {
-    axios
-      .get(`/api/crypto/getSentiment`)
-      .then((response) => {
-        console.log('response:  ', response);
-        this.setState({
-          sentiments: response.data,
-        })
       });
   }
 
@@ -113,14 +131,58 @@ class CryptoCurrency extends React.Component {
     );
   }
 
+  getSuggestions(value) {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    return inputLength === 0 ? [] : this.state.cryptoCurrencyList.filter(currency => currency.name.toLowerCase().slice(0, inputLength) === inputValue);
+  }
+
+  getSuggestionValue(suggestion) {
+    return suggestion.name;
+  }
+
+  renderSuggestion(suggestion) {
+    return (
+      <div>
+        {suggestion.name}
+      </div>
+    );
+    // return suggestion.name;
+  }
+
+  onSuggestionsFetchRequested({ value }) {
+    this.setState({
+      suggestions: this.getSuggestions(value),
+    });
+  }
+
+  onSuggestionsClearRequested () {
+    this.setState({
+      suggestions: [],
+    });
+  }
+
   render() {
-    // console.log('cryptoData: ', this.state.cryptoData);
+    const inputProps = {
+      placeholder: 'Type it!',
+      value: this.state.search,
+      onChange: this.onChange,
+    };
+
+    console.log('state:::', this.state);
+
     return (
       <div>
         <h1 className="header">Search Crypto Currency</h1>
-        <input value={this.state.search} type="text" onChange={this.onChange} placeholder="Search Cryptocurrency" />
+        <Autosuggest
+          suggestions={this.state.suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={this.getSuggestionValue}
+          renderSuggestion={this.renderSuggestion}
+          inputProps={inputProps}
+        />
         <button onClick={this.toggleModal}>Search</button>
-        <p>Result: </p>
         {this.popOutSearch()}
       </div>
     );
