@@ -2,22 +2,27 @@ import React from 'react';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap';
 import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
+import CryptoCurrencyNews from './cryptoCurrencyNews.jsx'
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
+      symbol: '',
       showModal: false,
       cryptoData: {
         metaData: '',
         timeSeries: '',
       },
+      cryptoNews: []
     };
     this.onChange = this.onChange.bind(this);
     this.cryptoSearch = this.cryptoSearch.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.popOutSearch = this.popOutSearch.bind(this);
+    this.getSymbol = this.getSymbol.bind(this);
+    this.close = this.close.bind(this);
   }
 
   onChange(e) {
@@ -26,13 +31,26 @@ class CryptoCurrency extends React.Component {
     });
   }
 
+  getSymbol() {
+
+  }
+
+  newsSearch() {
+    axios
+      .get(`api/crypto/getNews`)
+      .then((response) => {
+        console.log('news response::::', response);
+        this.setState({
+          cryptoNews: response.data
+        })
+      })
+  }
+
   cryptoSearch() {
     const symbol = this.state.search;
     axios
       .get(`/api/crypto/getCrypto?code=${symbol}`)
-      .then(response => {
-        console.log('response::::', response);
-        // console.log('response type: ', typeof response.data.data);
+      .then((response) => {
         this.setState({
           cryptoData: {
             metaData: response.data.data['Meta Data'],
@@ -40,7 +58,7 @@ class CryptoCurrency extends React.Component {
           },
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -49,7 +67,14 @@ class CryptoCurrency extends React.Component {
     this.setState({
       showModal: !this.state.showModal,
     });
-    this.cryptoSearch();
+    // this.cryptoSearch();
+    this.newsSearch();
+  }
+
+  close() {
+    this.setState({
+      showModal: false,
+    });
   }
 
   popOutSearch() {
@@ -61,10 +86,11 @@ class CryptoCurrency extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <CryptoCurrencyDetails data={this.state.cryptoData} />
+            <CryptoCurrencyNews stories={this.state.cryptoNews} />
           </Modal.Body>
           <Modal.Footer>
             <button> Add </button>
-            <button> Cancel </button>
+            <button onClick={this.close}> Cancel </button>
           </Modal.Footer>
         </Modal>
       </div>
