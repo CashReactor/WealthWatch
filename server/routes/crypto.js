@@ -1,6 +1,17 @@
 const express = require('express');
 const cryptoRouter = express.Router();
 const axios = require('axios');
+const { DigitalCurrency } = require('../../database/models/currencies.js');
+
+cryptoRouter.get('/getAllCryptoCurrencies', (req, res) => {
+  DigitalCurrency.find()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: `Database Error, unable to retrieve: ${error}` });
+    });
+});
 
 cryptoRouter.get('/getCrypto', (req, res) => {
   // console.log('req.body in crypto::::', req.query.code);
@@ -20,7 +31,7 @@ cryptoRouter.get('/getCrypto', (req, res) => {
 cryptoRouter.get('/getNews', (req, res) => {
   const aylieanId = process.env.X_AYLIEN_NewsAPI_Application_ID;
   const aylieanKey = process.env.X_AYLIEN_NewsAPI_Application_Key;
-  const currency = 'bitcoin';
+  const currency = req.query.value;
   // console.log('inside the getNews');
   const aylieanLink = `https://api.newsapi.aylien.com/api/v1/stories?text=${currency}&published_at.start=NOW-30DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`;
   axios
@@ -51,8 +62,9 @@ cryptoRouter.get('/getNews', (req, res) => {
 });
 
 cryptoRouter.get('/getSentiment', (req, res) => {
-  const currency = 'bitcoin';
-  const sentimentLink = `https://api.newsapi.aylien.com/api/v1/trends?field=sentiment.title.polarity&text=${currency}&published_at.start=NOW-30DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`
+  console.log('value:::', req.query.value)
+  const currency = req.query.value;
+  const sentimentLink = `https://api.newsapi.aylien.com/api/v1/trends?field=sentiment.title.polarity&text=${currency}&published_at.start=NOW-30DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`;
   const aylieanId = process.env.X_AYLIEN_NewsAPI_Application_ID;
   const aylieanKey = process.env.X_AYLIEN_NewsAPI_Application_Key;
   axios
@@ -60,13 +72,14 @@ cryptoRouter.get('/getSentiment', (req, res) => {
       headers: { "X-AYLIEN-NewsAPI-Application-ID": aylieanId, "X-AYLIEN-NewsAPI-Application-Key": aylieanKey }
     })
     .then((response) => {
-      // console.log('response::::', response.data);
+      console.log('response::::', response.data);
       const sentiment = response.data.trends;
-      const total = sentiment[1].count + sentiment[2].count;
+      const total = sentiment[0].count + sentiment[1].count + sentiment[2].count;
       const portions = {
+        neutral: Math.floor(sentiment[0].count/total*100)/100,
         negative: Math.floor(sentiment[1].count/total * 100)/100,
         positive: Math.floor(sentiment[2].count/total * 100)/100,
-      }
+      };
       res.json(portions);
     });
 });
