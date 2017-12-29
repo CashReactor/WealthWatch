@@ -40,7 +40,7 @@ cryptoRouter.get('/getNews', (req, res) => {
         newsInfo.push({
           ['title']: stories[i].title,
           ['summary']: stories[i].summary.sentences[0],
-          ['links']: stories[i].links.permalink,
+          ['link']: stories[i].links.permalink,
           ['sentiment']: stories[i].sentiment.body.polarity,
         });
       }
