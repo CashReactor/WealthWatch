@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Modal } from 'react-bootstrap';
 import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
 import CryptoCurrencyNews from './cryptoCurrencyNews.jsx'
+import SentimentSummary from './sentimentSummary.jsx'
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class CryptoCurrency extends React.Component {
         metaData: '',
         timeSeries: '',
       },
-      cryptoNews: []
+      cryptoNews: [],
+      sentiments: {},
     };
     this.onChange = this.onChange.bind(this);
     this.cryptoSearch = this.cryptoSearch.bind(this);
@@ -23,6 +25,7 @@ class CryptoCurrency extends React.Component {
     this.popOutSearch = this.popOutSearch.bind(this);
     this.getSymbol = this.getSymbol.bind(this);
     this.close = this.close.bind(this);
+    this.getSentiment = this.getSentiment.bind(this);
   }
 
   onChange(e) {
@@ -37,13 +40,24 @@ class CryptoCurrency extends React.Component {
 
   newsSearch() {
     axios
-      .get(`api/crypto/getNews`)
+      .get('api/crypto/getNews')
       .then((response) => {
-        console.log('news response::::', response);
+        // console.log('news response::::', response);
         this.setState({
-          cryptoNews: response.data
+          cryptoNews: response.data,
+        });
+      });
+  }
+
+  getSentiment() {
+    axios
+      .get(`/api/crypto/getSentiment`)
+      .then((response) => {
+        console.log('response:  ', response);
+        this.setState({
+          sentiments: response.data,
         })
-      })
+      });
   }
 
   cryptoSearch() {
@@ -69,6 +83,7 @@ class CryptoCurrency extends React.Component {
     });
     // this.cryptoSearch();
     this.newsSearch();
+    this.getSentiment();
   }
 
   close() {
@@ -86,6 +101,7 @@ class CryptoCurrency extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <CryptoCurrencyDetails data={this.state.cryptoData} />
+            <SentimentSummary sentiments={this.state.sentiments} />
             <CryptoCurrencyNews stories={this.state.cryptoNews} />
           </Modal.Body>
           <Modal.Footer>
