@@ -24,6 +24,7 @@ class Plaid extends React.Component {
    this.renderAccountList = this.renderAccountList.bind(this);
    this.renderBankInfo = this.renderBankInfo.bind(this);
    this.renderBankLogo = this.renderBankLogo.bind(this);
+   this.renderTransactionsList = this.renderTransactionsList.bind(this);
   }
 
   componentDidMount() {
@@ -186,16 +187,18 @@ class Plaid extends React.Component {
     )
   }
 
-  renderTransactionList() {
+  renderTransactionsList() {
     return(
       <div>
         <List className="transactionsList">
           {this.state.transactions.map(function(transaction) {
-            <ListItem className="transaction-element list-element">
-              <span>{transaction.date}</span>
-              <span>{transaction.name}</span>
-              <span>{transaction.amount}</span>
-            </ListItem>
+            return (
+              <ListItem className="transaction-element list-element">
+                <span style={{display:'block'}}>{transaction.date}</span>
+                <span style={{display:'block'}}>{transaction.name}</span>
+                <span>${transaction.amount}</span>
+              </ListItem>
+            )
           })}
         </List>
       </div>
@@ -243,7 +246,7 @@ class Plaid extends React.Component {
           </div>
           <div>
             <div onClick={this.plusToggle} id="trPlus" className="bankListButton">Transactions +</div>
-            <div className="transactionsList"></div>
+            {this.renderTransactionsList()}
           </div>
         </div>
         {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>

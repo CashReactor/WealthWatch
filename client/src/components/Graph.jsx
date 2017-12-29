@@ -7,6 +7,7 @@ import Avatar from 'material-ui/Avatar';
 import { red200, orange300, blue300, blue700, blue900 } from 'material-ui/styles/colors';
 import axios from 'axios';
 import Plaid from './plaidConsole.jsx';
+import InputBalance from './inputBalance.jsx';
 
 
 const styles = {
@@ -17,7 +18,7 @@ const styles = {
   },
   paper: {
     height: '50%',
-    width: '77%',
+    width: '97%',
     textAlign: 'center',
     marginLeft: '11.5%',
     marginRight: '11.5%',

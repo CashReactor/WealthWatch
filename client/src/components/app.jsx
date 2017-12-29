@@ -17,6 +17,8 @@ import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
 import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
+import BarGraph from './barGraph.jsx';
+import LineGraph from './lineGraph.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class App extends React.Component {
       bankName: '',
       budgetInput: false,
       currentDate: new Date(),
+      daysInMonth: '',
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
@@ -43,6 +46,8 @@ class App extends React.Component {
       bank: false,
       loading: false,
       avatar: '',
+      totalOneExpense: '',
+      totalRecExpense: '',
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -150,13 +155,29 @@ class App extends React.Component {
         avatar: response.data.gravatar,
       });
       console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
+
+      var totalOneExpense = this.state.one.map(function(expense) {
+        return expense.amount;
+      }).reduce((acc, cur) => (acc + cur));
+      var totalRecExpense = this.state.rec.map(function(expense) {
+        return expense.amount;
+      }).reduce((acc, cur) => (acc + cur));
+
+      this.setState({
+        totalOneExpense,
+        totalRecExpense
+      })
+
       this.renderGraph();
     })
+
+
   }
 
   renderBankGraph() {
     $('.loader').toggle();
     $('.companyLogo').toggle();
+    $('.bankInfo').css('display', 'grid');
     if (this.state.currentBankGraph) {
       this.state.currentBankGraph.destroy();
     }
@@ -183,6 +204,7 @@ class App extends React.Component {
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
+
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
@@ -305,6 +327,9 @@ class App extends React.Component {
     let totalRecExp = 0;
     console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
+    this.setState({
+      daysInMonth
+    });
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
@@ -529,8 +554,12 @@ class App extends React.Component {
     )
   }
 
-  barConditional() {
+  calculateExpensePerDay() {
+    return Math.round((this.state.totalOneExpense + this.state.totalRecExpense) / (new Date()).getDate());
+  }
 
+  calculateBalanceLeft() {
+    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (this.state.daysInMonth - (new Date()).getDate()));
   }
 
 
@@ -569,8 +598,10 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" render={() => (
               <div>
-              <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
+                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'11.5%', width: '50%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span></h2><br />
+                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'11.5%', width: '50%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month</h2> <br />
+                <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
               </div>
             )} />
             <Route path="/expense" render={() => (

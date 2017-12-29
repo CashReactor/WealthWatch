@@ -5,15 +5,30 @@ img {
 
 /* blue architecture https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D */
 
-.grid-container {
+#barChart {
+  width: 100%;
+}
+
+.grid {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50% 50% !important;
   padding: 7px;
 }
 
+.grid-container {
+  /* display: grid;
+  grid-template-columns: 50% 50%; */
+  padding: 7px;
+}
+
+.item1, .item2 {
+  width: 77%;
+  margin: 0 auto;
+}
+
 .bankInfo {
-  display: grid;
-  width: 80%;
+  display: none;
+  width: 100%;
   grid-template-columns: 50% 50%;
   padding:  7px;
   margin: 7% auto;
@@ -24,9 +39,9 @@ img {
   padding: 3%;
   margin: 0 10% 0 10%;
   text-align: center;
-  background-color: rgba(255,205,210 ,0.77);
+  background-color: rgba(25,118,210 ,0.7);
   font-weight: 700;
-  color: black;
+  color: white;
   transition: background-color 0.2s;
 }
 
@@ -41,10 +56,10 @@ img {
   margin: 0 10% 0 10% !important;
 }
 
-.bankListButton:hover {
+/* .bankListButton:hover {
   background-color: rgba(244,67,54 ,0.77);
-  color: black;
-}
+  color: rgba(183,28,28 ,1);
+} */
 
 .list-select, .list-select:hover {
   background-color: rgba(183,28,28 ,1);
@@ -53,6 +68,10 @@ img {
 
 .accountList, .bankList, .transactionsList {
   display: none;
+}
+
+.transaction-element {
+  display: grid;
 }
 
 

@@ -20,7 +20,7 @@ const styles = {
     borderColor: 'lightblue',
     width: '50%',
     padding: '7px',
-    margin: '7px',
+    margin: '7px auto',
   },
 };
 
