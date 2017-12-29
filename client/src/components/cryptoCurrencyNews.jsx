@@ -10,13 +10,13 @@ class CryptoCurrencyNews extends React.Component {
   }
 
   render() {
-    // console.log('stories: ', this.props.stories);
+    console.log('stories: ', this.props.stories);
     return (
       <div>
         <ListGroup>
           {this.props.stories.map((story) => {
             return (
-              <ListGroupItem header={story.title} href={story.link} target="_blank">
+              <ListGroupItem key={story.id} header={story.title} href={story.link} target="_blank">
                 { story.summary }
                 <br />
                 { 'Sentiment: ' + story.sentiment }
