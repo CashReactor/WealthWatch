@@ -13,9 +13,10 @@ img {
 
 .bankInfo {
   display: grid;
-  grid-template-columns: 33% 33% 33%;
+  width: 80%;
+  grid-template-columns: 50% 50%;
   padding:  7px;
-  margin: '7% auto';
+  margin: 7% auto;
 }
 
 .bankListButton {
@@ -23,17 +24,34 @@ img {
   padding: 3%;
   margin: 0 10% 0 10%;
   text-align: center;
-  background-color: rgba(174,213,129 ,1);
+  background-color: rgba(255,205,210 ,0.77);
   font-weight: 700;
-  color: white;
+  color: black;
   transition: background-color 0.2s;
 }
 
-.bankListButton:hover, .list-select {
-  background-color: rgba(0,121,107 ,1);
+.accountList {
+/*   border: solid !important;
+  border-color: rgba(0,121,107 ,1) !important; */
 }
 
-.accountList, .balanceList, .transactionsList {
+.list-element {
+  width: 80% !important;
+  padding: 3% !important;
+  margin: 0 10% 0 10% !important;
+}
+
+.bankListButton:hover {
+  background-color: rgba(244,67,54 ,0.77);
+  color: black;
+}
+
+.list-select, .list-select:hover {
+  background-color: rgba(183,28,28 ,1);
+  color: white;
+}
+
+.accountList, .bankList, .transactionsList {
   display: none;
 }
 

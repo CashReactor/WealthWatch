@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import MobileTearSheet from './mobileTearSheet.jsx';
-
+import { List, ListItem } from 'material-ui/List';
 
 class Plaid extends React.Component {
   constructor(props) {
@@ -21,6 +21,9 @@ class Plaid extends React.Component {
    this.getTransactions = this.getTransactions.bind(this);
    this.getBankInfo = this.getBankInfo.bind(this);
    this.plusToggle = this.plusToggle.bind(this);
+   this.renderAccountList = this.renderAccountList.bind(this);
+   this.renderBankInfo = this.renderBankInfo.bind(this);
+   this.renderBankLogo = this.renderBankLogo.bind(this);
   }
 
   componentDidMount() {
@@ -48,10 +51,12 @@ class Plaid extends React.Component {
       that.setState({
         acPlus: !that.state.acPlus
       })
+
       $(this).toggleClass('list-select')
+      $('.accountList').slideToggle('slow');
+
       if (that.state.acPlus) {
         $(this).text('Account information -');
-        $('.accountList').slideToggle('slow');
       } else {
         $(this).text('Account information +');
       }
@@ -61,12 +66,14 @@ class Plaid extends React.Component {
       that.setState({
         baPlus: !that.state.baPlus
       })
+
       $(this).toggleClass('list-select')
+      $('.bankList').slideToggle('slow');
+
       if (that.state.baPlus) {
-        $(this).text('Balance information -');
-        $('.accountList').slideToggle('slow');
+        $(this).text('Bank information -');
       } else {
-        $(this).text('Balance information +');
+        $(this).text('Bank information +');
       }
     })
 
@@ -74,10 +81,12 @@ class Plaid extends React.Component {
       that.setState({
         trPlus: !that.state.trPlus
       })
+
       $(this).toggleClass('list-select')
+      $('.transactionsList').slideToggle('slow');
+
       if (that.state.trPlus) {
         $(this).text('Transactions -');
-        $('.accountList').slideToggle('slow');
       } else {
         $(this).text('Transactions +');
       }
@@ -154,6 +163,66 @@ class Plaid extends React.Component {
     })
   }
 
+  renderAccountList() {
+    return (
+      <div>
+        <List className='accountList'>
+          {this.state.accounts.map(function(account) {
+            var balance;
+            var available = account.balances.available;
+            if (available) {
+              balance = available;
+            } else {
+              balance = account.balances.current;
+            }
+            return (
+              <ListItem className="list-element">
+                {account.name}: ${balance}
+              </ListItem>
+            )
+          })}
+        </List>
+      </div>
+    )
+  }
+
+  renderTransactionList() {
+    return(
+      <div>
+        <List className="transactionsList">
+          {this.state.transactions.map(function(transaction) {
+            <ListItem className="transaction-element list-element">
+              <span>{transaction.date}</span>
+              <span>{transaction.name}</span>
+              <span>{transaction.amount}</span>
+            </ListItem>
+          })}
+        </List>
+      </div>
+    )
+  }
+
+  renderBankLogo() {
+    if (this.state.item) {
+      var bankName = this.state.item.institution.name.toLowerCase().split(' ').join('');
+      return (
+        <div className="companyLogo" style={{display:'none', width:'100%'}}>
+          <img style={{marginLeft: '50%', transform: 'translate(-50%, -50%)'}} src={'https://logo.clearbit.com/' + bankName + '.com'}/>
+        </div>
+      )
+    }
+  }
+
+   renderBankInfo() {
+    if (!!this.state.item) {
+      return (
+        <div className="bankList">
+          <h3 style={{color:'lightblue'}}>{bankName}</h3>
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div style={{ width:'100%', margin:'auto'}}>
@@ -162,23 +231,21 @@ class Plaid extends React.Component {
           <div className="loader"></div>
           <br /><br />
         </div>
+        {this.renderBankLogo()}
         <canvas style={{display: 'none'}} id='bankBarChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
+        {/*<MobileTearSheet/>*/}
+
         <div className="bankInfo">
           <div>
             <div onClick={this.plusToggle} id="acPlus" className="bankListButton">Account information +</div>
-            <ul className="accountList"></ul>
-          </div>
-          <div style={{textAlign: 'center'}}>
-            <div onClick={this.plusToggle} id="baPlus" className="bankListButton">Available balance +</div>
-            <div className="balanceList"></div>
+            {this.renderAccountList()}
           </div>
           <div>
             <div onClick={this.plusToggle} id="trPlus" className="bankListButton">Transactions +</div>
             <div className="transactionsList"></div>
           </div>
         </div>
-        <MobileTearSheet/>
         {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
           <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
           <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>

@@ -156,6 +156,7 @@ class App extends React.Component {
 
   renderBankGraph() {
     $('.loader').toggle();
+    $('.companyLogo').toggle();
     if (this.state.currentBankGraph) {
       this.state.currentBankGraph.destroy();
     }
@@ -197,11 +198,16 @@ class App extends React.Component {
       var expenseDay = Number(date[2]);
       if (expenseYear === year && expenseMonth === month) {
         expenses[expenseDay] += expenseAmount;
+        for (let k = 0; k <= daysInMonth; k++) {
+          //this step is to start the budget from expenses over the month all added to the available & current balance
+          budget[k] += expenseAmount;
+        }
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
         }
       }
     }
+    console.log('THIS IS THE EXPENSE ARRAY', expenses);
     let barCtx = document.getElementById('bankBarChart');
     let lineCtx = document.getElementById('bankLineChart');
 
