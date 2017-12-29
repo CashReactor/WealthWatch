@@ -42,6 +42,7 @@ class App extends React.Component {
       currentLineGraph: null,
       currentBankGraph: null,
       currentBankLineGraph: null,
+      currentAverageDoughnutGraph: null,
       currency: '',
       bank: false,
       loading: false,
@@ -81,20 +82,20 @@ class App extends React.Component {
     console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
 
-    var url = window.location.href.split('/');
-    var urlLength = url.length;
-    var tab = url[urlLength - 1];
+    // var url = window.location.href.split('/');
+    // var urlLength = url.length;
+    // var tab = url[urlLength - 1];
 
-    if (tab === 'expense') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
-    } else if (tab === 'bank') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
-    } else if (tab == 'investor') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
-    }
+    // if (tab === 'expense') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
+    // } else if (tab === 'bank') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
+    // } else if (tab == 'investor') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
+    // }
   }
 
   w3Click(e) {
@@ -445,6 +446,10 @@ class App extends React.Component {
     });
   }
 
+  renderDoughnutGraph() {
+
+  }
+
   currencySymbols() {
     switch(this.state.currency) {
       case '':
@@ -562,7 +567,6 @@ class App extends React.Component {
     return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (this.state.daysInMonth - (new Date()).getDate()));
   }
 
-
   render() {
     console.log('Avatar is: ', this.state.avatar);
     if (!this.state.loggedIn) {
@@ -595,17 +599,33 @@ class App extends React.Component {
             <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
           </div>
           <br/><br/><br/>
+            <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
             <Route exact path="/" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                  <br/><br/><br/>
+                </div>
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
-                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'11.5%', width: '50%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span></h2><br />
-                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'11.5%', width: '50%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month</h2> <br />
+                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span></h2>
+                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month</h2> <br /><br />
                 <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+                <canvas id='averageDoughnutChart'/>
               </div>
             )} />
             <Route path="/expense" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
@@ -613,11 +633,25 @@ class App extends React.Component {
             )}/>
             <Route path="/investor" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
               </div>
             )}/>
             <Route path="/bank" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item bar-select">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <Plaid loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
               </div>
             )} />
