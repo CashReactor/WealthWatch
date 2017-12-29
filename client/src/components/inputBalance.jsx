@@ -20,7 +20,7 @@ const styles = {
     borderColor: 'lightblue',
     width: '50%',
     padding: '7px',
-    margin: '7px',
+    margin: '7px auto',
   },
 };
 
@@ -30,7 +30,6 @@ class InputBalance extends React.Component {
     this.state = {
       budget: '',
       budgetInput: true,
-      currency: '',
     };
     this.budgetToggle = this.budgetToggle.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -50,9 +49,6 @@ class InputBalance extends React.Component {
 
   onCurrencyChange(e) {
     // e.preventDefault();
-    this.setState({
-      currency: e.target.value,
-    });
     this.props.updateCurrency(e.target.value);
   }
 
@@ -61,7 +57,7 @@ class InputBalance extends React.Component {
     const data = {
       email: this.props.currentEmail,
       budget: this.state.budget,
-      currency: this.state.currency,
+      currency: this.props.currency,
     };
     axios.post('updateBalance', data).then((response) => {
       this.setState({

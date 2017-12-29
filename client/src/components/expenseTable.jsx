@@ -1,5 +1,6 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
+import MobileTearSheet from './mobileTearSheet.jsx';
 import {
   Table,
   TableBody,
@@ -28,6 +29,15 @@ const styles = {
     display: 'inline-block',
     margin: '10px 11.5% 17px 11.5%',
     padding: '10px',
+  },
+  container: {
+    border: 'solid 1px #d9d9d9',
+    borderBottom: 'none',
+    width: '77%',
+    textAlign: 'center',
+    margin: '10px 11.5% 0 11.5%',
+    padding: '10px',
+    height: '100%'
   },
 }
 
@@ -81,9 +91,8 @@ class ExpenseTable extends React.Component {
   render() {
     return (
       <div>
-        <div>
-        <Paper
-          style={styles.paper}
+        <Paper style={styles.paper}>
+        <div
         >
           <Table style={{width: '80%', margin:'auto'}}
             height={this.state.height}
@@ -135,8 +144,8 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
-        </Paper>
         </div>
+        </Paper>
 
         <br /><br /><br />
 

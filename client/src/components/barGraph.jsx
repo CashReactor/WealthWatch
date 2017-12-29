@@ -10,7 +10,6 @@ class BarGraph extends React.Component {
   }
 
   componentDidMount() {
-
   }
 
   render() {

@@ -17,6 +17,8 @@ import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
 import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
+import BarGraph from './barGraph.jsx';
+import LineGraph from './lineGraph.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class App extends React.Component {
       bankName: '',
       budgetInput: false,
       currentDate: new Date(),
+      daysInMonth: '',
       token: jwtToken,
       loggedIn: !!jwtToken,
       currentEmail: email,
@@ -39,10 +42,13 @@ class App extends React.Component {
       currentLineGraph: null,
       currentBankGraph: null,
       currentBankLineGraph: null,
+      currentAverageDoughnutGraph: null,
       currency: '',
       bank: false,
       loading: false,
       avatar: '',
+      totalOneExpense: '',
+      totalRecExpense: '',
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -76,20 +82,20 @@ class App extends React.Component {
     console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
     console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
 
-    var url = window.location.href.split('/');
-    var urlLength = url.length;
-    var tab = url[urlLength - 1];
+    // var url = window.location.href.split('/');
+    // var urlLength = url.length;
+    // var tab = url[urlLength - 1];
 
-    if (tab === 'expense') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
-    } else if (tab === 'bank') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
-    } else if (tab == 'investor') {
-      $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-      $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
-    }
+    // if (tab === 'expense') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
+    // } else if (tab === 'bank') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
+    // } else if (tab == 'investor') {
+    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
+    //   $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
+    // }
   }
 
   w3Click(e) {
@@ -150,12 +156,29 @@ class App extends React.Component {
         avatar: response.data.gravatar,
       });
       console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
+
+      var totalOneExpense = this.state.one.map(function(expense) {
+        return expense.amount;
+      }).reduce((acc, cur) => (acc + cur));
+      var totalRecExpense = this.state.rec.map(function(expense) {
+        return expense.amount;
+      }).reduce((acc, cur) => (acc + cur));
+
+      this.setState({
+        totalOneExpense,
+        totalRecExpense
+      })
+
       this.renderGraph();
     })
+
+
   }
 
   renderBankGraph() {
     $('.loader').toggle();
+    $('.companyLogo').toggle();
+    $('.bankInfo').css('display', 'grid');
     if (this.state.currentBankGraph) {
       this.state.currentBankGraph.destroy();
     }
@@ -182,6 +205,7 @@ class App extends React.Component {
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
+
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
@@ -197,11 +221,16 @@ class App extends React.Component {
       var expenseDay = Number(date[2]);
       if (expenseYear === year && expenseMonth === month) {
         expenses[expenseDay] += expenseAmount;
+        for (let k = 0; k <= daysInMonth; k++) {
+          //this step is to start the budget from expenses over the month all added to the available & current balance
+          budget[k] += expenseAmount;
+        }
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
         }
       }
     }
+    console.log('THIS IS THE EXPENSE ARRAY', expenses);
     let barCtx = document.getElementById('bankBarChart');
     let lineCtx = document.getElementById('bankLineChart');
 
@@ -299,6 +328,9 @@ class App extends React.Component {
     let totalRecExp = 0;
     console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
+    this.setState({
+      daysInMonth
+    });
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
     }
@@ -414,6 +446,10 @@ class App extends React.Component {
     });
   }
 
+  renderDoughnutGraph() {
+
+  }
+
   currencySymbols() {
     switch(this.state.currency) {
       case '':
@@ -523,10 +559,13 @@ class App extends React.Component {
     )
   }
 
-  barConditional() {
-
+  calculateExpensePerDay() {
+    return Math.round((this.state.totalOneExpense + this.state.totalRecExpense) / (new Date()).getDate());
   }
 
+  calculateBalanceLeft() {
+    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (this.state.daysInMonth - (new Date()).getDate()));
+  }
 
   render() {
     console.log('Avatar is: ', this.state.avatar);
@@ -560,15 +599,33 @@ class App extends React.Component {
             <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
           </div>
           <br/><br/><br/>
+            <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
             <Route exact path="/" render={() => (
               <div>
-              <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                  <br/><br/><br/>
+                </div>
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
+                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span></h2>
+                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month</h2> <br /><br />
+                <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+                <canvas id='averageDoughnutChart'/>
               </div>
             )} />
             <Route path="/expense" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
@@ -576,11 +633,25 @@ class App extends React.Component {
             )}/>
             <Route path="/investor" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
               </div>
             )}/>
             <Route path="/bank" render={() => (
               <div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item bar-select">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                </div>
+                <br/><br/><br/>
                 <Plaid loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
               </div>
             )} />

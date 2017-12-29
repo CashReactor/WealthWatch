@@ -8,7 +8,6 @@ class LineGraph extends React.Component {
     };
   }
   componentDidMount() {
-
   }
 
   render() {
