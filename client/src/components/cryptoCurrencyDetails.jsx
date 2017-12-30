@@ -10,7 +10,8 @@ class CryptoCurrencyDetails extends React.Component {
   }
 
   render() {
-    console.log('props: ', this.props.data.metaData['3. Digital Currency Name']);
+    // console.log('props: ', this.props.data.metaData['3. Digital Currency Name']);
+    console.log('props: ', this.props.data);
     return (
       <div>
         Hello
