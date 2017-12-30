@@ -69,8 +69,11 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-    this.renderAverageExpensePie();
-    console.log('THIS IS THE WINDOW LOCATION', window.location.href);
+    if (window.location.href.slice(21) === '/') {
+      this.renderGraph();
+      this.renderAverageExpensePie();
+    }
+    console.log('THIS IS THE WINDOW LOCATION', window.location.href.slice(21));
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
@@ -158,8 +161,6 @@ class App extends React.Component {
         totalOneExpense,
         totalRecExpense
       })
-
-      this.renderGraph();
     })
   }
 

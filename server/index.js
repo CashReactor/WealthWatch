@@ -106,7 +106,7 @@ app.post('/postBanks', function(req, res) {
   var banks;
   User.findOne({ email: req.body.email })
   .then((user) => {
-    banks = {};
+    banks = user.banks || {};
     banks[bank[0]] = bank.slice(1);
     User.findOneAndUpdate({ email: req.body.email }, {
       $set: { banks: banks }
