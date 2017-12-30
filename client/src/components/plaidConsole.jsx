@@ -25,6 +25,8 @@ class Plaid extends React.Component {
    this.renderBankInfo = this.renderBankInfo.bind(this);
    this.renderBankLogo = this.renderBankLogo.bind(this);
    this.renderTransactionsList = this.renderTransactionsList.bind(this);
+   this.updateBanks = this.updateBanks.bind(this);
+   this.getBanks = this.getBanks.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +98,21 @@ class Plaid extends React.Component {
 
   onClick() {
     this.state.handler.open();
+  }
+
+  getBanks() {
+    axios.post('/getBanks', { email: this.props.email })
+    .then((response) => {
+
+    })
+  }
+
+  updateBanks() {
+    var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions]};
+    axios.post('/updateBanks', data)
+    .then((response) => {
+
+    })
   }
 
   getBankInfo() {
