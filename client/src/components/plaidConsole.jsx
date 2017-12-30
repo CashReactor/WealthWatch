@@ -112,7 +112,7 @@ class Plaid extends React.Component {
     var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions] };
     axios.post('/postBanks', data)
     .then((response) => {
-
+      console.log('************the bank information got stored in the database************')
     })
   }
 
@@ -121,6 +121,7 @@ class Plaid extends React.Component {
       this.getItem(()=> {
         this.getTransactions(() => {
           console.log('these are the states', this.state.accounts, this.state.item, this.state.transactions);
+          this.postBanks();
           this.props.updateBankInfo(this.state.accounts, this.state.item, this.state.transactions);
           this.props.renderBankGraph();
         });
@@ -234,7 +235,7 @@ class Plaid extends React.Component {
     }
   }
 
-  renderBankLogo(bankName) {
+  selectBankLogo(bankName) {
     return (
       <div className="companyLogo" style={{display:'none', width:'100%'}}>
         <img style={{marginLeft: '50%', transform: 'translate(-50%, -50%)'}} src={'https://logo.clearbit.com/' + name + '.com'}/>

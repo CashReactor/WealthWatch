@@ -69,6 +69,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
+    this.renderAverageExpensePie();
     console.log('THIS IS THE WINDOW LOCATION', window.location.href);
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
@@ -119,24 +120,6 @@ class App extends React.Component {
   updateBanks(banks) {
     this.setState({ banks });
   }
-
-  // updateBankName(name) {
-  //   this.setState({
-  //     bankName: name
-  //   })
-  // }
-
-  // updateBankBudget(budget) {
-  //   this.setState({
-  //     bankBudget: budget
-  //   })
-  // }
-
-  // updateBankOne(transactions) {
-  //   this.setState({
-  //     bankOne: transactions
-  //   })
-  // }
 
   resetUser() {
     axios.post('/reset', { email: this.state.currentEmail })
@@ -467,8 +450,32 @@ class App extends React.Component {
     });
   }
 
-  renderDoughnutGraph() {
-
+  renderAverageExpensePie() {
+    var data = {
+      datasets: [{
+        label: 'Average US expenditure composition (Single)',
+        data: [12.4, 36.7, 15.9, 7.3, 8.9],
+        backgroundColor: [
+          'rgba(100,181,246 ,1)',
+          'rgba(77,182,172 ,1)',
+          'rgba(220,231,117 ,1)',
+          'rgba(255,183,77 ,1)',
+          'rgba(229,115,115 ,1)'
+        ],
+      }],
+      labels:
+        ['Foods', 'Housing', 'Transportation', 'Healthcare', 'Insurance and Pension']
+      ,
+    }
+    var ctx = document.getElementById('averageExpensePie');
+    var averageExpensePie = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      options: {
+        'animation.animateRotate': true,
+        'cutoutPercentage': '37',
+      },
+    })
   }
 
   currencySymbols() {
@@ -631,6 +638,7 @@ class App extends React.Component {
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
                 <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
                 <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2><br /><br />
+                <canvas id="averageExpensePie"/>
                 <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
                 <canvas id='averageDoughnutChart'/>
               </div>

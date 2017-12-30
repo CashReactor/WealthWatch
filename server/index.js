@@ -105,19 +105,14 @@ app.post('/postBanks', function(req, res) {
   var bank = req.body.bank;
   var banks;
   User.findOne({ email: req.body.email })
-  .then((err, user) => {
-    if (err) res.status(400).json({ message: err });
-    banks = user.banks;
-    banks[bank] = bank.slice(1);
-  })
-  User.findOneAndUpdate({ email: req.body.email },
-  {
-    $set: { banks }
-  }, (user) => {
-    res.send(user);
-  })
-  .catch((err) => {
-    res.status(400).json({ message: err });
+  .then((user) => {
+    banks = {};
+    banks[bank[0]] = bank.slice(1);
+    User.findOneAndUpdate({ email: req.body.email }, {
+      $set: { banks: banks }
+    }, (user) => {
+      res.send(user)
+    })
   })
 })
 
