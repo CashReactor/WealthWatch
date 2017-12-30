@@ -49,6 +49,8 @@ class App extends React.Component {
       avatar: '',
       totalOneExpense: '',
       totalRecExpense: '',
+      banks: [],
+      graphs: {},
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -62,6 +64,7 @@ class App extends React.Component {
     this.updateBankInfo = this.updateBankInfo.bind(this);
     this.renderBankGraph = this.renderBankGraph.bind(this);
     this.routerGraph = this.routerGraph.bind(this);
+    this.updateBanks = this.updateBanks.bind(this);
   }
 
   componentDidMount() {
@@ -111,6 +114,10 @@ class App extends React.Component {
     })
     console.log('the bank information is updated', this.state.bankBudget, this.state.bankOne, this.state.bankName);
     console.log()
+  }
+
+  updateBanks(banks) {
+    this.setState({ banks });
   }
 
   // updateBankName(name) {
@@ -171,6 +178,20 @@ class App extends React.Component {
 
       this.renderGraph();
     })
+  }
+
+  renderSelectGraph(select) {
+    $(`.loader${select}`).toggle();
+    $(`.companyLogo${select}`).toggle();
+    $(`.bankInfo${select}`).css('display', 'grid');
+    if (this.state.graphs[select]) {
+      this.state.graphs[select][0].destroy();
+      this.state.graphs[select][1].destroy();
+    }
+    let days = [];
+    let budget = [];
+    let expenses = [];
+    let day = this.state.currentDate.getDate();
 
 
   }
@@ -649,7 +670,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
                 <br/><br/><br/>
-                <Plaid loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+                <Plaid updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
               </div>
             )} />
           </Switch>

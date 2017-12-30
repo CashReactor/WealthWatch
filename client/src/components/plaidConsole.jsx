@@ -16,6 +16,7 @@ class Plaid extends React.Component {
       acPlus: false,
       trPlus: false,
       baPlus: false,
+      counter: 0,
     };
    this.onClick = this.onClick.bind(this);
    this.getTransactions = this.getTransactions.bind(this);
@@ -25,7 +26,7 @@ class Plaid extends React.Component {
    this.renderBankInfo = this.renderBankInfo.bind(this);
    this.renderBankLogo = this.renderBankLogo.bind(this);
    this.renderTransactionsList = this.renderTransactionsList.bind(this);
-   this.updateBanks = this.updateBanks.bind(this);
+   this.postBanks = this.postBanks.bind(this);
    this.getBanks = this.getBanks.bind(this);
   }
 
@@ -103,13 +104,13 @@ class Plaid extends React.Component {
   getBanks() {
     axios.post('/getBanks', { email: this.props.email })
     .then((response) => {
-
+      this.props.updateBanks(response.data);
     })
   }
 
-  updateBanks() {
-    var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions]};
-    axios.post('/updateBanks', data)
+  postBanks() {
+    var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions] };
+    axios.post('/postBanks', data)
     .then((response) => {
 
     })
@@ -231,6 +232,14 @@ class Plaid extends React.Component {
         </div>
       )
     }
+  }
+
+  renderBankLogo(bankName) {
+    return (
+      <div className="companyLogo" style={{display:'none', width:'100%'}}>
+        <img style={{marginLeft: '50%', transform: 'translate(-50%, -50%)'}} src={'https://logo.clearbit.com/' + name + '.com'}/>
+      </div>
+    )
   }
 
    renderBankInfo() {
