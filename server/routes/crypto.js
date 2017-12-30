@@ -22,7 +22,7 @@ cryptoRouter.get('/getCrypto', (req, res) => {
     market
   }&apikey=${apiKey}`;
   axios.get(alphaVantage).then((response) => {
-    // console.log('resp::::', response);
+    console.log('resp::::', response);
     console.log('sending data for crypto-currency');
     res.status(200).json({ message: 'Data Found', data: response.data });
   });

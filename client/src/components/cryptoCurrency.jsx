@@ -5,12 +5,14 @@ import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
 import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
 import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
+import ModalGraph from './modalGraph.jsx'
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
+      cryptoCurrencyCode: '',
       cryptoCurrencyList: [],
       suggestions: [],
       showModal: false,
@@ -79,9 +81,9 @@ class CryptoCurrency extends React.Component {
   }
 
   cryptoSearch() {
-    const symbol = this.state.search;
+    const { cryptoCurrencyCode } = this.state;
     axios
-      .get(`/api/crypto/getCrypto?code=${symbol}`)
+      .get(`/api/crypto/getCrypto?code=${cryptoCurrencyCode}`)
       .then((response) => {
         this.setState({
           cryptoData: {
@@ -99,7 +101,7 @@ class CryptoCurrency extends React.Component {
     this.setState({
       showModal: !this.state.showModal,
     });
-    // this.cryptoSearch();
+    this.cryptoSearch();
     this.newsSearch();
     this.getSentiment();
   }
@@ -118,6 +120,7 @@ class CryptoCurrency extends React.Component {
             This is Modal Header
           </Modal.Header>
           <Modal.Body>
+            <ModalGraph />
             <CryptoCurrencyDetails data={this.state.cryptoData} />
             <SentimentSummary sentiments={this.state.sentiments} />
             <CryptoCurrencyNews stories={this.state.cryptoNews} />
@@ -132,12 +135,18 @@ class CryptoCurrency extends React.Component {
   }
 
   getSuggestions(value) {
+    console.log('getSuggestions value: ', value);
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     return inputLength === 0 ? [] : this.state.cryptoCurrencyList.filter(currency => currency.name.toLowerCase().slice(0, inputLength) === inputValue);
   }
 
+
+
   getSuggestionValue(suggestion) {
+    this.setState({
+      cryptoCurrencyCode: suggestion.code
+    });
     return suggestion.name;
   }
 
@@ -147,7 +156,6 @@ class CryptoCurrency extends React.Component {
         {suggestion.name}
       </div>
     );
-    // return suggestion.name;
   }
 
   onSuggestionsFetchRequested({ value }) {
