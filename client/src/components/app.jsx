@@ -42,14 +42,13 @@ class App extends React.Component {
       currentLineGraph: null,
       currentBankGraph: null,
       currentBankLineGraph: null,
-      currentAverageDoughnutGraph: null,
       currency: '',
       bank: false,
       loading: false,
       avatar: '',
       totalOneExpense: '',
       totalRecExpense: '',
-      banks: [],
+      banks: {},
       graphs: {},
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
@@ -65,14 +64,12 @@ class App extends React.Component {
     this.renderBankGraph = this.renderBankGraph.bind(this);
     this.routerGraph = this.routerGraph.bind(this);
     this.updateBanks = this.updateBanks.bind(this);
+    this.renderSelectGraph = this.renderSelectGraph.bind(this);
   }
 
   componentDidMount() {
     this.updateUser();
-    if (window.location.href.slice(21) === '/') {
-      this.renderGraph();
-      this.renderAverageExpensePie();
-    }
+
     console.log('THIS IS THE WINDOW LOCATION', window.location.href.slice(21));
     console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
@@ -85,24 +82,6 @@ class App extends React.Component {
         700
       );
     });
-
-    console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
-    console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
-
-    // var url = window.location.href.split('/');
-    // var urlLength = url.length;
-    // var tab = url[urlLength - 1];
-
-    // if (tab === 'expense') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
-    // } else if (tab === 'bank') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
-    // } else if (tab == 'investor') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
-    // }
   }
 
   w3Click(e) {
@@ -161,41 +140,26 @@ class App extends React.Component {
         totalOneExpense,
         totalRecExpense
       })
+      if (window.location.href.slice(21) === '/') {
+        this.renderGraph();
+        this.renderAverageExpensePie();
+      }
     })
   }
 
-  renderSelectGraph(select) {
-    $(`.loader${select}`).toggle();
-    $(`.companyLogo${select}`).toggle();
-    $(`.bankInfo${select}`).css('display', 'grid');
-    if (this.state.graphs[select]) {
-      this.state.graphs[select][0].destroy();
-      this.state.graphs[select][1].destroy();
-    }
-    let days = [];
-    let budget = [];
-    let expenses = [];
-    let day = this.state.currentDate.getDate();
+  renderSelectGraph(bank, accounts, transactions) {
 
+    // $(`.loader${bank}`).toggle();
+    // $(`.companyLogo${bank}`).toggle();
+    // $(`.bankInfo${bank}`).css('display', 'grid');
 
-  }
-
-  renderBankGraph() {
-    $('.loader').toggle();
-    $('.companyLogo').toggle();
-    $('.bankInfo').css('display', 'grid');
-    if (this.state.currentBankGraph) {
-      this.state.currentBankGraph.destroy();
-    }
-
-    if (this.state.currentBankLineGraph) {
-      this.state.currentBankLineGraph.destroy();
+    if (this.state.graphs[bank]) {
+      this.state.graphs[bank][0].destroy();
+      this.state.graphs[bank][1].destroy();
     }
 
     var bankBudget = 0;
-    var that = this;
-    this.state.bankBudget.forEach(function(account) {
-      // console.log('THIS IS THE STATE BANKBUDGET', that.state.bankBudget);
+    accounts.forEach(function(account) {
       if (account.balances.available !== null) {
         bankBudget += account.balances.available;
       } else {
@@ -213,11 +177,148 @@ class App extends React.Component {
 
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
-    }
-    for (let i = 0; i <= daysInMonth; i++) {
       budget.push(bankBudget);
       expenses.push(0);
     }
+
+    transactions.forEach(function(transaction) {
+      var trAmount = transaction.amount;
+      var date = transaction.date.split('-');
+      var trYear = Number(date[0])
+      var trMonth = Number(date[1]);
+      var trDay = Number(date[2]);
+      if (year === trYear && month === trMonth) {
+        expenses[trDay] += trAmount;
+        //this is to start the budget previous to expenses being charged
+        for (var k = 0; k <= daysInMonth; k++) {
+          budget[k] += trAmount;
+        }
+        //this is to apply expenses for the respective days they occurred
+        for (var i = trDay; i <= daysInMonth; i++) {
+          budget[i] -= trAmount;
+        }
+      }
+    })
+
+    let barCtx = document.getElementById(`${bank}Chart`);
+    let lineCtx = document.getElementById(`${bank}LineChart`)
+
+    let positiveColor = 'rgba(54, 162, 235, 0.7)';
+
+    let color = budget.map((balance, index) => {
+      if (balance > 0) {
+        if (index <= this.state.currentDate.getDate()) {
+          return positiveColor;
+        } else {
+          return 'rgba(54, 162, 235, 0.3)';
+        }
+      } else {
+        return 'rgba(255, 0, 0, 0.5)';
+      }
+    });
+
+    var lineGraph = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Expenditure of ${bank} ($)`,
+            data: expenses,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 1,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    var barGraph = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Balance of ${bank} ($)`,
+            data: budget,
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    var graphs = this.state.graphs;
+    graphs[bank] = [barGraph, lineGraph];
+
+    this.setState({
+      graphs
+    })
+
+    $(`#${bank}Chart`).css('display', 'inline-block');
+    $(`#${bank}LineChart`).css('display', 'inline-block');
+  }
+
+  renderBankGraph() {
+    $('.loader').toggle();
+    $('.companyLogo').toggle();
+    $('.bankInfo').css('display', 'grid');
+    if (this.state.currentBankGraph) {
+      this.state.currentBankGraph.destroy();
+    }
+
+    if (this.state.currentBankLineGraph) {
+      this.state.currentBankLineGraph.destroy();
+    }
+
+    var bankBudget = 0;
+    var that = this;
+    this.state.bankBudget.forEach(function(account) {
+      if (account.balances.available !== null) {
+        bankBudget += account.balances.available;
+      } else {
+        bankBudget += account.balances.current;
+      }
+    })
+
+    let days = [];
+    let budget = [];
+    let expenses = [];
+    let day = this.state.currentDate.getDate();
+    let month = this.state.currentDate.getMonth() + 1;
+    let year = this.state.currentDate.getFullYear();
+    let daysInMonth = this.daysInMonth(month, year);
+
+    for (let i = 0; i <= daysInMonth; i++) {
+      days.push(i);
+      budget.push(bankBudget);
+      expenses.push(0);
+    }
+
     for (let i = 0; i < this.state.bankOne.length; i++) {
       var expenseAmount = this.state.bankOne[i].amount;
       var date = this.state.bankOne[i].date.split('-');
@@ -459,13 +560,13 @@ class App extends React.Component {
         backgroundColor: [
           'rgba(100,181,246 ,1)',
           'rgba(77,182,172 ,1)',
-          'rgba(220,231,117 ,1)',
+          '#FFEB3B',
           'rgba(255,183,77 ,1)',
           'rgba(229,115,115 ,1)'
         ],
       }],
       labels:
-        ['Foods', 'Housing', 'Transportation', 'Healthcare', 'Insurance and Pension']
+        ['Foods(%)', 'Housing(%)', 'Transportation(%)', 'Healthcare(%)', 'Insurance and Pension(%)']
       ,
     }
     var ctx = document.getElementById('averageExpensePie');
@@ -640,8 +741,7 @@ class App extends React.Component {
                 <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
                 <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2><br /><br />
                 <canvas id="averageExpensePie"/>
-                <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-                <canvas id='averageDoughnutChart'/>
+                <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
               </div>
             )} />
             <Route path="/expense" render={() => (
@@ -679,7 +779,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
                 <br/><br/><br/>
-                <Plaid updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+                <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
               </div>
             )} />
           </Switch>

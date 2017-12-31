@@ -93,7 +93,6 @@ app.post('/calculateNPV', function(req, res) {
 app.post('/getBanks', function(req, res) {
   User.findOne({ email: req.body.email })
   .then((user) => {
-    if (err) res.send(400).json({ message: err });
     res.send(user.banks);
   })
   .catch((err) => {
@@ -107,7 +106,7 @@ app.post('/postBanks', function(req, res) {
   User.findOne({ email: req.body.email })
   .then((user) => {
     banks = user.banks || {};
-    banks[bank[0]] = bank.slice(1);
+    banks[0][bank[0]] = bank.slice(1);
     User.findOneAndUpdate({ email: req.body.email }, {
       $set: { banks: banks }
     }, (user) => {

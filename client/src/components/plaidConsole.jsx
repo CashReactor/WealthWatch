@@ -95,6 +95,8 @@ class Plaid extends React.Component {
         $(this).text('Transactions +');
       }
     })
+
+    this.getBanks();
   }
 
   onClick() {
@@ -102,9 +104,22 @@ class Plaid extends React.Component {
   }
 
   getBanks() {
+    var that = this;
     axios.post('/getBanks', { email: this.props.email })
     .then((response) => {
-      this.props.updateBanks(response.data);
+      console.log('-----this is the bank we get from the database------', response.data)
+      var banks = response.data[0];
+      this.setState({
+        counter: Object.keys(banks).length
+      });
+      this.props.updateBanks(banks);
+      console.log('$$$$$$$$$$$$$$$$$$$', this.props.banks);
+      Object.keys(banks).forEach(function(bank) {
+        console.log('WWWWWWWWWWWWWW', bank);
+        var accounts = banks[bank][0];
+        var transactions = banks[bank][1];
+        that.props.renderSelectGraph(bank, accounts, transactions);
+      })
     })
   }
 
@@ -276,11 +291,14 @@ class Plaid extends React.Component {
             {this.renderTransactionsList()}
           </div>
         </div>
-        {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
-          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
-          <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>
-          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Transactions</button>
-        </div>*/}
+        {Object.keys(this.props.banks).map((bank) => {
+          return (
+            <div>
+              <canvas id={bank + 'Chart'} />
+              <canvas id={bank + 'LineChart'} />
+            </div>
+          )
+        })}
       </div>
     );
   }

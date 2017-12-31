@@ -29,16 +29,22 @@ img {
 
 .bankInfo {
   display: none;
-  width: 100%;
+  width: 80%;
   grid-template-columns: 50% 50%;
   padding:  7px;
   margin: 7% auto;
 }
 
+#bankBarChart, #bankLineChart {
+  width: 70% !important;
+  height: auto !important;
+  margin-left: 15%;
+}
+
 .bankListButton {
-  width: 80%;
+  width: 70%;
   padding: 3%;
-  margin: 0 10% 0 10%;
+  margin: 0 15% 0 15%;
   text-align: center;
   background-color: rgba(25,118,210 ,0.7);
   font-weight: 700;
@@ -102,6 +108,12 @@ img {
 .bar-select:link, .bar-select:visited {
   background-color: rgba(26,35,126 ,0.9);
   color: white;
+}
+
+#averageExpensePie {
+  height: 67% !important;
+  width: 67% !important;
+  margin: 0 auto !important;
 }
 
 .loader {
