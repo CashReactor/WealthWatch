@@ -250,10 +250,11 @@ class Plaid extends React.Component {
     }
   }
 
-  selectBankLogo(bankName) {
+  selectBankLogo(name) {
+    var name = name.toLowerCase().split(' ').join('');
     return (
-      <div className="companyLogo" style={{display:'none', width:'100%'}}>
-        <img style={{marginLeft: '50%', transform: 'translate(-50%, -50%)'}} src={'https://logo.clearbit.com/' + name + '.com'}/>
+      <div className="companyLogo" style={{width:'100%'}}>
+        <img style={{marginLeft: '50%', marginTop: '7%', marginBottom: '7%', transform: 'translate(-50%, 0)'}} src={'https://logo.clearbit.com/' + name + '.com'}/>
       </div>
     )
   }
@@ -294,8 +295,9 @@ class Plaid extends React.Component {
         {Object.keys(this.props.banks).map((bank) => {
           return (
             <div>
-              <canvas id={bank + 'Chart'} />
-              <canvas id={bank + 'LineChart'} />
+              {this.selectBankLogo(bank)}
+              <canvas className="bankCharts" id={bank + 'Chart'} />
+              <canvas className="bankCharts" id={bank + 'LineChart'} />
             </div>
           )
         })}

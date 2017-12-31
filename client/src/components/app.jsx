@@ -65,6 +65,8 @@ class App extends React.Component {
     this.routerGraph = this.routerGraph.bind(this);
     this.updateBanks = this.updateBanks.bind(this);
     this.renderSelectGraph = this.renderSelectGraph.bind(this);
+    this.analyzeExpenditure = this.analyzeExpenditure.bind(this);
+    this.analyzeBalance = this.analyzeBalance.bind(this);
   }
 
   componentDidMount() {
@@ -694,8 +696,34 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
-    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (this.state.daysInMonth - (new Date()).getDate()));
+    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
+
+  analyzeExpenditure() {
+    return (
+      <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
+    )
+  }
+
+  analyzeBalance() {
+    if (this.state.daysInMonth === this.state.currentDate.getDate()) {
+      if (this.calculateBalanceLeft() > 0) {
+        return (
+          <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> left to spend or invest for this month<span style={{color:'red'}}>.</span></h2>
+        )
+      } else {
+        return (
+          <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
+        )
+      }
+    } else {
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
+      )
+    }
+  }
+
+  // <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
 
   render() {
     console.log('Avatar is: ', this.state.avatar);
@@ -738,8 +766,8 @@ class App extends React.Component {
                   <br/><br/><br/>
                 </div>
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
-                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
-                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2><br /><br />
+                {this.analyzeExpenditure()}
+                {this.analyzeBalance()}<br /><br />
                 <canvas id="averageExpensePie"/>
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
               </div>

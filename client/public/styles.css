@@ -27,6 +27,12 @@ img {
   margin: 0 auto;
 }
 
+.bankCharts {
+  width: 70% !important;
+  height: auto !important;
+  margin-left: 15%;
+}
+
 .bankInfo {
   display: none;
   width: 80%;
