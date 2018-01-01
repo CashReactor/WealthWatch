@@ -49,6 +49,12 @@ export default class OneExpense extends React.Component {
       amount: this.state.amount,
       transactionDate: this.state.transactionDate,
     };
+    this.setState({
+      expense: '',
+      category: '',
+      amount: '',
+      transactionDate: '',
+    });
     axios.post('/api/expense/oneExpense', data).then((response) => {
       this.setState({
         expense: '', category: '', amount: '', rec: response.data, transactionDate: '',
