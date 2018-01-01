@@ -3,21 +3,19 @@ import React from 'react';
 class SentimentSummary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
 
-  render(){
+  render() {
     console.log(this.props.sentiments);
     return (
       <p>
         Neutral:
         {this.props.sentiments.neutral}
-        <br/>
+        <br />
         positive:
         {this.props.sentiments.positive}
-        <br/>
+        <br />
         negative:
         {this.props.sentiments.negative}
       </p>
@@ -37,5 +35,3 @@ export default SentimentSummary;
 //     </div>
 //   );
 // };
-
-
