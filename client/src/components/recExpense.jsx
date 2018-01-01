@@ -68,6 +68,13 @@ export default class RecExpense extends React.Component {
       period: this.state.period,
       startDate: this.state.transactionDate,
     };
+    this.setState({
+      expense: '',
+      category: '',
+      amount: '',
+      period: '',
+      transactionDate: '',
+    });
     axios.post('/api/expense/recExpense', data).then((response) => {
       this.setState({
         expense: '',
