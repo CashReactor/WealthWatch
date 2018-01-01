@@ -52,6 +52,10 @@ const style = {
     marginTop: '2em',
     backgroundColor: 'none',
   },
+  smallText: {
+    color: '#a8a4a7',
+    fontSize: '0.7em',
+  },
 };
 
 const muiTheme = getMuiTheme({
@@ -215,11 +219,10 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Email Address"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText="We'll never share your email to anyone else."
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
-            <br />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email to anyone else.
-            </small>
           </div>
           <div style={style.textContainer}>
             <TextField
@@ -232,6 +235,9 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Password"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText="  "
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
           </div>
         </form>
@@ -274,6 +280,9 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Name"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText=""
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
           </div>
           <div style={style.textContainer}>
@@ -287,8 +296,10 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Email"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText="This email account will be used for logging in."
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
-            <small className="form-text text-muted">This email account will be used for logging in.</small>
           </div>
           <div style={style.textContainer}>
             <TextField
@@ -301,6 +312,9 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Password"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText=" "
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
           </div>
           <div style={style.textContainer}>
@@ -314,8 +328,10 @@ export default class LoginSignup extends React.Component {
               floatingLabelText="Profile Image URL"
               floatingLabelStyle={style.label}
               floatingLabelFocusStyle={style.label}
+              errorText="A profile image will further personalize your account!"
+              errorStyle={style.smallText}
+              underlineStyle={style.smallText}
             />
-            <small className="form-text text-muted">A profile image will further personalize your account!</small>
           </div>
           <RaisedButton
             style={style.button}
