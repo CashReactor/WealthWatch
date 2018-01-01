@@ -5,7 +5,7 @@ import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
 import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
 import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
-import ModalGraph from './modalGraph.jsx'
+import CryptoModalGraph from './cryptoModalGraph.jsx';
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
@@ -31,23 +31,21 @@ class CryptoCurrency extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.popOutSearch = this.popOutSearch.bind(this);
     this.close = this.close.bind(this);
-    this.getSuggestions = this.getSuggestions.bind(this)
-    this.getSuggestionValue = this.getSuggestionValue.bind(this)
-    this.renderSuggestion = this.renderSuggestion.bind(this)
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
-    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
+    this.getSuggestions = this.getSuggestions.bind(this);
+    this.getSuggestionValue = this.getSuggestionValue.bind(this);
+    this.renderSuggestion = this.renderSuggestion.bind(this);
+    this.open = this.open.bind(this);
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
   }
 
   componentDidMount() {
-    axios
-      .get('/api/crypto/getAllCryptoCurrencies')
-      .then((response) => {
-        // console.log('all crypto currencies::: ', response.data);
-        this.setState({
-          cryptoCurrencyList: response.data,
-        });
-        console.log('Auto Complete Search ', this.state.cryptoCurrencyList);
+    axios.get('/api/crypto/getAllCryptoCurrencies').then(response => {
+      // console.log('all crypto currencies::: ', response.data);
+      this.setState({
+        cryptoCurrencyList: response.data,
       });
+    });
   }
 
   onChange(event, { newValue, method }) {
@@ -56,28 +54,29 @@ class CryptoCurrency extends React.Component {
     });
   }
 
+  onSuggestionsFetchRequested({ value }) {
+    this.setState({
+      suggestions: this.getSuggestions(value),
+    });
+  }
+
   getSentiment() {
     const { search } = this.state;
-    axios
-      .get(`/api/crypto/getSentiment?value=${search}`)
-      .then((response) => {
-        console.log('response:  ', response);
-        this.setState({
-          sentiments: response.data,
-        });
+    axios.get(`/api/crypto/getSentiment?value=${search}`).then((response) => {
+      this.setState({
+        sentiments: response.data,
       });
+    });
   }
 
   newsSearch() {
     const { search } = this.state;
-    axios
-      .get(`api/crypto/getNews?value=${search}`)
-      .then((response) => {
-        // console.log('news response::::', response);
-        this.setState({
-          cryptoNews: response.data,
-        });
+    axios.get(`api/crypto/getNews?value=${search}`).then(response => {
+      // console.log('news response::::', response);
+      this.setState({
+        cryptoNews: response.data,
       });
+    });
   }
 
   cryptoSearch() {
@@ -106,6 +105,11 @@ class CryptoCurrency extends React.Component {
     this.getSentiment();
   }
 
+  open() {
+    this.setState({
+      showModal: true,
+    });
+  }
   close() {
     this.setState({
       showModal: false,
@@ -116,11 +120,9 @@ class CryptoCurrency extends React.Component {
     return (
       <div className="modal">
         <Modal show={this.state.showModal} onHide={this.toggleModal}>
-          <Modal.Header>
-            This is Modal Header
-          </Modal.Header>
+          <Modal.Header>This is Modal Header</Modal.Header>
           <Modal.Body>
-            <ModalGraph />
+            <CryptoModalGraph timeSeries={this.state.cryptoData.timeSeries} open={this.open} close={this.close} />
             <CryptoCurrencyDetails data={this.state.cryptoData} />
             <SentimentSummary sentiments={this.state.sentiments} />
             <CryptoCurrencyNews stories={this.state.cryptoNews} />
@@ -133,51 +135,41 @@ class CryptoCurrency extends React.Component {
       </div>
     );
   }
+  
 
   getSuggestions(value) {
-    console.log('getSuggestions value: ', value);
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
-    return inputLength === 0 ? [] : this.state.cryptoCurrencyList.filter(currency => currency.name.toLowerCase().slice(0, inputLength) === inputValue);
+    return inputLength === 0
+      ? []
+      : this.state.cryptoCurrencyList
+        .filter(currency => currency.name.toLowerCase().slice(0, inputLength) === inputValue);
   }
-
-
-
+  
   getSuggestionValue(suggestion) {
     this.setState({
-      cryptoCurrencyCode: suggestion.code
+      cryptoCurrencyCode: suggestion.code,
     });
     return suggestion.name;
   }
 
   renderSuggestion(suggestion) {
-    return (
-      <div>
-        {suggestion.name}
-      </div>
-    );
+    return <div>{suggestion.name}</div>;
   }
 
-  onSuggestionsFetchRequested({ value }) {
-    this.setState({
-      suggestions: this.getSuggestions(value),
-    });
-  }
-
-  onSuggestionsClearRequested () {
+  onSuggestionsClearRequested() {
     this.setState({
       suggestions: [],
     });
   }
 
   render() {
+    console.log('cryptoCurrency timeSeries: ', this.state.cryptoData.timeSeries);
     const inputProps = {
       placeholder: 'Type it!',
       value: this.state.search,
       onChange: this.onChange,
     };
-
-    console.log('state:::', this.state);
 
     return (
       <div>
