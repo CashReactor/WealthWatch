@@ -4,10 +4,60 @@ img {
   padding: 0px;
 }
 
-/* blue architecture https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2090&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D */
+.investLink, .investLink:visited, .investLink:hover{
+  display: block;
+  margin-left: 50%;
+  transform: translate(-50%, 0) !important;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 1.7%;
+  color: rgba(25,118,210 ,0.7);
+}
+
+.investLink:hover {
+  color: rgba(25,118,210 ,1);
+  display: block;
+  margin-left: 50%;
+  transform: translate(-50%, 0) !important;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 1.7%;
+
+}
+
+.aTagNPV {
+  background-color: white !important;
+  color: rgba(25,118,210 ,0.7) !important;
+  border: solid !important;
+  border-width: 1px !important;
+  border-color: rgba(25,118,210 ,0.7) !important;
+  font-weight: 700 !important;
+}
+
+.aTagNPV:hover {
+  background-color: rgba(25,118,210 ,0.7) !important;
+  color: white !important;
+  border: solid !important;
+  border-width: 1px !important;
+  border-color: rgba(25,118,210 ,0.7) !important;
+  font-weight: 700 !important;
+  transition: background-color 0.7s, color: 0.7s !important;
+}
 
 #barChart {
   width: 100%;
+}
+
+.aggregate-logo:hover {
+  border: 7px !important;
+  border-color: lightblue !important;
+  transition: border 1s !important;
+}
+
+.companyLogo {
+  display: block !important;
 }
 
 .grid {
@@ -27,18 +77,35 @@ img {
   margin: 0 auto;
 }
 
+.bankCharts {
+  width: 100% !important;
+  height: auto !important;
+/*   margin-left: 15%;
+ */}
+
+ #bank-list {
+  display: grid;
+  grid-template-columns: 10% 45% 45%;
+}
+
 .bankInfo {
   display: none;
-  width: 100%;
+  width: 80%;
   grid-template-columns: 50% 50%;
   padding:  7px;
   margin: 7% auto;
 }
 
+#bankChart, #bankLineChart {
+  width: 70% !important;
+  height: auto !important;
+  margin-left: 15%;
+}
+
 .bankListButton {
-  width: 80%;
+  width: 70%;
   padding: 3%;
-  margin: 0 10% 0 10%;
+  margin: 0 15% 0 15%;
   text-align: center;
   background-color: rgba(25,118,210 ,0.7);
   font-weight: 700;
@@ -104,6 +171,12 @@ img {
   color: white;
 }
 
+#averageExpensePie {
+  height: 67% !important;
+  width: 67% !important;
+  margin: 0 auto !important;
+}
+
 .loader {
   display: none;
   border: 16px solid #f3f3f3;
@@ -126,6 +199,12 @@ img {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* .aggregate-logo:hover {
+  -webkit-transform: scale(1.7);
+  -ms-transform: scale(1.7);
+  transform: scale(1.7);
+ } */
 
 .widget {
   border-style: none;
@@ -208,6 +287,7 @@ i {
 .header {
   margin-top: 1.7% !important;
   margin-left: 1.5% !important;
+  margin-right: 1.5% !important;
 }
 
 #label {

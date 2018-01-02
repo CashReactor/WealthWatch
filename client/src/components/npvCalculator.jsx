@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import $ from 'jquery';
+import SkyLight from 'react-skylight';
 
 const style = {
   backgroundImage: '',
@@ -189,6 +190,32 @@ class NPVCalculator extends React.Component {
 
   }
 
+  NPVmodal() {
+
+    var style = {
+
+    }
+
+    return (
+      <div style={{display:'inline-block', margin: '1vh'}}>
+        <button onClick={() => this.animated.show()} className="btn aTagNPV" style={{textDecoration: 'none'}}>What is NPV?</button>
+        <SkyLight
+          dialogStyles={style}
+          hideOnOverlayClicked
+          ref={ref => this.animated = ref}
+          // title="An overview of NPV"
+          transitionDuration={500}
+        >
+        <h4 style={{textAlign: 'center', fontWeight: '700'}}>Investopedia video on NPV</h4>
+        <iframe style={{marginLeft: '10%'}} id="ytplayer" type="text/html" width="80%" height="80%"
+                  src="https://www.youtube.com/embed/VAWOrBlTqrY"
+                  frameborder="0"></iframe><br />
+        <a className="investLink" href="https://www.investopedia.com/terms/n/npv.asp">More on NPV</a>
+        </SkyLight>
+      </div>
+    )
+  }
+
   inputForm() {
     return (
       <div>
@@ -209,6 +236,7 @@ class NPVCalculator extends React.Component {
           <h5 style={{color: 'black', fontWeight: '300'}} id="label"># Click on year/&#8734; to change cash flow from currency {this.props.currency} to %<br></br></h5>
           <button onClick={this.addCashFlow} style={{margin: '1vh'}} className="btn btn-default">Add cashflow</button>
           <button /*id="pinkbutton" style={{backgroundColor: '#EC407A', borderColor: '#E91E63', margin: '0 5% 0 1.7%'}} */className="btn btn-default" onClick={this.addInfinityCashFlow}>Add &#8734; dividends</button>
+          {this.NPVmodal()}
           <button onClick={this.calculateNPV} style={{margin: '1vh', float: 'right'}} className="btn btn-primary">Calculate</button>
         </div>
       </div>

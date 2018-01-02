@@ -42,13 +42,14 @@ class App extends React.Component {
       currentLineGraph: null,
       currentBankGraph: null,
       currentBankLineGraph: null,
-      currentAverageDoughnutGraph: null,
       currency: '',
       bank: false,
       loading: false,
       avatar: '',
       totalOneExpense: '',
       totalRecExpense: '',
+      banks: {},
+      graphs: {},
     };
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.setLoginState = this.setLoginState.bind(this);
@@ -62,12 +63,16 @@ class App extends React.Component {
     this.updateBankInfo = this.updateBankInfo.bind(this);
     this.renderBankGraph = this.renderBankGraph.bind(this);
     this.routerGraph = this.routerGraph.bind(this);
+    this.updateBanks = this.updateBanks.bind(this);
+    this.renderSelectGraph = this.renderSelectGraph.bind(this);
+    this.analyzeExpenditure = this.analyzeExpenditure.bind(this);
+    this.analyzeBalance = this.analyzeBalance.bind(this);
+    this.updateExpenseList = this.updateExpenseList.bind(this);
   }
 
   componentDidMount() {
     this.updateUser();
-    console.log('THIS IS THE WINDOW LOCATION', window.location.href);
-    console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
+
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
@@ -78,24 +83,6 @@ class App extends React.Component {
         700
       );
     });
-
-    console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
-    console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
-
-    // var url = window.location.href.split('/');
-    // var urlLength = url.length;
-    // var tab = url[urlLength - 1];
-
-    // if (tab === 'expense') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
-    // } else if (tab === 'bank') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
-    // } else if (tab == 'investor') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
-    // }
   }
 
   w3Click(e) {
@@ -113,33 +100,39 @@ class App extends React.Component {
     console.log()
   }
 
-  // updateBankName(name) {
-  //   this.setState({
-  //     bankName: name
-  //   })
-  // }
-
-  // updateBankBudget(budget) {
-  //   this.setState({
-  //     bankBudget: budget
-  //   })
-  // }
-
-  // updateBankOne(transactions) {
-  //   this.setState({
-  //     bankOne: transactions
-  //   })
-  // }
+  updateBanks(banks) {
+    this.setState({ banks });
+  }
 
   resetUser() {
     axios.post('/reset', { email: this.state.currentEmail })
-    .then((response) => {
-      this.updateUser();
-    })
+      .then((response) => {
+        this.updateUser();
+      });
   }
 
   updateCurrency(currency) {
     this.setState({ currency: currency });
+  }
+
+  updateExpenseList(type, id) {
+    if (type === 'one') {
+      const { one } = this.state;
+      for (let i = 0; i < one.length; i++) {
+        if (one[i]._id === id) {
+          one.splice(i, 1);
+          this.setState({ one });
+        }
+      }
+    } else if (type === 'recurring') {
+      const { rec } = this.state;
+      for (let i = 0; i < rec.length; i++) {
+        if (rec[i]._id === id) {
+          rec.splice(i, 1);
+          this.setState({ rec });
+        }
+      }
+    }
   }
 
   updateUser() {
@@ -155,24 +148,169 @@ class App extends React.Component {
         currency: response.data.currency,
         avatar: response.data.gravatar,
       });
-      console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
 
-      var totalOneExpense = this.state.one.map(function(expense) {
-        return expense.amount;
+      var totalOneExpense = this.state.one.map((expense) => {
+        if (new Date(expense.date).getMonth() + 1 === this.state.currentDate.getMonth() + 1) {
+          console.log('THIS IS THE MATCHED EXPENSE AMOUNT', expense.amount);
+          return expense.amount;
+        } else {
+          return 0;
+        }
       }).reduce((acc, cur) => (acc + cur));
       var totalRecExpense = this.state.rec.map(function(expense) {
         return expense.amount;
       }).reduce((acc, cur) => (acc + cur));
 
+
+
       this.setState({
         totalOneExpense,
         totalRecExpense
       })
-
+      //if (window.location.href.slice(21) === '/') {
       this.renderGraph();
+      this.renderAverageExpensePie();
+      //
+    })
+  }
+
+  renderSelectGraph(bank, accounts, transactions) {
+    console.log('THIS IS THE TRANSACTIONS', transactions);
+    console.log('THIS IS THE BANK NAME', bank);
+
+    // $(`.loader${bank}`).toggle();
+    // $(`.companyLogo${bank}`).toggle();
+    // $(`.bankInfo${bank}`).css('display', 'grid');
+
+    if (this.state.graphs[bank]) {
+      this.state.graphs[bank][0].destroy();
+      this.state.graphs[bank][1].destroy();
+    }
+
+    let days = [];
+    let budget = [];
+    let expenses = [];
+    let day = this.state.currentDate.getDate();
+    let month = this.state.currentDate.getMonth() + 1;
+    let year = this.state.currentDate.getFullYear();
+    let daysInMonth = this.daysInMonth(month, year);
+
+    var totalBalance = 0;
+
+    accounts.forEach(function(account) {
+      if (account.balances.available) {
+        totalBalance += account.balances.available;
+      } else {
+        totalBalance += account.balances.current;
+      }
     })
 
+    for (let i = 0; i <= daysInMonth; i++) {
+      days.push(i);
+      budget.push(totalBalance);
+      expenses.push(0);
+    }
 
+    transactions.forEach(function(transaction) {
+      var trAmount = transaction.amount;
+      var date = transaction.date.split('-');
+      var trYear = Number(date[0])
+      var trMonth = Number(date[1]);
+      var trDay = Number(date[2]);
+      if (year === trYear && month === trMonth) {
+        expenses[trDay] += trAmount;
+        //this is to start the budget previous to expenses being charged
+        for (var k = 0; k <= daysInMonth; k++) {
+          budget[k] += trAmount;
+        }
+        //this is to apply expenses for the respective days they occurred
+        for (var i = trDay; i <= daysInMonth; i++) {
+          budget[i] -= trAmount;
+        }
+      }
+    })
+
+    let barCtx = document.getElementById(`${bank}Chart`);
+    let lineCtx = document.getElementById(`${bank}LineChart`)
+
+    let positiveColor = 'rgba(54, 162, 235, 0.7)';
+
+    let color = budget.map((balance, index) => {
+      if (balance > 0) {
+        if (index <= this.state.currentDate.getDate()) {
+          return positiveColor;
+        } else {
+          return 'rgba(54, 162, 235, 0.3)';
+        }
+      } else {
+        return 'rgba(255, 0, 0, 0.5)';
+      }
+    });
+
+    var lineGraph = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Expenditure of ${bank} ($)`,
+            data: expenses,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 0, 0, 0.5)',
+            borderWidth: 1,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    var barGraph = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: `Current Monthly Balance of ${bank} ($)`,
+            data: budget,
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    var graphs = this.state.graphs;
+    graphs[bank] = [barGraph, lineGraph];
+
+    this.setState({
+      graphs
+    })
+
+    $(`#${bank}Chart`).css('display', 'inline-block');
+    $(`#${bank}LineChart`).css('display', 'inline-block');
   }
 
   renderBankGraph() {
@@ -190,7 +328,6 @@ class App extends React.Component {
     var bankBudget = 0;
     var that = this;
     this.state.bankBudget.forEach(function(account) {
-      // console.log('THIS IS THE STATE BANKBUDGET', that.state.bankBudget);
       if (account.balances.available !== null) {
         bankBudget += account.balances.available;
       } else {
@@ -208,11 +345,10 @@ class App extends React.Component {
 
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
-    }
-    for (let i = 0; i <= daysInMonth; i++) {
       budget.push(bankBudget);
       expenses.push(0);
     }
+
     for (let i = 0; i < this.state.bankOne.length; i++) {
       var expenseAmount = this.state.bankOne[i].amount;
       var date = this.state.bankOne[i].date.split('-');
@@ -231,7 +367,7 @@ class App extends React.Component {
       }
     }
     console.log('THIS IS THE EXPENSE ARRAY', expenses);
-    let barCtx = document.getElementById('bankBarChart');
+    let barCtx = document.getElementById('bankChart');
     let lineCtx = document.getElementById('bankLineChart');
 
     // console.log(barCtx)
@@ -308,7 +444,7 @@ class App extends React.Component {
       currentBankGraph: barGraph,
       currentBankLineGraph: lineGraph
     });
-    $('#bankBarChart').css('display', 'inline-block');
+    $('#bankChart').css('display', 'inline-block');
     $('#bankLineChart').css('display', 'inline-block');
   }
 
@@ -354,6 +490,8 @@ class App extends React.Component {
         expenseYear
       );
       if (expenseYear === year && expenseMonth === month) {
+        console.log('this is the expense amount being deducted', expenseAmount);
+        console.log('and this is the expense day', expenseDay);
         expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
@@ -367,10 +505,10 @@ class App extends React.Component {
         budget[j] = budget[j] - expenseAmount;
       }
     }
-    expenses[1] = totalRecExp;
+    // expenses[1] = totalRecExp;
     console.log(budget);
-    let barCtx = document.getElementById('barChart');
-    let lineCtx = document.getElementById('lineChart');
+    let barCtx = document.getElementById('balanceChart');
+    let lineCtx = document.getElementById('balanceLineChart');
     let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
@@ -446,8 +584,32 @@ class App extends React.Component {
     });
   }
 
-  renderDoughnutGraph() {
-
+  renderAverageExpensePie() {
+    var data = {
+      datasets: [{
+        label: 'Average US expenditure composition (Single)',
+        data: [12.4, 36.7, 15.9, 7.3, 8.9],
+        backgroundColor: [
+          'rgba(100,181,246 ,1)',
+          'rgba(77,182,172 ,1)',
+          '#FFEB3B',
+          'rgba(255,183,77 ,1)',
+          'rgba(229,115,115 ,1)'
+        ],
+      }],
+      labels:
+        ['Foods(%)', 'Housing(%)', 'Transportation(%)', 'Healthcare(%)', 'Insurance and Pension(%)']
+      ,
+    }
+    var ctx = document.getElementById('averageExpensePie');
+    var averageExpensePie = new Chart(ctx, {
+      type: 'pie',
+      data: data,
+      options: {
+        'animation.animateRotate': true,
+        'cutoutPercentage': '37',
+      },
+    })
   }
 
   currencySymbols() {
@@ -564,8 +726,35 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
-    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (this.state.daysInMonth - (new Date()).getDate()));
+    console.log('this is the budget', this.state.budget, 'this is the totalOneExpense', this.state.totalOneExpense, 'this is the totalRecExpense', this.state.totalRecExpense);
+
+    return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
+
+  analyzeExpenditure() {
+    return (
+      <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
+    )
+  }
+
+  analyzeBalance() {
+    if (this.calculateBalanceLeft() < 0) {
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
+      )
+    }
+    if (this.state.daysInMonth === this.state.currentDate.getDate()) {
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> left to spend or invest for this month<span style={{color:'red'}}>.</span></h2>
+      )
+    } else {
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
+      )
+    }
+  }
+
+  // <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
 
   render() {
     console.log('Avatar is: ', this.state.avatar);
@@ -591,7 +780,7 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-            <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+          <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
             <Route exact path="/" render={() => (
               <div>
@@ -603,10 +792,10 @@ class App extends React.Component {
                   <br/><br/><br/>
                 </div>
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
-                <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span></h2>
-                <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month</h2> <br /><br />
-                <Graph renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-                <canvas id='averageDoughnutChart'/>
+                {this.analyzeExpenditure()}
+                {this.analyzeBalance()}<br /><br />
+                <canvas id="averageExpensePie"/>
+                <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
               </div>
             )} />
             <Route path="/expense" render={() => (
@@ -620,7 +809,7 @@ class App extends React.Component {
                 <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
-                <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
+                <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
               </div>
             )}/>
             <Route path="/investor" render={() => (
@@ -644,7 +833,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
                 <br/><br/><br/>
-                <Plaid loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+                <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
               </div>
             )} />
           </Switch>

@@ -34,6 +34,7 @@ const userSchema = new Schema({
   imageUrl: String,
   plaidAccessToken: String,
   plaidItemId: String,
+  banks: [Schema.Types.Mixed],
 });
 
 userSchema.virtual('gravatar').get(function () {

@@ -15,7 +15,7 @@ class BarGraph extends React.Component {
   render() {
     return (
       <div>
-        <canvas id="barChart" />
+        <canvas id="balanceChart" />
       </div>
     );
   }
