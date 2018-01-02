@@ -87,9 +87,35 @@ app.post('/calculateNPV', function(req, res) {
       result += Math.pow((100 - discountRate) * 0.01, Number(yearMinusInfinity)) * earning;
     }
   })
-
   res.send(JSON.stringify(Math.round(result)));
-  res.end();
+})
+
+app.post('/getBanks', function(req, res) {
+  User.findOne({ email: req.body.email })
+  .then((user) => {
+    res.send(user.banks);
+  })
+  .catch((err) => {
+    res.status(400).json({ message:err });
+  })
+})
+
+app.post('/postBanks', function(req, res) {
+  var bank = req.body.bank;
+  var banks;
+  User.findOne({ email: req.body.email })
+  .then((user) => {
+    banks = user.banks || {};
+    banks[0][bank[0]] = bank.slice(1);
+    banks[0][bank[0]].push(user.plaidAccessToken);
+    banks[0][bank[0]].push(user.plaidItemId);
+    //we have to store the plaidAccessToken and plaidItemId for that particular bank for reuse of tokens
+    User.findOneAndUpdate({ email: req.body.email }, {
+      $set: { banks: banks }
+    }, (user) => {
+      res.send(user)
+    })
+  })
 })
 
 app.post('/updateBalance', function(req, res) {
@@ -97,9 +123,7 @@ app.post('/updateBalance', function(req, res) {
     {
       $set: { budget: req.body.budget, currency: req.body.currency }
     }, (err, user) => {
-      console.log(user);
-      res.send('success')
-      res.end();
+      res.send(user);
     }
   )
 })

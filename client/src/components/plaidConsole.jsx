@@ -16,6 +16,7 @@ class Plaid extends React.Component {
       acPlus: false,
       trPlus: false,
       baPlus: false,
+      counter: 0,
     };
    this.onClick = this.onClick.bind(this);
    this.getTransactions = this.getTransactions.bind(this);
@@ -25,6 +26,9 @@ class Plaid extends React.Component {
    this.renderBankInfo = this.renderBankInfo.bind(this);
    this.renderBankLogo = this.renderBankLogo.bind(this);
    this.renderTransactionsList = this.renderTransactionsList.bind(this);
+   this.postBanks = this.postBanks.bind(this);
+   this.getBanks = this.getBanks.bind(this);
+   this.renderAggregateBankLogos = this.renderAggregateBankLogos.bind(this);
   }
 
   componentDidMount() {
@@ -92,10 +96,45 @@ class Plaid extends React.Component {
         $(this).text('Transactions +');
       }
     })
+
+    this.getBanks();
   }
 
   onClick() {
     this.state.handler.open();
+  }
+
+  getBanks() {
+    var that = this;
+    axios.post('/getBanks', { email: this.props.email })
+    .then((response) => {
+      console.log('-----this is the bank we get from the database------', response.data)
+      var banks = response.data[0];
+      this.setState({
+        counter: Object.keys(banks).length
+      });
+      this.props.updateBanks(banks);
+      var aggregateAccounts = [];
+      var aggregateTransactions = [];
+      Object.keys(banks).forEach(function(bank) {
+        var accounts = banks[bank][0];
+        var transactions = banks[bank][1];
+        var totalAccount = 0;
+        aggregateAccounts = aggregateAccounts.concat(accounts);
+        aggregateTransactions = aggregateTransactions.concat(transactions);
+        that.props.renderSelectGraph(bank, accounts, transactions);
+      })
+      that.props.renderSelectGraph('Aggregate', aggregateAccounts, aggregateTransactions);
+      $('.Aggregate').toggle();
+    })
+  }
+
+  postBanks() {
+    var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions] };
+    axios.post('/postBanks', data)
+    .then((response) => {
+      console.log('************the bank information got stored in the database************')
+    })
   }
 
   getBankInfo() {
@@ -103,7 +142,9 @@ class Plaid extends React.Component {
       this.getItem(()=> {
         this.getTransactions(() => {
           console.log('these are the states', this.state.accounts, this.state.item, this.state.transactions);
+          this.postBanks();
           this.props.updateBankInfo(this.state.accounts, this.state.item, this.state.transactions);
+          // this.props.renderSelectGraph('bank', this.state.accounts, this.state.transactions)
           this.props.renderBankGraph();
         });
       });
@@ -216,6 +257,45 @@ class Plaid extends React.Component {
     }
   }
 
+  selectBankLogo(name) {
+    var name = name.toLowerCase().split(' ').join('');
+    return (
+      <div className="companyLogo" style={{width:'100%'}}>
+        <img style={{marginLeft: '42.5%', marginTop: '2.7%', marginBottom: '2.7%', width:'15%' }} src={'https://logo.clearbit.com/' + name + '.com'}/>
+      </div>
+    )
+  }
+
+  renderAggregateBankLogos() {
+    var banks = Object.keys(this.props.banks);
+    banks = banks.map((bank) => {
+      return bank.toLowerCase().split(' ').join('');
+    })
+    console.log('THESE ARE THE BANKS', banks);
+    var length = banks.length;
+    var array = [];
+    var grid_template_columns;
+    var gridCol = String(Math.round(100 / length), 1) + '%';
+    for (var i = 0; i < length; i++) {
+      array.push(gridCol)
+    }
+    grid_template_columns = array.join(' ');
+    if (length) {
+      return (
+        <div style={{display: 'grid', 'gridTemplateColumns': grid_template_columns}}>
+          {banks.map((bank) => {
+            console.log('THIS IS THE BANK', bank);
+            return (
+              <div>
+                <img className='aggregate-logo' style={{marginLeft: '31.5%', width: '37%'}} src={'https://logo.clearbit.com/' + bank + '.com'}/>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
    renderBankInfo() {
     if (!!this.state.item) {
       return (
@@ -226,6 +306,8 @@ class Plaid extends React.Component {
     }
   }
 
+
+
   render() {
     return (
       <div style={{ width:'100%', margin:'auto'}}>
@@ -235,7 +317,7 @@ class Plaid extends React.Component {
           <br /><br />
         </div>
         {this.renderBankLogo()}
-        <canvas style={{display: 'none'}} id='bankBarChart'/>
+        <canvas style={{display: 'none'}} id='bankChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
         {/*<MobileTearSheet/>*/}
 
@@ -249,11 +331,20 @@ class Plaid extends React.Component {
             {this.renderTransactionsList()}
           </div>
         </div>
-        {/*<div style={{display:'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
-          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Accounts</button>
-          <button  style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Item</button>
-          <button style={{margin:'auto'}} className="btn btn-primary" id="get-btn">Get Transactions</button>
-        </div>*/}
+        {this.renderAggregateBankLogos()}<br /><br />
+        <div style={{width: '70%', marginLeft:'15%', display: 'none'}} className="Aggregate">
+          <canvas className="bankCharts" id='AggregateChart' />
+          <canvas className="bankCharts" id='AggregateLineChart' />
+        </div> <br /><br /><br /><br />
+        {Object.keys(this.props.banks).map((bank) => {
+          return (
+            <div style={{width: '70%', marginLeft:'15%'}}>
+              {this.selectBankLogo(bank)}
+              <canvas className="bankCharts" id={bank + 'Chart'} />
+              <canvas className="bankCharts" id={bank + 'LineChart'} />
+            </div>
+          )
+        })}
       </div>
     );
   }
