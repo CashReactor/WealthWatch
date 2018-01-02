@@ -190,18 +190,17 @@ class NPVCalculator extends React.Component {
 
   }
 
+  switch() {
+    document.getElementById('ytplayer').setAttribute('src', "https://www.youtube.com/embed/VAWOrBlTqrY?enablejsapi=1")
+  }
+
   NPVmodal() {
-
-    var style = {
-
-    }
-
     return (
       <div style={{display:'inline-block', margin: '1vh'}}>
         <button onClick={() => this.animated.show()} className="btn aTagNPV" style={{textDecoration: 'none'}}>What is NPV?</button>
         <SkyLight
-          dialogStyles={style}
           hideOnOverlayClicked
+          afterClose={this.switch}
           ref={ref => this.animated = ref}
           // title="An overview of NPV"
           transitionDuration={500}
