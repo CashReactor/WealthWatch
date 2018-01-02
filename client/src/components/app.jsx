@@ -72,8 +72,6 @@ class App extends React.Component {
   componentDidMount() {
     this.updateUser();
 
-    console.log('THIS IS THE WINDOW LOCATION', window.location.href.slice(21));
-    console.log('THIS IS THE TOKENNNNN', this.state.currentEmail);
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
@@ -719,16 +717,15 @@ class App extends React.Component {
   }
 
   analyzeBalance() {
+    if (this.calculateBalanceLeft() < 0) {
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
+      )
+    }
     if (this.state.daysInMonth === this.state.currentDate.getDate()) {
-      if (this.calculateBalanceLeft() > 0) {
-        return (
-          <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> left to spend or invest for this month<span style={{color:'red'}}>.</span></h2>
-        )
-      } else {
-        return (
-          <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
-        )
-      }
+      return (
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> left to spend or invest for this month<span style={{color:'red'}}>.</span></h2>
+      )
     } else {
       return (
         <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
@@ -762,15 +759,10 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-<<<<<<< HEAD
-            <Avatar size={97} src="https://www.sideshowtoy.com/photo_903079_thumb.jpg" style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
-=======
-            <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
->>>>>>> Add server routes and client-side requests for storing / fetching linked & stored bank accounts
+          <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
             <Route exact path="/" render={() => (
               <div>
-                {/*<i style={{'font-size':'100px'}} className="material-icons">keyboard_arrow_right</i>*/}
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
                   <Link onClick={this.w3Click} to="/expense" className="bar-item">Expenses</Link>
