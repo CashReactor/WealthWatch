@@ -114,13 +114,18 @@ class Plaid extends React.Component {
         counter: Object.keys(banks).length
       });
       this.props.updateBanks(banks);
+      var aggregateAccounts = [];
+      var aggregateTransactions = [];
       Object.keys(banks).forEach(function(bank) {
         var accounts = banks[bank][0];
         var transactions = banks[bank][1];
         var totalAccount = 0;
-
+        aggregateAccounts = aggregateAccounts.concat(accounts);
+        aggregateTransactions = aggregateTransactions.concat(transactions);
         that.props.renderSelectGraph(bank, accounts, transactions);
       })
+      that.props.renderSelectGraph('Aggregate', aggregateAccounts, aggregateTransactions);
+      $('.Aggregate').toggle();
     })
   }
 
@@ -326,11 +331,11 @@ class Plaid extends React.Component {
             {this.renderTransactionsList()}
           </div>
         </div>
-        <div style={{display: 'none'}}>
-          <canvas className="bankCharts" id="aggregateChart" />
-          <canvas className="bankCharts" id="aggregateLineChart" />
-        </div>
-        {this.renderAggregateBankLogos()}<br /><br /><br /><br />
+        {this.renderAggregateBankLogos()}<br /><br />
+        <div style={{width: '70%', marginLeft:'15%', display: 'none'}} className="Aggregate">
+          <canvas className="bankCharts" id='AggregateChart' />
+          <canvas className="bankCharts" id='AggregateLineChart' />
+        </div> <br /><br /><br /><br />
         {Object.keys(this.props.banks).map((bank) => {
           return (
             <div style={{width: '70%', marginLeft:'15%'}}>

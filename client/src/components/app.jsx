@@ -148,15 +148,16 @@ class App extends React.Component {
         totalOneExpense,
         totalRecExpense
       })
-      if (window.location.href.slice(21) === '/') {
-        this.renderGraph();
-        this.renderAverageExpensePie();
-      }
+      //if (window.location.href.slice(21) === '/') {
+      this.renderGraph();
+      this.renderAverageExpensePie();
+      //
     })
   }
 
   renderSelectGraph(bank, accounts, transactions) {
-    console.log('THIS IS THE TRANSACTIONS', transactions)
+    console.log('THIS IS THE TRANSACTIONS', transactions);
+    console.log('THIS IS THE BANK NAME', bank);
 
     // $(`.loader${bank}`).toggle();
     // $(`.companyLogo${bank}`).toggle();
