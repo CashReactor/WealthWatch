@@ -65,4 +65,40 @@ expenseRouter.post('/fetchRecExpenses', (req, res) => {
   });
 });
 
+expenseRouter.delete('/oneExpense', (req, res) => {
+  const { user, expenseId } = req.query;
+  User.findOne({ email: user })
+    .then((user) => {
+      const { oneTime } = user;
+      for (let i = 0; i < oneTime.length; i++) {
+        if (oneTime[i]._id.toString() === expenseId) {
+          const deletedOneTime = oneTime.splice(i, 1);
+          user.save();
+          return deletedOneTime;
+        }
+      }
+    })
+    .then((deletedOneExpense) => {
+      res.status(200).json({ message: 'Expense deleted', data: deletedOneExpense });
+    });
+});
+
+expenseRouter.delete('/recExpense', (req, res) => {
+  const { user, expenseId } = req.query;
+  User.findOne({ email: user })
+    .then((user) => {
+      const { recurring } = user;
+      for (let i = 0; i < recurring.length; i++) {
+        if (recurring[i]._id.toString() === expenseId) {
+          const deletedRecurring = recurring.splice(i, 1);
+          user.save();
+          return deletedRecurring;
+        }
+      }
+    })
+    .then((deletedRecurringExpense) => {
+      res.status(200).json({ message: 'Expense deleted', data: deletedRecurringExpense });
+    });
+});
+
 module.exports.expense = expenseRouter;

@@ -67,6 +67,7 @@ class App extends React.Component {
     this.renderSelectGraph = this.renderSelectGraph.bind(this);
     this.analyzeExpenditure = this.analyzeExpenditure.bind(this);
     this.analyzeBalance = this.analyzeBalance.bind(this);
+    this.updateExpenseList = this.updateExpenseList.bind(this);
   }
 
   componentDidMount() {
@@ -105,13 +106,33 @@ class App extends React.Component {
 
   resetUser() {
     axios.post('/reset', { email: this.state.currentEmail })
-    .then((response) => {
-      this.updateUser();
-    })
+      .then((response) => {
+        this.updateUser();
+      });
   }
 
   updateCurrency(currency) {
     this.setState({ currency: currency });
+  }
+
+  updateExpenseList(type, id) {
+    if (type === 'one') {
+      const { one } = this.state;
+      for (let i = 0; i < one.length; i++) {
+        if (one[i]._id === id) {
+          one.splice(i, 1);
+          this.setState({ one });
+        }
+      }
+    } else if (type === 'recurring') {
+      const { rec } = this.state;
+      for (let i = 0; i < rec.length; i++) {
+        if (rec[i]._id === id) {
+          rec.splice(i, 1);
+          this.setState({ rec });
+        }
+      }
+    }
   }
 
   updateUser() {
@@ -788,7 +809,7 @@ class App extends React.Component {
                 <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
-                <ExpenseTable currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
+                <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
               </div>
             )}/>
             <Route path="/investor" render={() => (
