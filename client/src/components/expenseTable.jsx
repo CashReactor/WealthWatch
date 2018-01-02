@@ -113,7 +113,7 @@ class ExpenseTable extends React.Component {
                 <TableHeaderColumn
                   colSpan="4"
                   tooltip="Super Header"
-                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: 'rgba(77,182,172 ,1)' }}
+                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: '#0288D1' }}
                 >
                   Recurring Expenses
                 </TableHeaderColumn>
@@ -172,7 +172,7 @@ class ExpenseTable extends React.Component {
                 <TableHeaderColumn
                   colSpan="4"
                   tooltip="Super Header"
-                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: 'rgba(77,182,172 ,1)' }}
+                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: '#0288D1' }}
                 >
                   Non-Recurring Expenses
                 </TableHeaderColumn>

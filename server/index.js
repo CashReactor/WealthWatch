@@ -107,6 +107,9 @@ app.post('/postBanks', function(req, res) {
   .then((user) => {
     banks = user.banks || {};
     banks[0][bank[0]] = bank.slice(1);
+    banks[0][bank[0]].push(user.plaidAccessToken);
+    banks[0][bank[0]].push(user.plaidItemId);
+    //we have to store the plaidAccessToken and plaidItemId for that particular bank for reuse of tokens
     User.findOneAndUpdate({ email: req.body.email }, {
       $set: { banks: banks }
     }, (user) => {

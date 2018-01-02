@@ -129,14 +129,20 @@ class App extends React.Component {
         currency: response.data.currency,
         avatar: response.data.gravatar,
       });
-      console.log('THIS IS THE CURRENCY WE RECEIVE FROM THER SERVER', response.data.currency);
 
-      var totalOneExpense = this.state.one.map(function(expense) {
-        return expense.amount;
+      var totalOneExpense = this.state.one.map((expense) => {
+        if (new Date(expense.date).getMonth() + 1 === this.state.currentDate.getMonth() + 1) {
+          console.log('THIS IS THE MATCHED EXPENSE AMOUNT', expense.amount);
+          return expense.amount;
+        } else {
+          return 0;
+        }
       }).reduce((acc, cur) => (acc + cur));
       var totalRecExpense = this.state.rec.map(function(expense) {
         return expense.amount;
       }).reduce((acc, cur) => (acc + cur));
+
+
 
       this.setState({
         totalOneExpense,
@@ -150,6 +156,7 @@ class App extends React.Component {
   }
 
   renderSelectGraph(bank, accounts, transactions) {
+    console.log('THIS IS THE TRANSACTIONS', transactions)
 
     // $(`.loader${bank}`).toggle();
     // $(`.companyLogo${bank}`).toggle();
@@ -160,15 +167,6 @@ class App extends React.Component {
       this.state.graphs[bank][1].destroy();
     }
 
-    var bankBudget = 0;
-    accounts.forEach(function(account) {
-      if (account.balances.available !== null) {
-        bankBudget += account.balances.available;
-      } else {
-        bankBudget += account.balances.current;
-      }
-    })
-
     let days = [];
     let budget = [];
     let expenses = [];
@@ -177,9 +175,19 @@ class App extends React.Component {
     let year = this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
 
+    var totalBalance = 0;
+
+    accounts.forEach(function(account) {
+      if (account.balances.available) {
+        totalBalance += account.balances.available;
+      } else {
+        totalBalance += account.balances.current;
+      }
+    })
+
     for (let i = 0; i <= daysInMonth; i++) {
       days.push(i);
-      budget.push(bankBudget);
+      budget.push(totalBalance);
       expenses.push(0);
     }
 
@@ -339,7 +347,7 @@ class App extends React.Component {
       }
     }
     console.log('THIS IS THE EXPENSE ARRAY', expenses);
-    let barCtx = document.getElementById('bankBarChart');
+    let barCtx = document.getElementById('bankChart');
     let lineCtx = document.getElementById('bankLineChart');
 
     // console.log(barCtx)
@@ -416,7 +424,7 @@ class App extends React.Component {
       currentBankGraph: barGraph,
       currentBankLineGraph: lineGraph
     });
-    $('#bankBarChart').css('display', 'inline-block');
+    $('#bankChart').css('display', 'inline-block');
     $('#bankLineChart').css('display', 'inline-block');
   }
 
@@ -462,6 +470,8 @@ class App extends React.Component {
         expenseYear
       );
       if (expenseYear === year && expenseMonth === month) {
+        console.log('this is the expense amount being deducted', expenseAmount);
+        console.log('and this is the expense day', expenseDay);
         expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
@@ -475,10 +485,10 @@ class App extends React.Component {
         budget[j] = budget[j] - expenseAmount;
       }
     }
-    expenses[1] = totalRecExp;
+    // expenses[1] = totalRecExp;
     console.log(budget);
-    let barCtx = document.getElementById('barChart');
-    let lineCtx = document.getElementById('lineChart');
+    let barCtx = document.getElementById('balanceChart');
+    let lineCtx = document.getElementById('balanceLineChart');
     let updatedBudgets = budget;
     let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
@@ -696,6 +706,8 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
+    console.log('this is the budget', this.state.budget, 'this is the totalOneExpense', this.state.totalOneExpense, 'this is the totalRecExpense', this.state.totalRecExpense);
+
     return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
 

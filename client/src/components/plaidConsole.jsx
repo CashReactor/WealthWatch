@@ -28,6 +28,7 @@ class Plaid extends React.Component {
    this.renderTransactionsList = this.renderTransactionsList.bind(this);
    this.postBanks = this.postBanks.bind(this);
    this.getBanks = this.getBanks.bind(this);
+   this.renderAggregateBankLogos = this.renderAggregateBankLogos.bind(this);
   }
 
   componentDidMount() {
@@ -113,11 +114,11 @@ class Plaid extends React.Component {
         counter: Object.keys(banks).length
       });
       this.props.updateBanks(banks);
-      console.log('$$$$$$$$$$$$$$$$$$$', this.props.banks);
       Object.keys(banks).forEach(function(bank) {
-        console.log('WWWWWWWWWWWWWW', bank);
         var accounts = banks[bank][0];
         var transactions = banks[bank][1];
+        var totalAccount = 0;
+
         that.props.renderSelectGraph(bank, accounts, transactions);
       })
     })
@@ -138,6 +139,7 @@ class Plaid extends React.Component {
           console.log('these are the states', this.state.accounts, this.state.item, this.state.transactions);
           this.postBanks();
           this.props.updateBankInfo(this.state.accounts, this.state.item, this.state.transactions);
+          // this.props.renderSelectGraph('bank', this.state.accounts, this.state.transactions)
           this.props.renderBankGraph();
         });
       });
@@ -254,9 +256,39 @@ class Plaid extends React.Component {
     var name = name.toLowerCase().split(' ').join('');
     return (
       <div className="companyLogo" style={{width:'100%'}}>
-        <img style={{marginLeft: '50%', marginTop: '7%', marginBottom: '7%', transform: 'translate(-50%, 0)'}} src={'https://logo.clearbit.com/' + name + '.com'}/>
+        <img style={{marginLeft: '42.5%', marginTop: '2.7%', marginBottom: '2.7%', width:'15%' }} src={'https://logo.clearbit.com/' + name + '.com'}/>
       </div>
     )
+  }
+
+  renderAggregateBankLogos() {
+    var banks = Object.keys(this.props.banks);
+    banks = banks.map((bank) => {
+      return bank.toLowerCase().split(' ').join('');
+    })
+    console.log('THESE ARE THE BANKS', banks);
+    var length = banks.length;
+    var array = [];
+    var grid_template_columns;
+    var gridCol = String(Math.round(100 / length), 1) + '%';
+    for (var i = 0; i < length; i++) {
+      array.push(gridCol)
+    }
+    grid_template_columns = array.join(' ');
+    if (length) {
+      return (
+        <div style={{display: 'grid', 'gridTemplateColumns': grid_template_columns}}>
+          {banks.map((bank) => {
+            console.log('THIS IS THE BANK', bank);
+            return (
+              <div>
+                <img className='aggregate-logo' style={{marginLeft: '31.5%', width: '37%'}} src={'https://logo.clearbit.com/' + bank + '.com'}/>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
   }
 
    renderBankInfo() {
@@ -269,6 +301,8 @@ class Plaid extends React.Component {
     }
   }
 
+
+
   render() {
     return (
       <div style={{ width:'100%', margin:'auto'}}>
@@ -278,7 +312,7 @@ class Plaid extends React.Component {
           <br /><br />
         </div>
         {this.renderBankLogo()}
-        <canvas style={{display: 'none'}} id='bankBarChart'/>
+        <canvas style={{display: 'none'}} id='bankChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
         {/*<MobileTearSheet/>*/}
 
@@ -292,9 +326,14 @@ class Plaid extends React.Component {
             {this.renderTransactionsList()}
           </div>
         </div>
+        <div style={{display: 'none'}}>
+          <canvas className="bankCharts" id="aggregateChart" />
+          <canvas className="bankCharts" id="aggregateLineChart" />
+        </div>
+        {this.renderAggregateBankLogos()}<br /><br /><br /><br />
         {Object.keys(this.props.banks).map((bank) => {
           return (
-            <div>
+            <div style={{width: '70%', marginLeft:'15%'}}>
               {this.selectBankLogo(bank)}
               <canvas className="bankCharts" id={bank + 'Chart'} />
               <canvas className="bankCharts" id={bank + 'LineChart'} />

@@ -10,6 +10,16 @@ img {
   width: 100%;
 }
 
+.aggregate-logo:hover {
+  border: 7px !important;
+  border-color: lightblue !important;
+  transition: border 1s !important;
+}
+
+.companyLogo {
+  display: block !important;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 50% 50% !important;
@@ -28,9 +38,14 @@ img {
 }
 
 .bankCharts {
-  width: 70% !important;
+  width: 100% !important;
   height: auto !important;
-  margin-left: 15%;
+/*   margin-left: 15%;
+ */}
+
+ #bank-list {
+  display: grid;
+  grid-template-columns: 10% 45% 45%;
 }
 
 .bankInfo {
@@ -41,7 +56,7 @@ img {
   margin: 7% auto;
 }
 
-#bankBarChart, #bankLineChart {
+#bankChart, #bankLineChart {
   width: 70% !important;
   height: auto !important;
   margin-left: 15%;
@@ -144,6 +159,12 @@ img {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* .aggregate-logo:hover {
+  -webkit-transform: scale(1.7);
+  -ms-transform: scale(1.7);
+  transform: scale(1.7);
+ } */
 
 .widget {
   border-style: none;

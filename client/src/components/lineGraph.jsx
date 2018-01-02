@@ -13,7 +13,7 @@ class LineGraph extends React.Component {
   render() {
     return (
       <div id="LineChart">
-        <canvas id="lineChart" />
+        <canvas id="balanceLineChart" />
       </div>
     );
   }
