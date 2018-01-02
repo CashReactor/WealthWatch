@@ -1,14 +1,8 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import MobileTearSheet from './mobileTearSheet.jsx';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Button } from 'react-bootstrap';
+import axios from 'axios';
 import ScrollArea from 'react-scrollbar';
 
 const styles = {
@@ -37,9 +31,12 @@ const styles = {
     textAlign: 'center',
     margin: '10px 11.5% 0 11.5%',
     padding: '10px',
-    height: '100%'
+    height: '100%',
   },
-}
+  deleteButton: {
+    marginLeft: '15em',
+  },
+};
 
 class ExpenseTable extends React.Component {
   constructor(props) {
@@ -57,15 +54,17 @@ class ExpenseTable extends React.Component {
       height: '300px',
       width: '80%',
       marginLeft: '10%',
-      marginRight: '10%'
-    }
+      marginRight: '10%',
+    };
 
     this.convertDate = this.convertDate.bind(this);
     this.convertCategory = this.convertCategory.bind(this);
+    this.deleteOneTimeExpense = this.deleteOneTimeExpense.bind(this);
+    this.deleteRecurringExpense = this.deleteRecurringExpense.bind(this);
   }
 
   convertDate(x) {
-    const str = '' + new Date(x);
+    const str = `${  new Date(x)}`;
     const arr = str.split('');
     arr.splice(25, 9);
     const res = arr.join('');
@@ -83,126 +82,166 @@ class ExpenseTable extends React.Component {
       return 'Utilities';
     } else if (x == '5') {
       return 'Others';
-    } else {
+    } 
       return 'No Category Specified';
-    }
+    
+  }
+
+  deleteOneTimeExpense(e) {
+    const [email, expenseId] = e.target.id.split('_');
+    axios.delete(`/api/expense/oneExpense?user=${email}&expenseId=${expenseId}`).then((response) => {
+      if (response.status === 200) {
+        this.props.updateExpenseList('one', expenseId);
+      }
+    });
+  }
+
+  deleteRecurringExpense(e) {
+    const [email, expenseId] = e.target.id.split('_');
+    axios.delete(`/api/expense/recExpense?user=${email}&expenseId=${expenseId}`).then((response) => {
+      if (response.status === 200) {
+        this.props.updateExpenseList('recurring', expenseId);
+      }
+    });
   }
 
   render() {
+    console.log('Expenses props coming from the app: ', this.props);
     return (
       <div>
         <Paper style={styles.paper}>
-        <div
-        >
-          <Table style={{width: '80%', margin:'auto'}}
-            height={this.state.height}
-            width={this.state.width}
-            marginRight={this.state.marginRight}
-            marginLeft={this.state.marginLeft}
-            fixedHeader={this.state.fixedHeader}
-            fixedFooter={this.state.fixedFooter}
-            selectable={this.state.selectable}
-            multiSelectable={this.state.multiSelectable}
-          >
-            <TableHeader
-              displaySelectAll={this.state.showCheckboxes}
-              adjustForCheckbox={this.state.showCheckboxes}
-              enableSelectAll={this.state.enableSelectAll}
+          <div>
+            <Table
+              style={{ width: '80%', margin: 'auto' }}
+              height={this.state.height}
+              width={this.state.width}
+              marginRight={this.state.marginRight}
+              marginLeft={this.state.marginLeft}
+              fixedHeader={this.state.fixedHeader}
+              fixedFooter={this.state.fixedFooter}
+              selectable={this.state.selectable}
+              multiSelectable={this.state.multiSelectable}
             >
-              <TableRow>
-                <TableHeaderColumn
-                  colSpan="4"
-                  tooltip="Super Header"
-                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: '#0288D1' }}
-                >
-                  Recurring Expenses
-                </TableHeaderColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
-                  Date
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
-                  Expense
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
-                  Category
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
-                  Amount ({this.props.currencySymbols()})
-                </TableRowColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={this.state.showCheckboxes}>
-              {this.props.rec.map((expense, index) => (
-                <TableRow key={index}>
-                  <TableRowColumn>{this.convertDate(expense.startDate)}</TableRowColumn>
-                  <TableRowColumn>{expense.expense}</TableRowColumn>
-                  <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
-                  <TableRowColumn>{expense.amount}</TableRowColumn>
+              <TableHeader
+                displaySelectAll={this.state.showCheckboxes}
+                adjustForCheckbox={this.state.showCheckboxes}
+                enableSelectAll={this.state.enableSelectAll}
+              >
+                <TableRow>
+                  <TableHeaderColumn
+                    colSpan="4"
+                    tooltip="Super Header"
+                    style={{
+                      margin: '10px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      fontSize: '2.5em',
+                      color: 'rgba(77,182,172 ,1)',
+                    }}
+                  >
+                    Recurring Expenses
+                  </TableHeaderColumn>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+                <TableRow>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Date</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Expense</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Category</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>
+                    Amount ({this.props.currencySymbols()})
+                  </TableRowColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={this.state.showCheckboxes}>
+                {this.props.rec.map(expense => (
+                  <TableRow key={expense._id}>
+                    <TableRowColumn>{this.convertDate(expense.startDate)}</TableRowColumn>
+                    <TableRowColumn>{expense.expense}</TableRowColumn>
+                    <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
+                    <TableRowColumn>
+                      {expense.amount}
+                      <Button
+                        id={`${this.props.currentEmail}_${expense._id}`}
+                        style={styles.deleteButton}
+                        bsStyle="danger"
+                        onClick={this.deleteRecurringExpense}
+                      >
+                        X
+                      </Button>
+                    </TableRowColumn>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Paper>
 
-        <br /><br /><br />
+        <br />
+        <br />
+        <br />
 
         <div>
-        <Paper
-          style={styles.paper}
-        >
-          <Table style={{width: '80%', margin:'auto'}}
-            height={this.state.height}
-            width={this.state.width}
-            marginRight={this.state.marginRight}
-            marginLeft={this.state.marginLeft}
-            fixedHeader={this.state.fixedHeader}
-            fixedFooter={this.state.fixedFooter}
-            selectable={this.state.selectable}
-            multiSelectable={this.state.multiSelectable}
-          >
-            <TableHeader
-              displaySelectAll={this.state.showCheckboxes}
-              adjustForCheckbox={this.state.showCheckboxes}
-              enableSelectAll={this.state.enableSelectAll}
+          <Paper style={styles.paper}>
+            <Table
+              style={{ width: '80%', margin: 'auto' }}
+              height={this.state.height}
+              width={this.state.width}
+              marginRight={this.state.marginRight}
+              marginLeft={this.state.marginLeft}
+              fixedHeader={this.state.fixedHeader}
+              fixedFooter={this.state.fixedFooter}
+              selectable={this.state.selectable}
+              multiSelectable={this.state.multiSelectable}
             >
-              <TableRow>
-                <TableHeaderColumn
-                  colSpan="4"
-                  tooltip="Super Header"
-                  style={{ margin: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '2.5em', color: '#0288D1' }}
-                >
-                  Non-Recurring Expenses
-                </TableHeaderColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
-                  Date
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em', }}>
-                  Expense
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
-                  Category
-                </TableRowColumn>
-                <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em',  }}>
-                  Amount ({this.props.currencySymbols()})
-                </TableRowColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={this.state.showCheckboxes}>
-              {this.props.one.map((expense, index) => (
-                <TableRow key={index}>
-                  <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
-                  <TableRowColumn>{expense.expense}</TableRowColumn>
-                  <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
-                  <TableRowColumn>{expense.amount}</TableRowColumn>
+              <TableHeader
+                displaySelectAll={this.state.showCheckboxes}
+                adjustForCheckbox={this.state.showCheckboxes}
+                enableSelectAll={this.state.enableSelectAll}
+              >
+                <TableRow>
+                  <TableHeaderColumn
+                    colSpan="4"
+                    tooltip="Super Header"
+                    style={{
+                      margin: '10px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      fontSize: '2.5em',
+                      color: 'rgba(77,182,172 ,1)',
+                    }}
+                  >
+                    Non-Recurring Expenses
+                  </TableHeaderColumn>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                <TableRow>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Date</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Expense</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Category</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>
+                    Amount ({this.props.currencySymbols()})
+                  </TableRowColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={this.state.showCheckboxes}>
+                {this.props.one.map(expense => (
+                  <TableRow key={expense._id}>
+                    <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
+                    <TableRowColumn>{expense.expense}</TableRowColumn>
+                    <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
+                    <TableRowColumn>
+                      {expense.amount}
+                      <Button
+                          id={`${this.props.currentEmail}_${expense._id}`}
+                          style={styles.deleteButton}
+                          bsStyle="danger"
+                          onClick={this.deleteOneTimeExpense}
+                      >
+                        X
+                      </Button>
+                    </TableRowColumn>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </Paper>
         </div>
       </div>
