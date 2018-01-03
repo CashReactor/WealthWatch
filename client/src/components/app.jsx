@@ -757,7 +757,6 @@ class App extends React.Component {
   // <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
 
   render() {
-    console.log('Avatar is: ', this.state.avatar);
     if (!this.state.loggedIn) {
       return (
         <div>
