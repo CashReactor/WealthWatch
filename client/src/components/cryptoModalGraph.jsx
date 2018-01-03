@@ -38,7 +38,7 @@ class CryptoModalGraph extends React.Component {
       data: {
         labels: xLabels,
         datasets: [{
-          label: 'currency',
+          label: 'Price',
           data: prices,
           backgroundColor: 'rgba(0,0,255,0.5)',
           borderColor: 'rgba(0,0,255,0.5)',
@@ -51,7 +51,6 @@ class CryptoModalGraph extends React.Component {
   render() {
     return (
       <div>
-        Here is the GRAPH
         <canvas id="modalLine" />
       </div>
     );
