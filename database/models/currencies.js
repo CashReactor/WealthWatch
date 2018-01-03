@@ -17,5 +17,17 @@ const physicalCurrencySchema = new mongoose.Schema({
   name: String,
 });
 
+const cryptoCurrencyListSchema = new mongoose.Schema({
+  name: String,
+  symbol: String,
+  recentSeries: [
+    {
+      date: String,
+      price: Number,
+    },
+  ],
+});
+
 module.exports.DigitalCurrency = mongoose.model('DigitalCurrency', digitalCurrencySchema);
 module.exports.PhysicalCurrency = mongoose.model('PhysicalCurrency', physicalCurrencySchema);
+module.exports.CryptoCurrencyList = mongoose.model('CryptoCurrencyList', cryptoCurrencyListSchema);
