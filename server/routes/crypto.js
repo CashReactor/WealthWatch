@@ -1,7 +1,7 @@
 const express = require('express');
 const cryptoRouter = express.Router();
 const axios = require('axios');
-const { DigitalCurrency } = require('../../database/models/currencies.js');
+const { DigitalCurrency, CryptoCurrencyList } = require('../../database/models/currencies.js');
 
 cryptoRouter.get('/getAllCryptoCurrencies', (req, res) => {
   DigitalCurrency.find()
@@ -14,7 +14,6 @@ cryptoRouter.get('/getAllCryptoCurrencies', (req, res) => {
 });
 
 cryptoRouter.get('/getCrypto', (req, res) => {
-  // console.log('req.body in crypto::::', req.query.code);
   const symbol = req.query.code;
   const market = 'USD';
   const apiKey = process.env.ALPHA_VANTAGE;
@@ -22,8 +21,6 @@ cryptoRouter.get('/getCrypto', (req, res) => {
     market
   }&apikey=${apiKey}`;
   axios.get(alphaVantage).then((response) => {
-    console.log('resp::::', response);
-    console.log('sending data for crypto-currency');
     res.status(200).json({ message: 'Data Found', data: response.data });
   });
 });
@@ -62,7 +59,6 @@ cryptoRouter.get('/getNews', (req, res) => {
 });
 
 cryptoRouter.get('/getSentiment', (req, res) => {
-  console.log('value:::', req.query.value)
   const currency = req.query.value;
   const sentimentLink = `https://api.newsapi.aylien.com/api/v1/trends?field=sentiment.title.polarity&text=${currency}&published_at.start=NOW-30DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`;
   const aylieanId = process.env.X_AYLIEN_NewsAPI_Application_ID;
@@ -72,18 +68,39 @@ cryptoRouter.get('/getSentiment', (req, res) => {
       headers: { "X-AYLIEN-NewsAPI-Application-ID": aylieanId, "X-AYLIEN-NewsAPI-Application-Key": aylieanKey }
     })
     .then((response) => {
-      console.log('response::::', response.data);
       const sentiment = response.data.trends;
       const total = sentiment[0].count + sentiment[1].count + sentiment[2].count;
+      const round = (value, decimals) => {
+        return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+      }
       const portions = {
-        neutral: Math.floor(sentiment[0].count/total*100)/100,
-        negative: Math.floor(sentiment[1].count/total * 100)/100,
-        positive: Math.floor(sentiment[2].count/total * 100)/100,
+        neutral: Math.round(sentiment[0].count/total*100),
+        negative: Math.round(sentiment[1].count/total * 100),
+        positive: Math.round(sentiment[2].count/total * 100),
       };
+      console.log('portions: ', portions);
       res.json(portions);
     });
 });
 
-cryptoRouter.get('/getSymbol', (req, res) => {});
+cryptoRouter.post('/saveCurrency', (req, res) => {
+  const receivedData = req.body;
+  // console.log('receivedData:::::::::::: ', receivedData);
+  CryptoCurrencyList.findOne({name: receivedData.name})
+    .then((currency) => {
+      if(!currency) {
+        const savingData = new CryptoCurrencyList(receivedData);
+        savingData.save((err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+        console.log('Saved!');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 module.exports.crypto = cryptoRouter;
