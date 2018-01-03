@@ -162,6 +162,7 @@ class RetirementCalculator extends React.Component {
     return (
       <div>
         <Paper style={style}>
+          <canvas id="retirementCalculator"></canvas>
           {this.startAge()}
           {this.retireAge()}
           {this.income()}

@@ -817,7 +817,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
                 </div>
                 <br/><br/><br/>
-                <RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>
+                {/*<RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>*/}
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
                 <button 
                   onClick={(event) => {this.setLogoutState(event, props.history)} } 
