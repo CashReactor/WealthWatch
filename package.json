@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --config ./webpack.config.js --progress --colors",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "start-server-dev": "NODE_ENV=development nodemon server/index.js --inspect",
