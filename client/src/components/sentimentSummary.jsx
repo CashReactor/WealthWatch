@@ -1,37 +1,49 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import { ProgressBar, Button } from 'react-bootstrap';
 
 class SentimentSummary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      positive: 0,
+      negative: 0,
+      neutral: 0,
+    };
+    this.updateSentiments = this.updateSentiments.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    console.log('props:::', this.props.sentiments);
+    this.updateSentiments();
+  }
+
+  updateSentiments() {
+    this.setState({
+      positive: this.props.sentiments.positive,
+      negative: this.props.sentiments.negative,
+      neutral: this.props.sentiments.neutral,
+    });
   }
 
   render() {
-    console.log(this.props.sentiments);
+    console.log('sentiments update states::: ', this.state);
     return (
-      <p>
-        Neutral:
-        {this.props.sentiments.neutral}
-        <br />
-        positive:
-        {this.props.sentiments.positive}
-        <br />
-        negative:
-        {this.props.sentiments.negative}
-      </p>
+      <div>
+        Sentiments: <br />
+        <Button bsSize="xsmall" bsStyle="info">Positive</Button>
+        <Button bsSize="xsmall" bsStyle="danger">Negative</Button>
+        <Button bsSize="xsmall" bsStyle="warning">Neutral</Button>
+        <br /><br />
+        <ProgressBar>
+          <ProgressBar active bsStyle="info" now={this.state.positive} key={1} />
+          <ProgressBar active bsStyle="danger" now={this.state.negative} key={2} />
+          <ProgressBar active bsStyle="warning" now={this.state.neutral} key={3} />
+        </ProgressBar>
+      </div>
     );
   }
 }
 
 export default SentimentSummary;
 
-// const SentimentSummary = (props) => {
-//   showSentiments() {
-//     const
-//   }
-//   return (
-//     <div>
-//       {props.}
-//     </div>
-//   );
-// };
