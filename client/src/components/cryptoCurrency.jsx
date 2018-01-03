@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal } from 'react-bootstrap';
-import CryptoCurrencyDetails from './cryptoCurrencyDetails.jsx';
+import { Modal, ListGroup, ListGroupItem } from 'react-bootstrap';
 import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
 import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
@@ -22,8 +21,10 @@ class CryptoCurrency extends React.Component {
       },
       cryptoNews: [],
       sentiments: {},
+      savedCurrencyLists: [],
     };
 
+    this.onAdd = this.onAdd.bind(this);
     this.onChange = this.onChange.bind(this);
     this.getSentiment = this.getSentiment.bind(this);
     this.newsSearch = this.newsSearch.bind(this);
@@ -40,7 +41,7 @@ class CryptoCurrency extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/crypto/getAllCryptoCurrencies').then(response => {
+    axios.get('/api/crypto/getAllCryptoCurrencies').then((response) => {
       // console.log('all crypto currencies::: ', response.data);
       this.setState({
         cryptoCurrencyList: response.data,
@@ -105,6 +106,49 @@ class CryptoCurrency extends React.Component {
     this.getSentiment();
   }
 
+  onAdd() {
+    // const dates = Object.keys(this.state.cryptoData.timeSeries);
+    // const recentDate = dates[0];
+    // const lastDay = dates[1];
+    const name = this.state.cryptoData.metaData['3. Digital Currency Name'];
+    const symbol = this.state.cryptoData.metaData['4. Market Code'];
+    const timeSeries = this.state.cryptoData.timeSeries;
+    console.log('timeSeries::::: ', timeSeries);
+    const timeArray = Object.keys(timeSeries);
+    const length = timeArray.length;
+    const recentSeries = [];
+    const lastInfo = timeSeries[timeArray[length-1]];
+    console.log("LastInfo::: ", lastInfo);//can get closing price
+
+    for(let i = 0; i < 31; i++) {
+      let time = timeArray[i];
+      recentSeries.push( { date: time, price: timeSeries[timeArray[i]] });
+    }
+
+    // const price = this.state.cryptoData.timeSeries[recentDate]['4a. close (USD)'];
+    // const previousPrice = this.state.cryptoData.timeSeries[lastDay]['4a. close (USD)'];
+    // const difference = (price - previousPrice) / previousPrice;
+    // const percentageDifference;
+    const currency = {
+      name,
+      symbol,
+      recentSeries,
+    }
+    this.setState({
+      savedCurrencyLists: [...this.state.savedCurrencyLists, currency],
+    }, () => {
+      // console.log('SAVED CURRENCY LISTS::::::::', name);
+      // const nameLists = this.state.savedCurrencyLists;
+      axios.post('/api/crypto/saveCurrency', { name, symbol, recentSeries })
+        .then((response) => {
+          // console.log('response for adding:::', response)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    });
+  }
+
   open() {
     this.setState({
       showModal: true,
@@ -120,22 +164,24 @@ class CryptoCurrency extends React.Component {
     return (
       <div className="modal">
         <Modal show={this.state.showModal} onHide={this.toggleModal}>
-          <Modal.Header>This is Modal Header</Modal.Header>
+          <Modal.Header>
+            <Modal.Title>
+              {this.state.cryptoData.metaData['3. Digital Currency Name']}
+            </Modal.Title>
+          </Modal.Header>
           <Modal.Body>
-            <CryptoModalGraph timeSeries={this.state.cryptoData.timeSeries} open={this.open} close={this.close} />
-            <CryptoCurrencyDetails data={this.state.cryptoData} />
+            <CryptoModalGraph timeSeries={this.state.cryptoData.timeSeries} />
             <SentimentSummary sentiments={this.state.sentiments} />
             <CryptoCurrencyNews stories={this.state.cryptoNews} />
           </Modal.Body>
           <Modal.Footer>
-            <button> Add </button>
+            <button onClick={this.onAdd}> Add </button>
             <button onClick={this.close}> Cancel </button>
           </Modal.Footer>
         </Modal>
       </div>
     );
   }
-  
 
   getSuggestions(value) {
     const inputValue = value.trim().toLowerCase();
@@ -164,7 +210,6 @@ class CryptoCurrency extends React.Component {
   }
 
   render() {
-    console.log('cryptoCurrency timeSeries: ', this.state.cryptoData.timeSeries);
     const inputProps = {
       placeholder: 'Type it!',
       value: this.state.search,
@@ -182,6 +227,9 @@ class CryptoCurrency extends React.Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
+        <ListGroup>
+          <ListGroupItem href="">Bitcoin</ListGroupItem>
+        </ListGroup>
         <button onClick={this.toggleModal}>Search</button>
         {this.popOutSearch()}
       </div>
