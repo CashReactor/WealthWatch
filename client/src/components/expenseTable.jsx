@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import ScrollArea from 'react-scrollbar';
@@ -36,12 +37,22 @@ const styles = {
   deleteButton: {
     marginLeft: '15em',
   },
+  tableHeader: {
+    general: {
+      marginLeft: '-1.2em',
+    },
+    date: {
+      marginLeft: '-1.8em',
+    },
+  },
 };
 
 class ExpenseTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      oneExpenses: [],
+      recExpenses: [],
       fixedHeader: true,
       fixedFooter: false,
       stripedRows: false,
@@ -59,12 +70,21 @@ class ExpenseTable extends React.Component {
 
     this.convertDate = this.convertDate.bind(this);
     this.convertCategory = this.convertCategory.bind(this);
+    this.setExpensesState = this.setExpensesState.bind(this);
     this.deleteOneTimeExpense = this.deleteOneTimeExpense.bind(this);
     this.deleteRecurringExpense = this.deleteRecurringExpense.bind(this);
+    this.sortHelper = this.sortHelper.bind(this);
+    this.sortOneTable = this.sortOneTable.bind(this);
+    this.sortRecurringTable = this.sortRecurringTable.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    const { one, rec } = this.props;
+    this.setExpensesState(one, rec);
   }
 
   convertDate(x) {
-    const str = `${  new Date(x)}`;
+    const str = `${new Date(x)}`;
     const arr = str.split('');
     arr.splice(25, 9);
     const res = arr.join('');
@@ -82,9 +102,8 @@ class ExpenseTable extends React.Component {
       return 'Utilities';
     } else if (x == '5') {
       return 'Others';
-    } 
-      return 'No Category Specified';
-    
+    }
+    return 'No Category Specified';
   }
 
   deleteOneTimeExpense(e) {
@@ -102,6 +121,49 @@ class ExpenseTable extends React.Component {
       if (response.status === 200) {
         this.props.updateExpenseList('recurring', expenseId);
       }
+    });
+  }
+
+  sortRecurringTable(e) {
+    this.sortHelper(e, 'recExpenses');
+  }
+
+  sortOneTable(e) {
+    this.sortHelper(e, 'oneExpenses');
+  }
+
+  sortHelper(e, type) {
+    const expenseType = type;
+    const sortedBy = e.target.innerHTML.toLowerCase();
+    const expenses = this.state[expenseType];
+    if (sortedBy === 'date') {
+      expenses.sort((a, b) => {
+        return new Date(a.startDate) - new Date(b.startDate);
+      });
+    } else if (sortedBy === 'expense' || sortedBy === 'category') {
+      expenses.sort((a, b) => {
+        const expenseA = a[sortedBy].toUpperCase();
+        const expenseB = b[sortedBy].toUpperCase();
+        if (expenseA < expenseB) {
+          return -1;
+        }
+        if (expenseA > expenseB) {
+          return 1;
+        }
+      });
+    } else if (sortedBy === 'amount') {
+      expenses.sort((a, b) => {
+        return a.amount - b.amount;
+      });
+    }
+
+    this.setState({ [expenseType]: expenses });
+  }
+
+  setExpensesState(one = [], rec = []) {
+    this.setState({
+      oneExpenses: one,
+      recExpenses: rec,
     });
   }
 
@@ -129,7 +191,7 @@ class ExpenseTable extends React.Component {
               >
                 <TableRow>
                   <TableHeaderColumn
-                    colSpan="4"
+                    colSpan="5"
                     tooltip="Super Header"
                     style={{
                       margin: '10px',
@@ -143,27 +205,30 @@ class ExpenseTable extends React.Component {
                   </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Date</TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Expense</TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Category</TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Date" onClick={this.sortRecurringTable} hoverColor="white" style={styles.tableHeader.date} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Expense" onClick={this.sortRecurringTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Category" onClick={this.sortRecurringTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
                   <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>
-                    Amount ({this.props.currencySymbols()})
+                    <FlatButton label="Amount" onClick={this.sortRecurringTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} />
                   </TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }} ><FlatButton label="" /></TableRowColumn>
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={this.state.showCheckboxes}>
-                {this.props.rec.map(expense => (
+                {this.state.recExpenses.map(expense => (
                   <TableRow key={expense._id}>
                     <TableRowColumn>{this.convertDate(expense.startDate)}</TableRowColumn>
                     <TableRowColumn>{expense.expense}</TableRowColumn>
                     <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
                     <TableRowColumn>
                       {expense.amount}
+                    </TableRowColumn>
+                    <TableRowColumn>
                       <Button
                         id={`${this.props.currentEmail}_${expense._id}`}
-                        style={styles.deleteButton}
                         bsStyle="danger"
                         onClick={this.deleteRecurringExpense}
+                        style={styles.deleteButton}
                       >
                         X
                       </Button>
@@ -199,7 +264,7 @@ class ExpenseTable extends React.Component {
               >
                 <TableRow>
                   <TableHeaderColumn
-                    colSpan="4"
+                    colSpan="5"
                     tooltip="Super Header"
                     style={{
                       margin: '10px',
@@ -213,27 +278,30 @@ class ExpenseTable extends React.Component {
                   </TableHeaderColumn>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Date</TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Expense</TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>Category</TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>
-                    Amount ({this.props.currencySymbols()})
+                  <TableRowColumn id="oneDate" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Date" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.date} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneExpense" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Expense" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneCategory" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Category" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneAmount" style={{ fontWeight: 'bold', fontSize: '1em' }}>
+                    <FlatButton label="Amount" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} />
                   </TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}> </TableRowColumn>
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={this.state.showCheckboxes}>
-                {this.props.one.map(expense => (
+                {this.state.oneExpenses.map(expense => (
                   <TableRow key={expense._id}>
                     <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
                     <TableRowColumn>{expense.expense}</TableRowColumn>
                     <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
                     <TableRowColumn>
                       {expense.amount}
+                    </TableRowColumn>
+                    <TableRowColumn>
                       <Button
-                          id={`${this.props.currentEmail}_${expense._id}`}
-                          style={styles.deleteButton}
-                          bsStyle="danger"
-                          onClick={this.deleteOneTimeExpense}
+                        id={`${this.props.currentEmail}_${expense._id}`}
+                        style={styles.deleteButton}
+                        bsStyle="danger"
+                        onClick={this.deleteOneTimeExpense}
                       >
                         X
                       </Button>
