@@ -22,6 +22,7 @@ class CryptoCurrency extends React.Component {
       cryptoNews: [],
       sentiments: {},
       savedCurrencyLists: [],
+      databaseCurrencyLists: [],
     };
 
     this.onAdd = this.onAdd.bind(this);
@@ -41,6 +42,15 @@ class CryptoCurrency extends React.Component {
   }
 
   componentDidMount() {
+    axios.get('/api/crypto/getCryptoCurrencyDatabase').then((response) => {
+      console.log('currency list response!!!!!!!!', response);
+      this.setState({
+        databaseCurrencyLists: response.data,
+      });
+    }).catch((err) => {
+      console.log(err);
+    });
+
     axios.get('/api/crypto/getAllCryptoCurrencies').then((response) => {
       // console.log('all crypto currencies::: ', response.data);
       this.setState({
@@ -113,18 +123,17 @@ class CryptoCurrency extends React.Component {
     const name = this.state.cryptoData.metaData['3. Digital Currency Name'];
     const symbol = this.state.cryptoData.metaData['4. Market Code'];
     const timeSeries = this.state.cryptoData.timeSeries;
-    console.log('timeSeries::::: ', timeSeries);
+    // console.log('timeSeries::::: ', timeSeries);
     const timeArray = Object.keys(timeSeries);
     const length = timeArray.length;
     const recentSeries = [];
     const lastInfo = timeSeries[timeArray[length-1]];
-    console.log("LastInfo::: ", lastInfo);//can get closing price
 
     for(let i = 0; i < 31; i++) {
       let time = timeArray[i];
-      recentSeries.push( { date: time, price: timeSeries[timeArray[i]] });
+      recentSeries.push( { date: time, price: timeSeries[timeArray[i]]['4a. close (USD)'] });
     }
-
+    // console.log('recentSeries::::', recentSeries);
     // const price = this.state.cryptoData.timeSeries[recentDate]['4a. close (USD)'];
     // const previousPrice = this.state.cryptoData.timeSeries[lastDay]['4a. close (USD)'];
     // const difference = (price - previousPrice) / previousPrice;
@@ -148,7 +157,6 @@ class CryptoCurrency extends React.Component {
         })
     });
   }
-
   open() {
     this.setState({
       showModal: true,
@@ -210,6 +218,7 @@ class CryptoCurrency extends React.Component {
   }
 
   render() {
+    console.log('state currency for list check!!!!!', this.state.databaseCurrencyLists)
     const inputProps = {
       placeholder: 'Type it!',
       value: this.state.search,

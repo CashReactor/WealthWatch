@@ -85,22 +85,30 @@ cryptoRouter.get('/getSentiment', (req, res) => {
 
 cryptoRouter.post('/saveCurrency', (req, res) => {
   const receivedData = req.body;
-  // console.log('receivedData:::::::::::: ', receivedData);
+  console.log('receivedData:::::::::::: ', receivedData);
   CryptoCurrencyList.findOne({name: receivedData.name})
     .then((currency) => {
-      if(!currency) {
+      if (!currency) {
         const savingData = new CryptoCurrencyList(receivedData);
         savingData.save((err) => {
           if (err) {
             console.log(err);
+          } else {
+            console.log('Saved!');
           }
         });
-        console.log('Saved!');
       }
     })
     .catch((err) => {
       console.log(err);
     });
 });
+
+cryptoRouter.get('/getCryptoCurrencyDatabase', (req, res) => {
+  CryptoCurrencyList.find({}).then((data) => {
+    console.log('data found::::', data);
+    res.json(data);
+  })
+})
 
 module.exports.crypto = cryptoRouter;
