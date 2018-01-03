@@ -6,6 +6,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import $ from 'jquery';
 import SkyLight from 'react-skylight';
+import Slider from 'material-ui/Slider';
 
 const style = {
   backgroundImage: '',
@@ -16,6 +17,7 @@ const style = {
   marginLeft: '25%',
   marginRight: '25%'
 }
+
 
 class NPVCalculator extends React.Component {
   constructor(props) {
@@ -40,6 +42,10 @@ class NPVCalculator extends React.Component {
     this.switchCashFlowType = this.switchCashFlowType.bind(this);
     this.addInfinityCashFlow = this.addInfinityCashFlow.bind(this);
     this.subtractInfinityCashFlow = this.subtractInfinityCashFlow.bind(this);
+  }
+
+  componentDidMount() {
+
   }
 
   calculateNPV() {

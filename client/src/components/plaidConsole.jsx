@@ -331,8 +331,9 @@ class Plaid extends React.Component {
             {this.renderTransactionsList()}
           </div>
         </div>
-        {this.renderAggregateBankLogos()}<br /><br />
+        {this.renderAggregateBankLogos()}
         <div style={{width: '70%', marginLeft:'15%', display: 'none'}} className="Aggregate">
+          <h1 style={{fontSize: '5em'}}>This is the aggregate of all linked bank accounts<span style={{color:'red'}}>.</span></h1><br />
           <canvas className="bankCharts" id='AggregateChart' />
           <canvas className="bankCharts" id='AggregateLineChart' />
         </div> <br /><br /><br /><br />

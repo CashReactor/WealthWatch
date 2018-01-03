@@ -60,6 +60,14 @@ app.use('/auth', auth); // Authentication route
 app.use('/api/expense', expense);
 /* **************************************************** */
 
+app.post('/neededRetirementIncome', function(req, res) {
+
+})
+
+app.post('/estimatedRetirementIncome', function(req, res) {
+
+})
+
 app.post('/calculateNPV', function(req, res) {
   var { initialInvestment, discountRate, cashFlow, infinityArray } = req.body;
   console.log('THIS IS THE DISCOUNT RATE', discountRate);

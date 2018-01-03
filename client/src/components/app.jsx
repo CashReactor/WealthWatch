@@ -20,6 +20,7 @@ import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
+import RetirementCalculator from './retirementCalculator.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -183,8 +184,8 @@ class App extends React.Component {
     let budget = [];
     let expenses = [];
     let day = this.state.currentDate.getDate();
-    let month = this.state.currentDate.getMonth() + 1;
-    let year = this.state.currentDate.getFullYear();
+    let month = 12 //this.state.currentDate.getMonth() + 1;
+    let year = 2017 //this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
 
     var totalBalance = 0;
@@ -331,8 +332,8 @@ class App extends React.Component {
     let budget = [];
     let expenses = [];
     let day = this.state.currentDate.getDate();
-    let month = this.state.currentDate.getMonth() + 1;
-    let year = this.state.currentDate.getFullYear();
+    let month = 12 //this.state.currentDate.getMonth() + 1;
+    let year = 2017 //this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
 
     for (let i = 0; i <= daysInMonth; i++) {
@@ -816,6 +817,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
                 </div>
                 <br/><br/><br/>
+                <RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
                 <button 
                   onClick={(event) => {this.setLogoutState(event, props.history)} } 
