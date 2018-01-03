@@ -77,6 +77,11 @@ class ExpenseTable extends React.Component {
     this.sortOneTable = this.sortOneTable.bind(this);
     this.sortRecurringTable = this.sortRecurringTable.bind(this);
   }
+  
+  componentDidMount() {
+    const { one, rec } = this.props;
+    this.setExpensesState(one, rec);
+  }
 
   componentWillReceiveProps() {
     const { one, rec } = this.props;
@@ -168,7 +173,6 @@ class ExpenseTable extends React.Component {
   }
 
   render() {
-    console.log('Expenses props coming from the app: ', this.props);
     return (
       <div>
         <Paper style={styles.paper}>
