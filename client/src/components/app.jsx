@@ -830,6 +830,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
                 </div>
                 <br/><br/><br/>
+                <CryptoCurrency />
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
               </div>
             )}/>
@@ -850,7 +851,6 @@ class App extends React.Component {
           <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
           </MuiThemeProvider>
-          <CryptoCurrency />
         </div>
       );
     }
