@@ -5,6 +5,7 @@ import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
 import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
 import CryptoModalGraph from './cryptoModalGraph.jsx';
+import CryptoListGraph from './cryptoListGraph.jsx';
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
@@ -23,6 +24,8 @@ class CryptoCurrency extends React.Component {
       sentiments: {},
       savedCurrencyLists: [],
       databaseCurrencyLists: [],
+      renderGraph: false,
+      filteredGraphData: {},
     };
 
     this.onAdd = this.onAdd.bind(this);
@@ -39,13 +42,14 @@ class CryptoCurrency extends React.Component {
     this.open = this.open.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
+    this.renderGraph = this.renderGraph.bind(this);
   }
 
   componentDidMount() {
     axios.get('/api/crypto/getCryptoCurrencyDatabase').then((response) => {
       console.log('currency list response!!!!!!!!', response);
       this.setState({
-        databaseCurrencyLists: response.data,
+        savedCurrencyLists: response.data,
       });
     }).catch((err) => {
       console.log(err);
@@ -121,7 +125,7 @@ class CryptoCurrency extends React.Component {
     // const recentDate = dates[0];
     // const lastDay = dates[1];
     const name = this.state.cryptoData.metaData['3. Digital Currency Name'];
-    const symbol = this.state.cryptoData.metaData['4. Market Code'];
+    const symbol = this.state.cryptoData.metaData['2. Digital Currency Code'];
     const timeSeries = this.state.cryptoData.timeSeries;
     // console.log('timeSeries::::: ', timeSeries);
     const timeArray = Object.keys(timeSeries);
@@ -133,11 +137,7 @@ class CryptoCurrency extends React.Component {
       let time = timeArray[i];
       recentSeries.push( { date: time, price: timeSeries[timeArray[i]]['4a. close (USD)'] });
     }
-    // console.log('recentSeries::::', recentSeries);
-    // const price = this.state.cryptoData.timeSeries[recentDate]['4a. close (USD)'];
-    // const previousPrice = this.state.cryptoData.timeSeries[lastDay]['4a. close (USD)'];
-    // const difference = (price - previousPrice) / previousPrice;
-    // const percentageDifference;
+
     const currency = {
       name,
       symbol,
@@ -156,12 +156,14 @@ class CryptoCurrency extends React.Component {
           console.log(error);
         })
     });
+    this.close();
   }
   open() {
     this.setState({
       showModal: true,
     });
   }
+
   close() {
     this.setState({
       showModal: false,
@@ -216,18 +218,30 @@ class CryptoCurrency extends React.Component {
       suggestions: [],
     });
   }
+  renderGraph(e) {
+    const currentCurrency = e.target.id;
+    // console.log('target: ', currentCurrency);
+    let currentData = this.state.savedCurrencyLists.filter((element) => {
+      return element.symbol === currentCurrency;
+    });
+    this.setState({
+      renderGraph: true,
+      filteredGraphData: currentData[0],
+    });
+  }
 
   render() {
-    console.log('state currency for list check!!!!!', this.state.databaseCurrencyLists)
     const inputProps = {
-      placeholder: 'Type it!',
+      placeholder: 'Type Bitcoin Currency Name',
       value: this.state.search,
       onChange: this.onChange,
     };
 
+    console.log('check filtered Data::::', this.state.renderGraph, this.state.filteredGraphData);
     return (
       <div>
         <h1 className="header">Search Crypto Currency</h1>
+        <CryptoListGraph pickedCurrency={this.state.filteredGraphData} />
         <Autosuggest
           suggestions={this.state.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -236,10 +250,21 @@ class CryptoCurrency extends React.Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <ListGroup>
-          <ListGroupItem href="">Bitcoin</ListGroupItem>
-        </ListGroup>
         <button onClick={this.toggleModal}>Search</button>
+        <ListGroup>
+          {this.state.savedCurrencyLists.map((currency) => {
+            const priceDifference = currency.recentSeries[0].price - currency.recentSeries[1].price;
+            const percentageDifference = priceDifference / currency.recentSeries[1].price * 100;
+            const rounded = Math.round(percentageDifference * 100) / 100;
+            return (
+              <ListGroupItem key={currency.symbol} header={currency.name} id={currency.symbol}>
+                {currency.symbol}
+                {"        " + rounded}
+                <button id={currency.symbol} onClick={this.renderGraph}>Show Graph</button>
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
         {this.popOutSearch()}
       </div>
     );
