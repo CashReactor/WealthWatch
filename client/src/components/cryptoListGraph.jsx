@@ -16,8 +16,8 @@ class CryptoListGraph extends React.Component {
   lineGraph(propsData) {
     const recentSeries = propsData.pickedCurrency.recentSeries || [];
     // console.log('recentSeries:::::::::::', recentSeries)
-    const date = recentSeries.map(element => element.date);
-    const prices = recentSeries.map(element => element.price);
+    const date = recentSeries.map(element => element.date).reverse();
+    const prices = recentSeries.map(element => element.price).reverse();
 
     const ctx = document.getElementById('listGraph');
     const listChart = new Chart(ctx, {

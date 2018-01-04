@@ -236,12 +236,12 @@ class CryptoCurrency extends React.Component {
       value: this.state.search,
       onChange: this.onChange,
     };
-
+    const cryptoGraph = this.state.renderGraph ? <CryptoListGraph pickedCurrency={this.state.filteredGraphData} /> : null;
     console.log('check filtered Data::::', this.state.renderGraph, this.state.filteredGraphData);
     return (
       <div>
         <h1 className="header">Search Crypto Currency</h1>
-        <CryptoListGraph pickedCurrency={this.state.filteredGraphData} />
+        {cryptoGraph}
         <Autosuggest
           suggestions={this.state.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

@@ -74,10 +74,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-<<<<<<< HEAD
-
-=======
->>>>>>> clean up logs
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
@@ -88,27 +84,6 @@ class App extends React.Component {
         700
       );
     });
-<<<<<<< HEAD
-=======
-
-    // console.log('THIS IS THE ONETIME EXPENSES UPON LOADING', this.state.one);
-    // console.log('THIS IS THE RECURRING EXPENSES UPON LOADING', this.state.rec);
-
-    // var url = window.location.href.split('/');
-    // var urlLength = url.length;
-    // var tab = url[urlLength - 1];
-
-    // if (tab === 'expense') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(2)').toggleClass('bar-select');
-    // } else if (tab === 'bank') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(3)').toggleClass('bar-select');
-    // } else if (tab == 'investor') {
-    //   $('.bar .bar-item:nth-child(1)').toggleClass('bar-select');
-    //   $('.bar .bar-item:nth-child(4)').toggleClass('bar-select');
-    // }
->>>>>>> clean up logs
   }
 
   w3Click(e) {
@@ -121,13 +96,7 @@ class App extends React.Component {
       bankBudget: budget,
       bankName: name,
       bankOne: transactions,
-<<<<<<< HEAD
     });
-=======
-    })
-    // console.log('the bank information is updated', this.state.bankBudget, this.state.bankOne, this.state.bankName);
-    // console.log()
->>>>>>> clean up logs
   }
 
   updateBanks(banks) {
@@ -167,10 +136,6 @@ class App extends React.Component {
 
   updateUser() {
     axios.post('/user', { email: this.state.currentEmail }).then((response) => {
-<<<<<<< HEAD
-=======
-      // console.log('RESPONSE DATAAAA', response.data);
->>>>>>> clean up logs
       if (!response.data.budget) {
         response.data.budget = '7777';
       }
