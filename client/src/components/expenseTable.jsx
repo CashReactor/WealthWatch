@@ -170,9 +170,84 @@ class ExpenseTable extends React.Component {
   render() {
     console.log('Expenses props coming from the app: ', this.props);
     return (
+
       <div>
-        <Paper style={styles.paper}>
-          <div>
+
+        <div>
+          <Paper style={styles.paper}>
+            <Table
+              style={{ width: '80%', margin: 'auto' }}
+              height={this.state.height}
+              width={this.state.width}
+              marginRight={this.state.marginRight}
+              marginLeft={this.state.marginLeft}
+              fixedHeader={this.state.fixedHeader}
+              fixedFooter={this.state.fixedFooter}
+              selectable={this.state.selectable}
+              multiSelectable={this.state.multiSelectable}
+            >
+              <TableHeader
+                displaySelectAll={this.state.showCheckboxes}
+                adjustForCheckbox={this.state.showCheckboxes}
+                enableSelectAll={this.state.enableSelectAll}
+              >
+                <TableRow>
+                  <TableHeaderColumn
+                    colSpan="5"
+                    tooltip="Super Header"
+                    style={{
+                      margin: '10px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      fontSize: '2.5em',
+                      color: 'rgba(77,182,172 ,1)',
+                    }}
+                  >
+                    Non-Recurring Expenses
+                  </TableHeaderColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn id="oneDate" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Date" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.date} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneExpense" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Description" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneCategory" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Category" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
+                  <TableRowColumn id="oneAmount" style={{ fontWeight: 'bold', fontSize: '1em' }}>
+                    <FlatButton label="Amount" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} />
+                  </TableRowColumn>
+                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}> </TableRowColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={this.state.showCheckboxes}>
+                {this.state.oneExpenses.map(expense => (
+                  <TableRow key={expense._id}>
+                    <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
+                    <TableRowColumn>{expense.expense}</TableRowColumn>
+                    <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
+                    <TableRowColumn>
+                      {expense.amount}
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      <Button
+                        id={`${this.props.currentEmail}_${expense._id}`}
+                        style={styles.deleteButton}
+                        bsStyle="danger"
+                        onClick={this.deleteOneTimeExpense}
+                      >
+                        X
+                      </Button>
+                    </TableRowColumn>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        <div>
+          <Paper style={styles.paper}>
             <Table
               style={{ width: '80%', margin: 'auto' }}
               height={this.state.height}
@@ -237,81 +312,9 @@ class ExpenseTable extends React.Component {
                 ))}
               </TableBody>
             </Table>
-          </div>
-        </Paper>
-
-        <br />
-        <br />
-        <br />
-
-        <div>
-          <Paper style={styles.paper}>
-            <Table
-              style={{ width: '80%', margin: 'auto' }}
-              height={this.state.height}
-              width={this.state.width}
-              marginRight={this.state.marginRight}
-              marginLeft={this.state.marginLeft}
-              fixedHeader={this.state.fixedHeader}
-              fixedFooter={this.state.fixedFooter}
-              selectable={this.state.selectable}
-              multiSelectable={this.state.multiSelectable}
-            >
-              <TableHeader
-                displaySelectAll={this.state.showCheckboxes}
-                adjustForCheckbox={this.state.showCheckboxes}
-                enableSelectAll={this.state.enableSelectAll}
-              >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan="5"
-                    tooltip="Super Header"
-                    style={{
-                      margin: '10px',
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      fontSize: '2.5em',
-                      color: 'rgba(77,182,172 ,1)',
-                    }}
-                  >
-                    Non-Recurring Expenses
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn id="oneDate" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Date" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.date} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
-                  <TableRowColumn id="oneExpense" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Expense" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
-                  <TableRowColumn id="oneCategory" style={{ fontWeight: 'bold', fontSize: '1em' }}><FlatButton label="Category" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} /></TableRowColumn>
-                  <TableRowColumn id="oneAmount" style={{ fontWeight: 'bold', fontSize: '1em' }}>
-                    <FlatButton label="Amount" onClick={this.sortOneTable} hoverColor="white" style={styles.tableHeader.general} labelStyle={{fontWeight: 'bold'}} />
-                  </TableRowColumn>
-                  <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}> </TableRowColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={this.state.showCheckboxes}>
-                {this.state.oneExpenses.map(expense => (
-                  <TableRow key={expense._id}>
-                    <TableRowColumn>{this.convertDate(expense.date)}</TableRowColumn>
-                    <TableRowColumn>{expense.expense}</TableRowColumn>
-                    <TableRowColumn>{this.convertCategory(expense.category)}</TableRowColumn>
-                    <TableRowColumn>
-                      {expense.amount}
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <Button
-                        id={`${this.props.currentEmail}_${expense._id}`}
-                        style={styles.deleteButton}
-                        bsStyle="danger"
-                        onClick={this.deleteOneTimeExpense}
-                      >
-                        X
-                      </Button>
-                    </TableRowColumn>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
           </Paper>
         </div>
+
       </div>
     );
   }
