@@ -32,7 +32,7 @@ export default class ExpenseGraph extends React.Component {
     console.log('Category Values: ', this.state.categoryValues);
     return (
       <div>
-        Hello
+
       </div>
     );
   }
