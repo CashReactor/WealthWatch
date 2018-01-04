@@ -24,6 +24,14 @@ const styles = {
       marginLeft: '-1.8em',
     },
   },
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '90%',
+    padding: '7px',
+    margin: '7px auto',
+  },
 };
 
 class ExpenseTable extends React.Component {
@@ -154,7 +162,7 @@ class ExpenseTable extends React.Component {
   render() {
     return (
       <div className="expenseTable">
-        <Paper style={styles.paper} className="expenseOneTable">
+        <div style={styles.border} className="expenseOneTable">
           <Table
             style={{ width: '100%', margin: 'auto' }}
             height={this.state.height}
@@ -175,14 +183,12 @@ class ExpenseTable extends React.Component {
                 <TableHeaderColumn
                   colSpan="5"
                   style={{
-                    margin: '10px',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '2.5em',
+                    fontWeight: 700,
+                    fontSize: '27px',
                     color: 'rgba(77,182,172 ,1)',
                   }}
                 >
-                  Non-Recurring Expenses
+                  One-time Expenses
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
@@ -246,9 +252,9 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
-        </Paper>
+        </div>
 
-        <Paper style={styles.paper} className="expenseRecTable">
+        <div style={styles.border} className="expenseRecTable">
           <Table
             style={{ width: '100%', margin: 'auto' }}
             height={this.state.height}
@@ -268,12 +274,9 @@ class ExpenseTable extends React.Component {
               <TableRow>
                 <TableHeaderColumn
                   colSpan="5"
-                  tooltip="Super Header"
                   style={{
-                    margin: '10px',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '2.5em',
+                    fontWeight: 700,
+                    fontSize: '27px',
                     color: 'rgba(77,182,172 ,1)',
                   }}
                 >
@@ -343,7 +346,7 @@ class ExpenseTable extends React.Component {
               ))}
             </TableBody>
           </Table>
-        </Paper>
+        </div>
       </div>
     );
   }
