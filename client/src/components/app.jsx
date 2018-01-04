@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
 import $ from 'jquery';
 import axios from 'axios';
-import { Switch, BrowserRouter, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import Graph from './Graph.jsx';
 import ExpenseTable from './expenseTable.jsx';
 import InputBalance from './inputBalance.jsx';
@@ -812,7 +812,7 @@ class App extends React.Component {
             )} />
           </Switch>
           <br /><br /><br /><br />
-          <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
+          <Link onClick={this.setLogoutState} className="btn btn-danger" to="/">Logout</Link>
           <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
           </MuiThemeProvider>
         </div>
