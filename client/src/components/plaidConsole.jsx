@@ -29,6 +29,7 @@ class Plaid extends React.Component {
    this.postBanks = this.postBanks.bind(this);
    this.getBanks = this.getBanks.bind(this);
    this.renderAggregateBankLogos = this.renderAggregateBankLogos.bind(this);
+   this.renderBanks = this.renderBanks.bind(this);
   }
 
   componentDidMount() {
@@ -110,9 +111,12 @@ class Plaid extends React.Component {
     .then((response) => {
       console.log('-----this is the bank we get from the database------', response.data)
       var banks = response.data[0];
-      this.setState({
-        counter: Object.keys(banks).length
-      });
+      if (!banks) {
+        return;
+      }
+      // this.setState({
+      //   counter: Object.keys(banks).length
+      // });
       this.props.updateBanks(banks);
       var aggregateAccounts = [];
       var aggregateTransactions = [];
@@ -130,7 +134,9 @@ class Plaid extends React.Component {
   }
 
   postBanks() {
+    console.log(' THIS IS THE EMAIL', this.props.email);
     var data = { email: this.props.email, bank: [this.state.item.institution.name, this.state.accounts, this.state.transactions] };
+    console.log('*******************this is the bank info*****',data);
     axios.post('/postBanks', data)
     .then((response) => {
       console.log('************the bank information got stored in the database************')
@@ -157,7 +163,7 @@ class Plaid extends React.Component {
       if (data.error !== null) {
         // console.log(data.error.error_code + ':' + data.error.error_message);
       }
-      console.log('THIS IS THE ACCOUNTS WE RECEIVE', data.data.accounts);
+      // console.log('THIS IS THE ACCOUNTS WE RECEIVE', data.data.accounts);
       this.setState({
         accounts: data.data.accounts,
         //data.accounts.forEach((account, idx) {account.name, if (account.balances.available) account.balances.available else account.balances.current})
@@ -172,7 +178,7 @@ class Plaid extends React.Component {
       if (data.error !== null) {
         // console.log(data.error.error_code + ':' + data.error.error_message);
       }
-      console.log('THIS IS THE ITEM WE RECEIVE', data.data);
+      // console.log('THIS IS THE ITEM WE RECEIVE', data.data);
       this.setState({
         item: data.data
         //data.institution.name (bank name)
@@ -189,11 +195,11 @@ class Plaid extends React.Component {
       if (data.error !== null) {
         // console.log(data.error.error_code + ':' + data.error.error_message);
       }
-      console.log('THIS IS THE TRANSACTIONS WE RECEIVE', data.data.transactions);
+      // console.log('THIS IS THE TRANSACTIONS WE RECEIVE', data.data.transactions);
       this.setState({
         transactions: data.data.transactions
       })
-      console.log('THIS IS THE TRANSACTIONS THAT WE RECEIVE', data.data.transactions, 'AND THIS IS THE FIRST ELEMENT OF THE TRANSACTIONS');
+      // console.log('THIS IS THE TRANSACTIONS THAT WE RECEIVE', data.data.transactions, 'AND THIS IS THE FIRST ELEMENT OF THE TRANSACTIONS');
       //data.transactions.forEach((transaction) => { transaction.name, transaction.amount, transaction.date })
       cb();
     })
@@ -267,6 +273,12 @@ class Plaid extends React.Component {
   }
 
   renderAggregateBankLogos() {
+    if (!this.props.banks) {
+      return (
+        <div>
+        </div>
+      )
+    }
     var banks = Object.keys(this.props.banks);
     banks = banks.map((bank) => {
       return bank.toLowerCase().split(' ').join('');
@@ -306,7 +318,24 @@ class Plaid extends React.Component {
     }
   }
 
-
+  renderBanks() {
+    if (!this.props.banks) {
+      return;
+    }
+    return(
+      <div>
+        {Object.keys(this.props.banks).map((bank) => {
+          return (
+            <div style={{width: '70%', marginLeft:'15%'}}>
+              {this.selectBankLogo(bank)}
+              <canvas className="bankCharts" id={bank + 'Chart'} />
+              <canvas className="bankCharts" id={bank + 'LineChart'} />
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
 
   render() {
     return (
@@ -337,15 +366,7 @@ class Plaid extends React.Component {
           <canvas className="bankCharts" id='AggregateChart' />
           <canvas className="bankCharts" id='AggregateLineChart' />
         </div> <br /><br /><br /><br />
-        {Object.keys(this.props.banks).map((bank) => {
-          return (
-            <div style={{width: '70%', marginLeft:'15%'}}>
-              {this.selectBankLogo(bank)}
-              <canvas className="bankCharts" id={bank + 'Chart'} />
-              <canvas className="bankCharts" id={bank + 'LineChart'} />
-            </div>
-          )
-        })}
+        {this.renderBanks()}
       </div>
     );
   }

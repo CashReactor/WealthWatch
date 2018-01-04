@@ -14,7 +14,7 @@ const style = {
     height: '50%',
     margin: '0 auto',
     textAlign: 'center',
-    width: '25%',
+    width: '370px',
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -107,7 +107,7 @@ export default class LoginSignup extends React.Component {
         const token = params[1];
         const email = params[2];
         resolve({ token, email });
-      } 
+      }
     });
   }
 
@@ -350,6 +350,7 @@ export default class LoginSignup extends React.Component {
     console.log(this.props.location);
     return (
       <div className="login-container">
+        <h1 style={{fontSize:'15em', color: 'white'}}>Until debt tears us <span style={{width: '10%'}}></span>apart.</h1>
         <Paper style={style.paper}>
           <Tabs tabItemContainerStyle={style.headline}>
             <Tab style={style.tab} label="Login">

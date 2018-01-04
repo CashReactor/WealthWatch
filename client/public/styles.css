@@ -1,6 +1,7 @@
 img {
   margin: 0px;
   padding: 0px;
+  margin-top: -10%;
 }
 
 .range-slider {
@@ -367,7 +368,7 @@ i {
 /* Login Page Styling */
 .login-container {
   height: 100vh;
-  background-image: url('https://images.unsplash.com/uploads/14131528357928cb9c5b5/220ec369?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1600&h=900&fit=crop&s=06d1006e051dc5789e4140c14e9de8a6');
+  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1650&q=80');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

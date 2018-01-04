@@ -757,7 +757,7 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-          <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+          <Avatar size={97} src={this.state.avatar} style={{marginTop: '1%', transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
             <Route exact path="/" render={(props) => (
               <div>
