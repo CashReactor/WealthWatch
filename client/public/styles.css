@@ -177,11 +177,11 @@ img {
   margin: 0 auto !important;
 }
 
-#expensePie {
+/*#expensePie {
   height: 67% !important;
   width: 67% !important;
   margin: 0 auto !important;
-}
+}*/
 
 .loader {
   display: none;

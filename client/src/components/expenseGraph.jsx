@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pie} from 'react-chartjs-2';
+import Chart from 'chart.js';
 
 export default class ExpenseGraph extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ export default class ExpenseGraph extends React.Component {
       categoryValues: {},
     };
     this.accumulateExpenses = this.accumulateExpenses.bind(this);
+    this.renderExpensePie = this.renderExpensePie.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -33,7 +35,9 @@ export default class ExpenseGraph extends React.Component {
         result[category] += amount;
       }
     }
-    this.setState({ categoryValues: {...this.state.categoryValues, ...result} });
+    this.setState({ categoryValues: {...this.state.categoryValues, ...result} }, () => {
+      this.renderExpensePie();
+    });
   }
 
   renderExpensePie() {
@@ -77,21 +81,10 @@ export default class ExpenseGraph extends React.Component {
     console.log('Category Values: ', this.state.categoryValues);
     return (
       <div>
-        <canvas id="expensePie" render={this.renderExpensePie}/>
-        {/*<Pie
-          data: data,
-          options: {
-            animatable: true,
-            segmentShowStroke : true,
-            segmentStrokeColor : "#fff",
-            segmentStrokeWidth : 2,
-            percentageInnerCutout : 0,
-            animationSteps : 100,
-            animationEasing : "easeOutBounce",
-            animateRotate : true,
-        />*/}
-        <Pie render={this.renderExpensePie} />
-        Hello
+      <br />
+      <br />
+      <br />
+        <canvas id="expensePie" />
       </div>
     );
   }
