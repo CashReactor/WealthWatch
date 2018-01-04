@@ -203,7 +203,7 @@ class ExpenseTable extends React.Component {
                 </TableRowColumn>
                 <TableRowColumn id="oneExpense" style={{ fontWeight: 'bold', fontSize: '1em' }}>
                   <FlatButton
-                    label="Expense"
+                    label="Description"
                     onClick={this.sortOneTable}
                     hoverColor="white"
                     style={styles.tableHeader.general}
@@ -295,7 +295,7 @@ class ExpenseTable extends React.Component {
                 </TableRowColumn>
                 <TableRowColumn style={{ fontWeight: 'bold', fontSize: '1em' }}>
                   <FlatButton
-                    label="Expense"
+                    label="Description"
                     onClick={this.sortRecurringTable}
                     hoverColor="white"
                     style={styles.tableHeader.general}
