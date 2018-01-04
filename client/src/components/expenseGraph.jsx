@@ -81,8 +81,10 @@ export default class ExpenseGraph extends React.Component {
     console.log('Category Values: ', this.state.categoryValues);
     return (
       <div>
-        <canvas id="expensePie" width='400' height='400' />
-        Hello
+      <br />
+      <br />
+      <br />
+        <canvas id="expensePie" />
       </div>
     );
   }
