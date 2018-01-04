@@ -450,3 +450,17 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   grid-column: 2/3;
 }
 
+.expenseButtonGroup {
+  grid-column: 1/2;
+  display: flex;
+}
+.expenseButton {
+  width: 8%;
+  height: 80%;
+  margin: 7px
+}
+
+.expenseButton2 {
+  width: 13%;
+}
+

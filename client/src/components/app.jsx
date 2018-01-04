@@ -676,11 +676,13 @@ class App extends React.Component {
     window.localStorage.setItem('currency', currency);
   }
 
-  setLogoutState(event) {
+  setLogoutState(event, history) {
     event.preventDefault();
     this.setState({
       loggedIn: false,
       token: '',
+    }, () => {
+      history.push('/');
     });
     window.localStorage.removeItem('wealthwatch_token');
     window.localStorage.removeItem('user_email');
@@ -756,7 +758,7 @@ class App extends React.Component {
           </div>
           <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
-            <Route exact path="/" render={() => (
+            <Route exact path="/" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
@@ -770,10 +772,19 @@ class App extends React.Component {
                 {this.analyzeBalance()}<br /><br />
                 <canvas id="averageExpensePie"/>
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+
+                <button 
+                  onClick={(event) => {this.setLogoutState(event, props.history)} } 
+                  className="btn btn-danger" 
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )} />
-            <Route path="/expense" render={() => (
+            <Route path="/expense" render={(props) => (
               <div className="grid">
+                {console.log(props)}
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
                   <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
@@ -784,9 +795,19 @@ class App extends React.Component {
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
+                <br />
+                <div className="expenseButtonGroup">
+                  <button 
+                    onClick={(event) => {this.setLogoutState(event, props.history)} } 
+                    className="btn btn-danger expenseButton" 
+                  >
+                    Logout
+                  </button>
+                  <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default expenseButton2">Reset Expenses</a>
+                </div>
               </div>
             )}/>
-            <Route path="/investor" render={() => (
+            <Route path="/investor" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
@@ -796,9 +817,16 @@ class App extends React.Component {
                 </div>
                 <br/><br/><br/>
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
+                <button 
+                  onClick={(event) => {this.setLogoutState(event, props.history)} } 
+                  className="btn btn-danger" 
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )}/>
-            <Route path="/bank" render={() => (
+            <Route path="/bank" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
@@ -808,12 +836,17 @@ class App extends React.Component {
                 </div>
                 <br/><br/><br/>
                 <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+                <br /><br /><br /><br />
+                <button 
+                  onClick={(event) => {this.setLogoutState(event, props.history)} } 
+                  className="btn btn-danger" 
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )} />
-          </Switch>
-          <br /><br /><br /><br />
-          <Link onClick={this.setLogoutState} className="btn btn-danger" to="/">Logout</Link>
-          <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
+          </Switch>          
           </MuiThemeProvider>
         </div>
       );
