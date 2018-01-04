@@ -14,7 +14,7 @@ const styles = {
     padding: '10px',
   },
   deleteButton: {
-    marginLeft: '10em',
+    marginLeft: '0',
   },
   tableHeader: {
     general: {
