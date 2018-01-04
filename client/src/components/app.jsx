@@ -74,8 +74,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-
-    $(document).on('click', 'a[href^="#"]', function(event) {
+    $(document).on('click', 'a[href^="#"]', function (event) {
       event.preventDefault();
 
       $('html, body').animate(
@@ -741,7 +740,7 @@ class App extends React.Component {
           <MuiThemeProvider>
             <div>
               <Switch>
-                <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
+                <Route exact path="/" render={(props) => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} location={props.location}/>)} />
                 <Route path="/forgot" component={ForgotPassword} />
                 <Route path="/reset/:token" component={ResetPassword} />
               </Switch>

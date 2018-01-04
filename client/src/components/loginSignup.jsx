@@ -93,6 +93,8 @@ export default class LoginSignup extends React.Component {
     return this.extractTokenEmail()
       .then((tokenEmail) => {
         const { token, email } = tokenEmail;
+        console.log('Token: ', token);
+        console.log('Email: ', email);
         this.props.setLoginState(token, email);
       })
       .then(() => {
@@ -100,6 +102,7 @@ export default class LoginSignup extends React.Component {
       });
   }
 
+<<<<<<< HEAD
   extractTokenEmail(callback) {
     return new Promise((resolve, reject) => {
       if (this.props.location.search) {
@@ -111,6 +114,8 @@ export default class LoginSignup extends React.Component {
     });
   }
 
+=======
+>>>>>>> Fix googleAuthLogin
   onInputChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
@@ -161,6 +166,18 @@ export default class LoginSignup extends React.Component {
           }
         });
     }
+  }
+
+  extractTokenEmail(callback) {
+    return new Promise((resolve, reject) => {
+      if (this.props.location.search) {
+        console.log(this.props.location.search);
+        const params = this.props.location.search.split('?');
+        const token = params[1];
+        const email = params[2];
+        resolve({ token, email });
+      }
+    });
   }
 
   googleLogin(e) {
