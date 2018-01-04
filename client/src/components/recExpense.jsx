@@ -5,6 +5,17 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
+const styles = {
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '90%',
+    padding: '7px',
+    margin: '7px auto',
+  },
+};
+
 export default class RecExpense extends React.Component {
   constructor(props) {
     super(props);
@@ -175,11 +186,10 @@ export default class RecExpense extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
-      <Paper style={{ paddingTop: '7px', width: '90%', margin: 'auto', height: '100%' }} className="expenseRecInput">
+      <div className="expenseRecInput" style={styles.border}>
         {this.bootstrapBar()}
-      </Paper>
+      </div>
     );
   }
 }
