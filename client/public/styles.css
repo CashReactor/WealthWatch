@@ -4,10 +4,21 @@ img {
   margin-top: -10%;
 }
 
+h1 {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 .range-slider {
     position: relative;
     height: 80px;
 }
+
+#until {
+  padding-top: 337px !important;
+  margin: 0px;
+}
+
 .extra-controls {
     position: relative;
     border-top: 3px solid #000;
@@ -315,7 +326,7 @@ i {
   border-color: lightblue;
   margin-bottom: 30px;
   background-color: white;
-  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
+  background-image: linear-gradient(rgba(0,0,0, 0.50), rgba(0,0,0, 0.50)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
   background-size: cover;
   background-position: bottom;
   padding: 17px;
@@ -368,7 +379,7 @@ i {
 /* Login Page Styling */
 .login-container {
   height: 100vh;
-  background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1650&q=80');
+  background-image: linear-gradient(rgba(0,0,0, 0.50), rgba(0,0,0, 0.50)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1650&q=80');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -384,14 +395,22 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .loginForm-edit{
   padding: 17px;
-  background-color: #102847;
+  background-color: rgba(13,71,161, 1);
   text-decoration-color: #fff;
   color: #fff;
 }
 
+#loginEmail {
+  background-color: rgba(13,71,161, 1) !important;
+}
+
+#loginPassword {
+  background-color: rgba(13,71,161, 1) !important;
+}
+
 .signupForm-edit{
   padding: 17px;
-  background-color: #102847;
+  background-color: rgba(13,71,161, 1);
   color: #fff;
 }
 
