@@ -144,10 +144,11 @@ export default class OneExpense extends React.Component {
       <Paper
         style={{
           paddingTop: '7px',
-          width: '77%',
-          marginLeft: '11.5%',
-          marginRight: '11.5',
+          width: '90%',
+          margin: 'auto',
+          height: '100%',
         }}
+        className="expenseOneInput"
       >
         {this.bootstrapBar()}
       </Paper>

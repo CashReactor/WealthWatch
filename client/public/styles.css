@@ -416,3 +416,37 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
+/*Expenses Page*/
+
+.navigator {
+  grid-column: 1/3;
+}
+
+.expenses {
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.expenseOneInput {
+  grid-column: 1/2;
+}
+
+.expenseRecInput {
+  grid-column: 2/3;
+}
+
+.expenseTable {
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.expenseOneTable {
+  grid-column: 1/2;
+}
+
+.expenseRecTable {
+  grid-column: 2/3;
+}
+

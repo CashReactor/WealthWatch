@@ -773,14 +773,13 @@ class App extends React.Component {
               </div>
             )} />
             <Route path="/expense" render={() => (
-              <div>
-                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+              <div className="grid">
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
                   <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
                   <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
-                <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
