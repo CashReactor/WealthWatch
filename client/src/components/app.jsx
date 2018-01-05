@@ -778,7 +778,7 @@ class App extends React.Component {
             <button
               onClick={(event) => {this.setLogoutState(event, props.history)} }
               className="btn btn-danger"
-              style={{marginTop: '10px'}}
+              style={{marginTop: '10px', float: 'right'}}
             >
               Logout
             </button>

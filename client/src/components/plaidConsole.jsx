@@ -341,10 +341,11 @@ class Plaid extends React.Component {
     return (
       <div style={{ width:'100%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
-        <div style={{height: '0px'}}>
+        <div>
           <div className="loader"></div>
-          <br /><br />
+          <br /><br /><br />
         </div>
+        <br /><br />
         {this.renderBankLogo()}
         <canvas style={{display: 'none'}} id='bankChart'/>
         <canvas style={{display: 'none'}} id='bankLineChart'/>
