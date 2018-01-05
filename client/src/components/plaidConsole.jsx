@@ -341,7 +341,7 @@ class Plaid extends React.Component {
     return (
       <div style={{ width:'100%', margin:'auto'}}>
         <button onClick={this.onClick} style={{margin:'0 auto 7% auto', display: 'block'}} className="btn btn-primary" id="link-btn">Link Account</button>
-        <div>
+        <div style={{height: '0px'}}>
           <div className="loader"></div>
           <br /><br />
         </div>
@@ -362,7 +362,7 @@ class Plaid extends React.Component {
         </div>
         {/*this.renderAggregateBankLogos()*/}
         <div style={{width: '70%', marginLeft:'15%', display: 'none'}} className="Aggregate">
-          <h1 style={{fontSize: '5em'}}>This is the aggregate of all linked bank accounts<span style={{color:'red'}}>.</span></h1><br />
+          <h1 style={{fontSize: '5em'}}>This is the aggregate of all linked bank accounts<span style={{color:'red'}}>.</span></h1><br /><br />
           <canvas className="bankCharts" id='AggregateChart' />
           <canvas className="bankCharts" id='AggregateLineChart' />
         </div> <br /><br /><br /><br />

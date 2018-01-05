@@ -838,8 +838,7 @@ class App extends React.Component {
                   <br/><br/><br/>
                 </div>
                 <h2 className="welcomeHeader" style={{width: '90%', margin: '0 auto', fontSize:'3em', textAlign:'right'}}><span className='welcome' style={{width:'100%', fontSize:'2.7em'}}>Welcome to WealthWatch<span style={{color:'red'}}>.</span></span> Enter your balance with the appropriate currency to chart your balance and expenses below<span style={{color:'red'}}>.</span></h2><br /><br />
-                <br /><br />
-                {this.welcomeUser()}
+                {/*this.welcomeUser()*/}
                 <br /><br />
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
                 {this.analyzeExpenditure()}
@@ -847,7 +846,7 @@ class App extends React.Component {
                 <canvas id="averageExpensePie"/>
                 <br />
                 {/*this.toggleExpensePie()*/}
-                <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
+                {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
                 <br /><br /><br />
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
@@ -865,10 +864,9 @@ class App extends React.Component {
                     <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                   </div>
                 </div>
-                <br /><br /><br />
+                <br /><br /><br /><br />
                 <h2 style={{display:'block', width: '70%', margin: '0 auto', fontSize:'5em'}}>You can add, delete, and view all your expenses here<span style={{color:'red'}}>.</span> <br /><br /></h2>
-                <br/><br/><br/>
-                <br/><br/>
+                <br/>
                 {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
 
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
@@ -876,12 +874,6 @@ class App extends React.Component {
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
                 <br />
                 <div className="expenseButtonGroup">
-                  <button
-                    onClick={(event) => {this.setLogoutState(event, props.history)} }
-                    className="btn btn-danger expenseButton"
-                  >
-                    Logout
-                  </button>
                   <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default expenseButton2">Reset Expenses</a>
                 </div>
                 {this.filterNavbar(props)}
