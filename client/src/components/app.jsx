@@ -759,7 +759,7 @@ class App extends React.Component {
     }
   }
 
-  filterNavbar() {
+  filterNavbar(props) {
     var scope = this;
     if (this.state.loggedIn) {
       return (
@@ -770,7 +770,7 @@ class App extends React.Component {
             </div>
             <ul className="nav navbar-nav">
 
-              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors -- the most fantastic team of software engineers</a>
+              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors - the team that strives hard to make it rain</a>
               </li>
             </ul>
             <div id="space"></div>
@@ -792,7 +792,7 @@ class App extends React.Component {
               <a className="navbar-brand" href="#top">WealthWatch</a>
             </div>
             <ul className="nav navbar-nav">
-              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors -- the most fantastic team of software engineers</a>
+              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors - the team that strives hard to make it rain</a>
               </li>
             </ul>
           </div>
@@ -827,7 +827,6 @@ class App extends React.Component {
             <Weather getAuthentication={this.getAuthentication} />
           </div>
           <Avatar size={97} src={this.state.avatar} style={{marginTop: '1%', transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
-          {this.filterNavbar()}
           <Switch>
             <Route exact path="/" render={(props) => (
               <div>
@@ -851,13 +850,8 @@ class App extends React.Component {
                 <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 <br /><br /><br />
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-                <button
-                  onClick={(event) => {this.setLogoutState(event, props.history)} }
-                  className="btn btn-danger"
-                >
-                  Logout
-                </button>
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
+                {this.filterNavbar(props)}
               </div>
             )} />
             <Route path="/expense" render={(props) => (
@@ -890,6 +884,7 @@ class App extends React.Component {
                   </button>
                   <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default expenseButton2">Reset Expenses</a>
                 </div>
+                {this.filterNavbar(props)}
               </div>
             )}/>
             <Route path="/investor" render={(props) => (
@@ -903,13 +898,8 @@ class App extends React.Component {
                 <br/><br/><br/>
                 {/*<RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>*/}
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
-                <button
-                  onClick={(event) => {this.setLogoutState(event, props.history)} }
-                  className="btn btn-danger"
-                >
-                  Logout
-                </button>
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
+                {this.filterNavbar(props)}
               </div>
             )}/>
             <Route path="/bank" render={(props) => (
@@ -924,13 +914,8 @@ class App extends React.Component {
                 <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
                 <br /><br /><br /><br />
                 {/*<a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>*/}
-                <button
-                  onClick={(event) => {this.setLogoutState(event, props.history)} }
-                  className="btn btn-danger"
-                >
-                  Logout
-                </button>
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
+                {this.filterNavbar(props)}
               </div>
             )} />
           </Switch>
