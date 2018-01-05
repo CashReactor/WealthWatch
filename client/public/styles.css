@@ -516,9 +516,12 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .expenseButton2 {
   width: 13%;
+}
+
 /*
 cryptoContainer
 */
+
 .cryptoContainer {
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;

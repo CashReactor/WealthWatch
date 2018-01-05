@@ -891,10 +891,11 @@ class App extends React.Component {
                 <br/><br/><br/>
                 {/*<RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>*/}
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
-                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
-                {this.filterNavbar(props)}
                 <br/><br/>
                 <CryptoCurrency />
+                <br/><br/>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
+                {this.filterNavbar(props)}
               </div>
             )}/>
             <Route path="/bank" render={(props) => (
