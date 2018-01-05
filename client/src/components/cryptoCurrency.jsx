@@ -1,11 +1,32 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Modal, ListGroup, ListGroupItem } from 'react-bootstrap';
 import CryptoCurrencyNews from './cryptoCurrencyNews.jsx';
 import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
 import CryptoModalGraph from './cryptoModalGraph.jsx';
 import CryptoListGraph from './cryptoListGraph.jsx';
+
+const theme = {
+  input: {
+    width: '44em',
+    height: '2.5em',
+    marginTop: '1em',
+    marginLeft: '1.3em',
+    marginBottom: '1em',
+  },
+};
+
+const styles = {
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '75%',
+    padding: '7px',
+    margin: '7px auto',
+  },
+};
 
 class CryptoCurrency extends React.Component {
   constructor(props) {
@@ -23,7 +44,6 @@ class CryptoCurrency extends React.Component {
       cryptoNews: [],
       sentiments: {},
       savedCurrencyLists: [],
-      databaseCurrencyLists: [],
       renderGraph: false,
       filteredGraphData: {},
     };
@@ -47,7 +67,7 @@ class CryptoCurrency extends React.Component {
 
   componentDidMount() {
     axios.get('/api/crypto/getCryptoCurrencyDatabase').then((response) => {
-      console.log('currency list response!!!!!!!!', response);
+      // console.log('currency list response!!!!!!!!', response);
       this.setState({
         savedCurrencyLists: response.data,
       });
@@ -102,7 +122,7 @@ class CryptoCurrency extends React.Component {
         this.setState({
           cryptoData: {
             metaData: response.data.data['Meta Data'],
-            timeSeries: response.data.data['Time Series (Digital Currency Daily)'],
+            timeSeries: response.data.data['Time Series (Digital Currency Intraday)'],
           },
         });
       })
@@ -133,9 +153,9 @@ class CryptoCurrency extends React.Component {
     const recentSeries = [];
     const lastInfo = timeSeries[timeArray[length-1]];
 
-    for(let i = 0; i < 31; i++) {
+    for(let i = 0; i < 200; i++) {
       let time = timeArray[i];
-      recentSeries.push( { date: time, price: timeSeries[timeArray[i]]['4a. close (USD)'] });
+      recentSeries.push( { date: time, price: timeSeries[timeArray[i]]['1a. price (USD)'] });
     }
 
     const currency = {
@@ -231,18 +251,20 @@ class CryptoCurrency extends React.Component {
   }
 
   render() {
+    console.log('cryptoDataTimeSeries:::', this.state.cryptoData.timeSeries)
     const inputProps = {
       placeholder: 'Type Bitcoin Currency Name',
       value: this.state.search,
       onChange: this.onChange,
     };
     const cryptoGraph = this.state.renderGraph ? <CryptoListGraph pickedCurrency={this.state.filteredGraphData} /> : null;
-    console.log('check filtered Data::::', this.state.renderGraph, this.state.filteredGraphData);
+    // console.log('check filtered Data::::', this.state.renderGraph, this.state.filteredGraphData);
     return (
-      <div>
-        <h1 className="header">Search Crypto Currency</h1>
+      <div style={styles.border} className="cryptoContainer">
+        <h1 className="header cryptoHeader">Track the Price of Your Favorite Cryptocurrency</h1>
         {cryptoGraph}
         <Autosuggest
+          theme={theme}
           suggestions={this.state.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -250,17 +272,19 @@ class CryptoCurrency extends React.Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <button onClick={this.toggleModal}>Search</button>
-        <ListGroup>
+        <br/><br/>
+        <button className="cryptoSearchBtn btn btn-primary" onClick={this.toggleModal}>Search</button>
+        <label id="cryptoListLabel">Crypto Currency Lists</label>
+        <ListGroup className="listGroup">
           {this.state.savedCurrencyLists.map((currency) => {
             const priceDifference = currency.recentSeries[0].price - currency.recentSeries[1].price;
             const percentageDifference = priceDifference / currency.recentSeries[1].price * 100;
             const rounded = Math.round(percentageDifference * 100) / 100;
             return (
-              <ListGroupItem key={currency.symbol} header={currency.name} id={currency.symbol}>
+              <ListGroupItem className="groupItem" key={currency.symbol} header={currency.name} id={currency.symbol}>
+                <button className="btn btn-primary cryptoChart" id={currency.symbol} onClick={this.renderGraph} >Show Chart</button>
                 {currency.symbol}
                 {"        " + rounded}
-                <button id={currency.symbol} onClick={this.renderGraph}>Show Graph</button>
               </ListGroupItem>
             );
           })}
