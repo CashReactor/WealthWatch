@@ -838,7 +838,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
-                <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
+                {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
                 <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
