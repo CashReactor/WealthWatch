@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { ProgressBar, Button } from 'react-bootstrap';
+import { ProgressBar, Button, ButtonToolbar } from 'react-bootstrap';
 
 class SentimentSummary extends React.Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class SentimentSummary extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log('props:::', this.props.sentiments);
     this.updateSentiments();
   }
 
@@ -27,14 +26,16 @@ class SentimentSummary extends React.Component {
   }
 
   render() {
-    console.log('sentiments update states::: ', this.state);
+    // console.log('sentiments update states::: ', this.state);
     return (
       <div>
         Sentiments: <br />
-        <Button bsSize="xsmall" bsStyle="info">Positive</Button>
-        <Button bsSize="xsmall" bsStyle="danger">Negative</Button>
-        <Button bsSize="xsmall" bsStyle="warning">Neutral</Button>
-        <br /><br />
+        <ButtonToolbar>
+          <Button bsSize="xsmall" bsStyle="info">Positive</Button>
+          <Button bsSize="xsmall" bsStyle="danger">Negative</Button>
+          <Button bsSize="xsmall" bsStyle="warning">Neutral</Button>
+        </ButtonToolbar>
+        <br />
         <ProgressBar>
           <ProgressBar active bsStyle="info" now={this.state.positive} key={1} />
           <ProgressBar active bsStyle="danger" now={this.state.negative} key={2} />
