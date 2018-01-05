@@ -4,6 +4,25 @@ img {
   margin-top: -10%;
 }
 
+body {
+  padding-bottom: 50px;
+}
+
+.welcome {
+  display: block;
+ /*  background-image: linear-gradient(rgba(0,0,0, 0.7), rgba(0,0,0, 0.7)), url('https://images.unsplash.com/photo-1495511623436-ba44aaee07cf?auto=format&fit=crop&w=1951&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D') !important;
+  color: white;
+  background-size: cover;
+  background-attachment: fixed; */
+}
+
+.welcomeHeader {
+}
+
+.header {
+  margin-bottom: 7px !important;
+}
+
 h1 {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
@@ -94,8 +113,8 @@ h1 {
 }
 
 .item1, .item2 {
-  width: 77%;
-  margin: 0 auto;
+  width: 77% !important;
+  margin: 0 auto !important;
 }
 
 .bankCharts {

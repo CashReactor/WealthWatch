@@ -21,6 +21,8 @@ import Avatar from 'material-ui/Avatar';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
 import RetirementCalculator from './retirementCalculator.jsx';
+import Ionicon from 'react-ionicons'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -70,6 +72,7 @@ class App extends React.Component {
     this.analyzeExpenditure = this.analyzeExpenditure.bind(this);
     this.analyzeBalance = this.analyzeBalance.bind(this);
     this.updateExpenseList = this.updateExpenseList.bind(this);
+    this.filterNavbar = this.filterNavbar.bind(this);
     this.welcomeUser = this.welcomeUser.bind(this);
     this.toggleExpensePie = this.toggleExpensePie.bind(this);
   }
@@ -86,6 +89,7 @@ class App extends React.Component {
         700
       );
     });
+
   }
 
   w3Click(e) {
@@ -675,7 +679,6 @@ class App extends React.Component {
     // this.renderChart();
     window.localStorage.setItem('wealthwatch_token', token);
     window.localStorage.setItem('user_email', email);
-    window.localStorage.setItem('currency', currency);
   }
 
   setLogoutState(event, history) {
@@ -756,6 +759,48 @@ class App extends React.Component {
     }
   }
 
+  filterNavbar() {
+    var scope = this;
+    if (this.state.loggedIn) {
+      return (
+        <nav className= "navbar navbar-default navbar-fixed-bottom">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#top">WealthWatch</a>
+            </div>
+            <ul className="nav navbar-nav">
+
+              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors -- the most fantastic team of software engineers</a>
+              </li>
+            </ul>
+            <div id="space"></div>
+            <button
+              onClick={(event) => {this.setLogoutState(event, props.history)} }
+              className="btn btn-danger"
+              style={{marginTop: '10px'}}
+            >
+              Logout
+            </button>
+          </div>
+        </nav>
+      );
+    } else {
+      return (
+        <nav className = "navbar navbar-default navbar-fixed-bottom">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#top">WealthWatch</a>
+            </div>
+            <ul className="nav navbar-nav">
+              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors -- the most fantastic team of software engineers</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      );
+    }
+  }
+
   // <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
 
   render() {
@@ -782,6 +827,7 @@ class App extends React.Component {
             <Weather getAuthentication={this.getAuthentication} />
           </div>
           <Avatar size={97} src={this.state.avatar} style={{marginTop: '1%', transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+          {this.filterNavbar()}
           <Switch>
             <Route exact path="/" render={(props) => (
               <div>
@@ -792,7 +838,8 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                   <br/><br/><br/>
                 </div>
-
+                <h2 className="welcomeHeader" style={{width: '90%', margin: '0 auto', fontSize:'3em', textAlign:'right'}}><span className='welcome' style={{width:'100%', fontSize:'2.7em'}}>Welcome to WealthWatch<span style={{color:'red'}}>.</span></span> Enter your balance with the appropriate currency to chart your balance and expenses below<span style={{color:'red'}}>.</span></h2><br /><br />
+                <br /><br />
                 {this.welcomeUser()}
                 <br /><br />
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
@@ -804,7 +851,6 @@ class App extends React.Component {
                 <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 <br /><br /><br />
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
-
                 <button
                   onClick={(event) => {this.setLogoutState(event, props.history)} }
                   className="btn btn-danger"
@@ -815,19 +861,24 @@ class App extends React.Component {
               </div>
             )} />
             <Route path="/expense" render={(props) => (
-              <div className="grid">
-                {console.log(props)}
-                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
-                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
-                  <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
-                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
-                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+              <div>
+                <div className="grid">
+                  {console.log(props)}
+                  <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
+                    <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                    <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
+                    <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                    <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
+                  </div>
                 </div>
+                <br /><br /><br />
+                <h2 style={{display:'block', width: '70%', margin: '0 auto', fontSize:'5em'}}>You can add, delete, and view all your expenses here<span style={{color:'red'}}>.</span> <br /><br /></h2>
+                <br/><br/><br/>
                 <br/><br/>
                 {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
 
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
-                <br /><br />
+                <br />
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
                 <br />
                 <div className="expenseButtonGroup">
@@ -872,6 +923,7 @@ class App extends React.Component {
                 <br/><br/><br/>
                 <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
                 <br /><br /><br /><br />
+                {/*<a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>*/}
                 <button
                   onClick={(event) => {this.setLogoutState(event, props.history)} }
                   className="btn btn-danger"
