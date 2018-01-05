@@ -52,7 +52,7 @@ userSchema.methods.comparePassword = function (password, callback) {
 };
 
 // The second argument of pre can't be arrow function or else this will not be the user
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function(next) {
   return bcrypt.hash(this.password, 10, (error, hash) => {
     if (error) {
       return next(error);
