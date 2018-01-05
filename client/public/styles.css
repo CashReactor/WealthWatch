@@ -477,10 +477,14 @@ cryptoContainer
 
 #cryptoListLabel {
   grid-column: 1/2;
+  font-size: x-large;
+  margin-top: 1em;
+  margin-left: 0.8em;
 }
 
 .listGroup {
   grid-column: 1/3;
+  margin-left: 1.2em;
 }
 
 .cryptoChart {
@@ -489,7 +493,7 @@ cryptoContainer
   top: 1em;
 }
 
-.listGraph {
+#listGraph {
   grid-column:1/5;
   grid-row:2;
   padding: 5em;
@@ -528,3 +532,4 @@ cryptoContainer
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
+
