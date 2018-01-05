@@ -17,7 +17,7 @@ googleRouter.route('/')
   }));
 
 googleRouter.get('/callback', passport.authenticate('google', { session: false }), googleUserLogin, (req, res) => {
-  const { token, email } = res.body;
-  res.redirect(`/?${token}?${email}`);
+  const { token, email, currency } = res.body;
+  res.redirect(`/?${token}?${email}?${currency}`);
 });
 module.exports = googleRouter;

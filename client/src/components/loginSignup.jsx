@@ -92,10 +92,8 @@ export default class LoginSignup extends React.Component {
   componentDidMount() {
     return this.extractTokenEmail()
       .then((tokenEmail) => {
-        const { token, email } = tokenEmail;
-        console.log('Token: ', token);
-        console.log('Email: ', email);
-        this.props.setLoginState(token, email);
+        const { token, email, currency } = tokenEmail;
+        this.props.setLoginState(token, email, currency);
       })
       .then(() => {
         this.props.updateUser();
@@ -175,7 +173,8 @@ export default class LoginSignup extends React.Component {
         const params = this.props.location.search.split('?');
         const token = params[1];
         const email = params[2];
-        resolve({ token, email });
+        const currency = params[3];
+        resolve({ token, email, currency });
       }
     });
   }

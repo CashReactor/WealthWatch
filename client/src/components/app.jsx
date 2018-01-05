@@ -664,7 +664,7 @@ class App extends React.Component {
     return new Date(year, month, 0).getDate();
   }
 
-  setLoginState(token, email) {
+  setLoginState(token, email, currency = '$') {
     this.setState({
       loggedIn: true,
       token: token,
