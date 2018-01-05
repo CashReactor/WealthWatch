@@ -217,6 +217,12 @@ h1 {
   margin: 0 auto !important;
 }
 
+/*#expensePie {
+  height: 67% !important;
+  width: 67% !important;
+  margin: 0 auto !important;
+}*/
+
 .loader {
   display: none;
   border: 16px solid #f3f3f3;
