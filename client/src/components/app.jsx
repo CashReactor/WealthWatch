@@ -824,7 +824,7 @@ class App extends React.Component {
                 {this.analyzeBalance()}<br /><br />
                 <canvas id="averageExpensePie"/>
                 <br />
-                {this.toggleExpensePie()}
+                {/*this.toggleExpensePie()*/}
                 <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 <br /><br /><br />
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
