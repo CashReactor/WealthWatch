@@ -134,7 +134,7 @@ export default class OneExpense extends React.Component {
           <label id="label" htmlFor="">Enter transaction date</label>
           <br />
           <DayPickerInput value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
-          <br />
+          <br /><br />
           <button
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
