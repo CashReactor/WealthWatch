@@ -23,6 +23,7 @@ import LineGraph from './lineGraph.jsx';
 import RetirementCalculator from './retirementCalculator.jsx';
 import Ionicon from 'react-ionicons'
 
+import CryptoCurrency from './cryptoCurrency.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-    $(document).on('click', 'a[href^="#"]', function (event) {
+    $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
       $('html, body').animate(
@@ -892,6 +893,8 @@ class App extends React.Component {
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
                 {this.filterNavbar(props)}
+                <br/><br/>
+                <CryptoCurrency />
               </div>
             )}/>
             <Route path="/bank" render={(props) => (
@@ -919,3 +922,4 @@ class App extends React.Component {
 }
 
 export default App;
+
