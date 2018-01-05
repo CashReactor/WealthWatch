@@ -795,8 +795,9 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
                 </div>
                 <br/><br/><br/>
-                <CryptoCurrency />
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
+                <br/><br/>
+                <CryptoCurrency />
               </div>
             )}/>
             <Route path="/bank" render={() => (
