@@ -20,7 +20,11 @@ cryptoRouter.get('/getCrypto', (req, res) => {
   const alphaVantage = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=${
     market
   }&apikey=${apiKey}`;
-  axios.get(alphaVantage).then((response) => {
+  const alphaVantageIntra = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=${symbol}&market=${
+    market
+  }&apikey=${apiKey}`;
+  axios.get(alphaVantageIntra).then((response) => {
+    console.log('response data::::', response.data)
     res.status(200).json({ message: 'Data Found', data: response.data });
   });
 });
@@ -60,7 +64,7 @@ cryptoRouter.get('/getNews', (req, res) => {
 
 cryptoRouter.get('/getSentiment', (req, res) => {
   const currency = req.query.value;
-  const sentimentLink = `https://api.newsapi.aylien.com/api/v1/trends?field=sentiment.title.polarity&text=${currency}&published_at.start=NOW-30DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`;
+  const sentimentLink = `https://api.newsapi.aylien.com/api/v1/trends?field=sentiment.title.polarity&text=${currency}&published_at.start=NOW-7DAYS%2FDAY&published_at.end=NOW&language=en&sort_by=relevance`;
   const aylieanId = process.env.X_AYLIEN_NewsAPI_Application_ID;
   const aylieanKey = process.env.X_AYLIEN_NewsAPI_Application_Key;
   axios
