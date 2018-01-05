@@ -14,7 +14,15 @@ const style = {
   paddingTop: '7px',
   width: '50%',
   marginLeft: '25%',
-  marginRight: '25%'
+  marginRight: '25%',
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '75%',
+    padding: '7px',
+    margin: '7px auto',
+  },
 }
 
 class NPVCalculator extends React.Component {
@@ -245,10 +253,8 @@ class NPVCalculator extends React.Component {
 
   render() {
     return (
-      <div>
-        <Paper style={style}>
+      <div style={style.border}>
           {this.inputForm()}
-        </Paper>
       </div>
     );
   }

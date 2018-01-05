@@ -1,6 +1,7 @@
 // Import your routes here
 const { auth } = require('./routes/authentication.js');
 const { expense } = require('./routes/expense.js');
+const { crypto } = require('./routes/crypto.js');
 const { User } = require('../database/models/user.js');
 const { Rec } = require('../database/models/recurring.js');
 const { One } = require('../database/models/oneTime.js');
@@ -58,6 +59,7 @@ app.use(express.static(__dirname + '/../client/public'));
 // Routes
 app.use('/auth', auth); // Authentication route
 app.use('/api/expense', expense);
+app.use('/api/crypto', crypto);
 /* **************************************************** */
 
 app.post('/calculateNPV', function(req, res) {

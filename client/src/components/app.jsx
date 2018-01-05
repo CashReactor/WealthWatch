@@ -20,6 +20,7 @@ import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
+import CryptoCurrency from './cryptoCurrency.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -73,7 +74,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-
     $(document).on('click', 'a[href^="#"]', function(event) {
       event.preventDefault();
 
@@ -796,6 +796,8 @@ class App extends React.Component {
                 </div>
                 <br/><br/><br/>
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
+                <br/><br/>
+                <CryptoCurrency />
               </div>
             )}/>
             <Route path="/bank" render={() => (
@@ -822,3 +824,4 @@ class App extends React.Component {
 }
 
 export default App;
+
