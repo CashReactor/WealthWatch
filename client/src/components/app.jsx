@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chart from 'chart.js';
 import $ from 'jquery';
 import axios from 'axios';
-import { Switch, BrowserRouter, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import Graph from './Graph.jsx';
 import ExpenseTable from './expenseTable.jsx';
 import InputBalance from './inputBalance.jsx';
@@ -20,6 +20,7 @@ import Plaid from './plaidConsole.jsx';
 import Avatar from 'material-ui/Avatar';
 import BarGraph from './barGraph.jsx';
 import LineGraph from './lineGraph.jsx';
+import RetirementCalculator from './retirementCalculator.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -75,8 +76,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.updateUser();
-
-    $(document).on('click', 'a[href^="#"]', function(event) {
+    $(document).on('click', 'a[href^="#"]', function (event) {
       event.preventDefault();
 
       $('html, body').animate(
@@ -98,9 +98,7 @@ class App extends React.Component {
       bankBudget: budget,
       bankName: name,
       bankOne: transactions,
-    })
-    console.log('the bank information is updated', this.state.bankBudget, this.state.bankOne, this.state.bankName);
-    console.log()
+    });
   }
 
   updateBanks(banks) {
@@ -140,7 +138,6 @@ class App extends React.Component {
 
   updateUser() {
     axios.post('/user', { email: this.state.currentEmail }).then((response) => {
-      console.log('RESPONSE DATAAAA', response.data);
       if (!response.data.budget) {
         response.data.budget = '7777';
       }
@@ -154,7 +151,6 @@ class App extends React.Component {
 
       var totalOneExpense = this.state.one.map((expense) => {
         if (new Date(expense.date).getMonth() + 1 === this.state.currentDate.getMonth() + 1) {
-          console.log('THIS IS THE MATCHED EXPENSE AMOUNT', expense.amount);
           return expense.amount;
         } else {
           return 0;
@@ -164,23 +160,18 @@ class App extends React.Component {
         return expense.amount;
       }).reduce((acc, cur) => (acc + cur));
 
-
-
       this.setState({
         totalOneExpense,
-        totalRecExpense
-      })
+        totalRecExpense,
+      });
       //if (window.location.href.slice(21) === '/') {
       this.renderGraph();
       this.renderAverageExpensePie();
       //
-    })
+    });
   }
 
   renderSelectGraph(bank, accounts, transactions) {
-    console.log('THIS IS THE TRANSACTIONS', transactions);
-    console.log('THIS IS THE BANK NAME', bank);
-
     // $(`.loader${bank}`).toggle();
     // $(`.companyLogo${bank}`).toggle();
     // $(`.bankInfo${bank}`).css('display', 'grid');
@@ -194,8 +185,8 @@ class App extends React.Component {
     let budget = [];
     let expenses = [];
     let day = this.state.currentDate.getDate();
-    let month = this.state.currentDate.getMonth() + 1;
-    let year = this.state.currentDate.getFullYear();
+    let month = 12 //this.state.currentDate.getMonth() + 1;
+    let year = 2017 //this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
 
     var totalBalance = 0;
@@ -342,8 +333,8 @@ class App extends React.Component {
     let budget = [];
     let expenses = [];
     let day = this.state.currentDate.getDate();
-    let month = this.state.currentDate.getMonth() + 1;
-    let year = this.state.currentDate.getFullYear();
+    let month = 12 //this.state.currentDate.getMonth() + 1;
+    let year = 2017 //this.state.currentDate.getFullYear();
     let daysInMonth = this.daysInMonth(month, year);
 
     for (let i = 0; i <= daysInMonth; i++) {
@@ -369,7 +360,6 @@ class App extends React.Component {
         }
       }
     }
-    console.log('THIS IS THE EXPENSE ARRAY', expenses);
     let barCtx = document.getElementById('bankChart');
     let lineCtx = document.getElementById('bankLineChart');
 
@@ -465,7 +455,6 @@ class App extends React.Component {
     let month = this.state.currentDate.getMonth() + 1;
     let year = this.state.currentDate.getFullYear();
     let totalRecExp = 0;
-    console.log('THIS IS THE CURRENT DAY AND MONTH FOR THE STATE', day, '//', month, '//', year)
     let daysInMonth = this.daysInMonth(month, year);
     this.setState({
       daysInMonth
@@ -479,22 +468,10 @@ class App extends React.Component {
     }
     for (let i = 0; i < this.state.one.length; i++) {
       var expenseAmount = this.state.one[i].amount;
-      console.log('THIS STATE ONE', new Date(this.state.one[i].date).getDate());
       var expenseDay = new Date(this.state.one[i].date).getDate();
-      console.log('THIS IS THE EXPENSE DAY', expenseDay);
       var expenseMonth = new Date(this.state.one[i].date).getMonth() + 1;
       var expenseYear = new Date(this.state.one[i].date).getFullYear();
-      console.log(
-        'THIS IS THE CURRENT DAY AND MONTH AND YEAR FOR THE EXPENSES',
-        expenseDay,
-        '//',
-        expenseMonth,
-        '//',
-        expenseYear
-      );
       if (expenseYear === year && expenseMonth === month) {
-        console.log('this is the expense amount being deducted', expenseAmount);
-        console.log('and this is the expense day', expenseDay);
         expenses[expenseDay] += expenseAmount;
         for (let j = expenseDay; j <= daysInMonth; j++) {
           budget[j] = budget[j] - expenseAmount;
@@ -509,7 +486,6 @@ class App extends React.Component {
       }
     }
     // expenses[1] = totalRecExp;
-    console.log(budget);
     let barCtx = document.getElementById('balanceChart');
     let lineCtx = document.getElementById('balanceLineChart');
     let updatedBudgets = budget;
@@ -690,7 +666,7 @@ class App extends React.Component {
     return new Date(year, month, 0).getDate();
   }
 
-  setLoginState(token, email) {
+  setLoginState(token, email, currency = '$') {
     this.setState({
       loggedIn: true,
       token: token,
@@ -702,11 +678,13 @@ class App extends React.Component {
     window.localStorage.setItem('currency', currency);
   }
 
-  setLogoutState(event) {
+  setLogoutState(event, history) {
     event.preventDefault();
     this.setState({
       loggedIn: false,
       token: '',
+    }, () => {
+      history.push('/');
     });
     window.localStorage.removeItem('wealthwatch_token');
     window.localStorage.removeItem('user_email');
@@ -721,7 +699,7 @@ class App extends React.Component {
       <div>
         <Graph renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
       </div>
-    )
+    );
   }
 
   calculateExpensePerDay() {
@@ -729,15 +707,13 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
-    console.log('this is the budget', this.state.budget, 'this is the totalOneExpense', this.state.totalOneExpense, 'this is the totalRecExpense', this.state.totalRecExpense);
-
     return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
 
   analyzeExpenditure() {
     return (
-      <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent a daily average of <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
-    )
+      <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
+    );
   }
 
   welcomeUser() {
@@ -766,8 +742,8 @@ class App extends React.Component {
   analyzeBalance() {
     if (this.calculateBalanceLeft() < 0) {
       return (
-        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> over your budget this month<span style={{color:'red'}}>.</span></h2>
-      )
+        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
+      );
     }
     if (this.state.daysInMonth === this.state.currentDate.getDate()) {
       return (
@@ -789,7 +765,7 @@ class App extends React.Component {
           <MuiThemeProvider>
             <div>
               <Switch>
-                <Route exact path="/" render={() => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} />)} />
+                <Route exact path="/" render={(props) => (<LoginSignup updateUser={this.updateUser} getCurrentEmail={this.getCurrentEmail} setLoginState={this.setLoginState} setLogoutState={this.setLogoutState} location={props.location}/>)} />
                 <Route path="/forgot" component={ForgotPassword} />
                 <Route path="/reset/:token" component={ResetPassword} />
               </Switch>
@@ -805,9 +781,9 @@ class App extends React.Component {
             <Clock getCurrentDate={this.getCurrentDate} />
             <Weather getAuthentication={this.getAuthentication} />
           </div>
-          <Avatar size={97} src={this.state.avatar} style={{transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
+          <Avatar size={97} src={this.state.avatar} style={{marginTop: '1%', transform:  'translate(-50%, -50%)', marginLeft:'50%', marginRight:'50%'}}/>
           <Switch>
-            <Route exact path="/" render={() => (
+            <Route exact path="/" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item bar-select">Home</Link>
@@ -816,7 +792,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                   <br/><br/><br/>
                 </div>
-                <br /><br />
+
                 {this.welcomeUser()}
                 <br /><br />
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
@@ -828,24 +804,44 @@ class App extends React.Component {
                 <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 <br /><br /><br />
                 <Graph renderEPie={this.renderAverageExpensePie} renderGraph={this.renderGraph} loading={this.state.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} one={this.state.one} rec={this.state.rec} currentEmail={this.state.currentEmail} />
+
+                <button
+                  onClick={(event) => {this.setLogoutState(event, props.history)} }
+                  className="btn btn-danger"
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )} />
-            <Route path="/expense" render={() => (
-              <div>
-                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
+            <Route path="/expense" render={(props) => (
+              <div className="grid">
+                {console.log(props)}
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
                   <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
                   <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
+                <br/><br/>
                 {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
-                <br/><br/><br/>
+
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
+                <br />
+                <div className="expenseButtonGroup">
+                  <button
+                    onClick={(event) => {this.setLogoutState(event, props.history)} }
+                    className="btn btn-danger expenseButton"
+                  >
+                    Logout
+                  </button>
+                  <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default expenseButton2">Reset Expenses</a>
+                </div>
               </div>
             )}/>
-            <Route path="/investor" render={() => (
+            <Route path="/investor" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
@@ -854,10 +850,18 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item bar-select">Investors</Link>
                 </div>
                 <br/><br/><br/>
+                {/*<RetirementCalculator currency={this.currencySymbols(this.state.currency)}/>*/}
                 <NPVCalculator currency={this.currencySymbols(this.state.currency)} />
+                <button
+                  onClick={(event) => {this.setLogoutState(event, props.history)} }
+                  className="btn btn-danger"
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )}/>
-            <Route path="/bank" render={() => (
+            <Route path="/bank" render={(props) => (
               <div>
                 <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar">
                   <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
@@ -867,12 +871,17 @@ class App extends React.Component {
                 </div>
                 <br/><br/><br/>
                 <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
+                <br /><br /><br /><br />
+                <button
+                  onClick={(event) => {this.setLogoutState(event, props.history)} }
+                  className="btn btn-danger"
+                >
+                  Logout
+                </button>
+                <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
               </div>
             )} />
           </Switch>
-          <br /><br /><br /><br />
-          <button onClick={this.setLogoutState} type="" className="btn btn-danger">Logout</button>
-          <a href="#widget" style={{margin:'7px'}} onClick={this.resetUser} className="btn btn-default">Reset Expenses</a>
           </MuiThemeProvider>
         </div>
       );

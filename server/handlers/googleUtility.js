@@ -39,11 +39,11 @@ const googleUserLogin = (req, res, next) => {
   const { id } = req.user;
   User.findOne({ googleId: id })
     .then((user) => {
-      const { _id, email, name } = user;
+      const { _id, email, name, currency } = user;
 
       if (user) {
         const token = generateToken({ _id, email, name });
-        res.body = { token, email };
+        res.body = { token, email, currency };
         next();
       }
     })

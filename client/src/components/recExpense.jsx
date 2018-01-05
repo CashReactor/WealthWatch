@@ -5,6 +5,16 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
+const styles = {
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '90%',
+    padding: '7px',
+    margin: '7px auto',
+  },
+};
 
 export default class RecExpense extends React.Component {
   constructor(props) {
@@ -75,7 +85,7 @@ export default class RecExpense extends React.Component {
       period: '',
       transactionDate: '',
     });
-    axios.post('/api/expense/recExpense', data).then((response) => {
+    axios.post('/api/expense/recExpense', data).then(response => {
       this.setState({
         expense: '',
         category: '',
@@ -91,10 +101,10 @@ export default class RecExpense extends React.Component {
   getRecExpenses() {
     axios
       .get('/api/expense/fetchRecExpenses', { email: this.props.email })
-      .then((response) => {
+      .then(response => {
         this.setState({ rec: response.data });
       })
-      .catch((err) => {
+      .catch(err => {
         throw err;
       });
   }
@@ -156,17 +166,18 @@ export default class RecExpense extends React.Component {
             <option value={5}>Others</option>
           </select>
           <br />
-          <label id="label" htmlFor="">Enter transaction date</label>
+          <label id="label" htmlFor="">
+            Enter transaction date
+          </label>
           <br />
-          <DayPickerInput id="inputaddon" value={this.state.transactionDate} onDayChange={this.onDateChange} placeholder="Enter Transaction Date" />
+          <DayPickerInput
+            id="inputaddon"
+            value={this.state.transactionDate}
+            onDayChange={this.onDateChange}
+            placeholder="Enter Transaction Date"
+          />
           <br />
-          <button
-            onClick={this.onSubmit}
-            style={{ margin: '1vh' }}
-            type="submit"
-            id="btn"
-            className="btn btn-primary"
-          >
+          <button onClick={this.onSubmit} style={{ margin: '1vh' }} type="submit" id="btn" className="btn btn-primary">
             Submit
           </button>
         </div>
@@ -175,11 +186,10 @@ export default class RecExpense extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
-      <Paper style={{ paddingTop: '7px', width: '77%', marginLeft: '11.5%', marginRight: '11.5' }}>
+      <div className="expenseRecInput" style={styles.border}>
         {this.bootstrapBar()}
-      </Paper>
+      </div>
     );
   }
 }

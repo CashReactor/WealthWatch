@@ -8,17 +8,17 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
 const Promise = require('bluebird');
+import $ from 'jquery';
 
 const style = {
   paper: {
     height: '50%',
-    margin: '0 auto',
+    // margin: '0 0 0 30%',
     textAlign: 'center',
-    width: '25%',
+    width: '370px',
     position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    right: '7px',
+    top: '7px',
     backgroundColor: 'none',
     boxShadow: 'none',
   },
@@ -28,11 +28,11 @@ const style = {
     backgroundColor: '#102847',
   },
   tab: {
-    backgroundColor: '#102847',
+    backgroundColor: 'rgba(13,71,161 ,0.9)',
   },
   textContainer: {
     width: '100%',
-    backgroundColor: '#102847',
+    backgroundColor: 'rgba(13,71,161 ,0.9)',
   },
   form: {
     display: 'flex',
@@ -42,7 +42,7 @@ const style = {
     color: '#fff',
   },
   input: {
-    color: '#fff',
+    color: '#fff'
   },
   link: {
     marginLeft: '0',
@@ -60,8 +60,8 @@ const style = {
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: '#F06292',
-    primary2Color: '#AB47BC',
+    primary1Color: 'rgba(13,71,161 ,0.9)',
+    primary2Color: 'rgba(13,71,161 ,0.9)',
   },
 });
 
@@ -92,23 +92,12 @@ export default class LoginSignup extends React.Component {
   componentDidMount() {
     return this.extractTokenEmail()
       .then((tokenEmail) => {
-        const { token, email } = tokenEmail;
-        this.props.setLoginState(token, email);
+        const { token, email, currency } = tokenEmail;
+        this.props.setLoginState(token, email, currency);
       })
       .then(() => {
         this.props.updateUser();
       });
-  }
-
-  extractTokenEmail(callback) {
-    return new Promise((resolve, reject) => {
-      if (this.props.location.search) {
-        const params = this.props.location.search.split('?');
-        const token = params[1];
-        const email = params[2];
-        resolve({ token, email });
-      } 
-    });
   }
 
   onInputChange(e) {
@@ -161,6 +150,19 @@ export default class LoginSignup extends React.Component {
           }
         });
     }
+  }
+
+  extractTokenEmail(callback) {
+    return new Promise((resolve, reject) => {
+      if (this.props.location.search) {
+        console.log(this.props.location.search);
+        const params = this.props.location.search.split('?');
+        const token = params[1];
+        const email = params[2];
+        const currency = params[3];
+        resolve({ token, email, currency });
+      }
+    });
   }
 
   googleLogin(e) {
@@ -350,6 +352,7 @@ export default class LoginSignup extends React.Component {
     console.log(this.props.location);
     return (
       <div className="login-container">
+        <h1 id="until"style={{display:'block', fontSize:'12em', color: 'white'}}>Until debt tears us <span style={{width: '10%'}}></span>apart.</h1>
         <Paper style={style.paper}>
           <Tabs tabItemContainerStyle={style.headline}>
             <Tab style={style.tab} label="Login">

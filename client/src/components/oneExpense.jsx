@@ -4,6 +4,16 @@ import Paper from 'material-ui/Paper';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'bootstrap/dist/css/bootstrap.css';
 
+const styles = {
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '90%',
+    padding: '7px',
+    margin: '7px auto',
+  },
+};
 
 export default class OneExpense extends React.Component {
   constructor(props) {
@@ -141,16 +151,9 @@ export default class OneExpense extends React.Component {
 
   render() {
     return (
-      <Paper
-        style={{
-          paddingTop: '7px',
-          width: '77%',
-          marginLeft: '11.5%',
-          marginRight: '11.5',
-        }}
-      >
+      <div className="expenseOneInput" style={styles.border}>
         {this.bootstrapBar()}
-      </Paper>
+      </div>
     );
   }
 }
