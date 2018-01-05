@@ -92,23 +92,12 @@ export default class LoginSignup extends React.Component {
   componentDidMount() {
     return this.extractTokenEmail()
       .then((tokenEmail) => {
-        const { token, email } = tokenEmail;
-        this.props.setLoginState(token, email);
+        const { token, email, currency } = tokenEmail;
+        this.props.setLoginState(token, email, currency);
       })
       .then(() => {
         this.props.updateUser();
       });
-  }
-
-  extractTokenEmail(callback) {
-    return new Promise((resolve, reject) => {
-      if (this.props.location.search) {
-        const params = this.props.location.search.split('?');
-        const token = params[1];
-        const email = params[2];
-        resolve({ token, email });
-      }
-    });
   }
 
   onInputChange(e) {
@@ -161,6 +150,19 @@ export default class LoginSignup extends React.Component {
           }
         });
     }
+  }
+
+  extractTokenEmail(callback) {
+    return new Promise((resolve, reject) => {
+      if (this.props.location.search) {
+        console.log(this.props.location.search);
+        const params = this.props.location.search.split('?');
+        const token = params[1];
+        const email = params[2];
+        const currency = params[3];
+        resolve({ token, email, currency });
+      }
+    });
   }
 
   googleLogin(e) {

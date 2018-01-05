@@ -152,8 +152,10 @@ app.post('/reset', function(req, res) {
 })
 
 app.post('/user', (req, res) => {
+  console.log('User Email: ', req.body.email);
   User.findOne({ email: req.body.email })
     .then((user) => {
+      console.log('User: ', user);
       const gravatar = user.gravatar;
       const {
         _id,
