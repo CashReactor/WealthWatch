@@ -70,6 +70,22 @@ export default class ExpenseGraph extends React.Component {
             animationSteps : 100,
             animationEasing : "easeOutBounce",
             animateRotate : true,
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                    var allData = data.datasets[tooltipItem.datasetIndex].data;
+                    var tooltipLabel = data.labels[tooltipItem.index];
+                    var tooltipData = allData[tooltipItem.index];
+                    var total = 0;
+                    for (var i in allData) {
+                        total += allData[i];
+                    }
+                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                }
+              }
+            }
+
 
       },
     })
@@ -79,13 +95,16 @@ export default class ExpenseGraph extends React.Component {
 
   render() {
     console.log('Category Values: ', this.state.categoryValues);
-    return (
-      <div>
-      <br />
-      <br />
-      <br />
-        <canvas id="expensePie" />
-      </div>
-    );
+
+      return (
+        <div>
+        <br />
+        <br />
+        <br />
+          <canvas id="expensePie" />
+        </div>
+      )
   }
+
+
 }
