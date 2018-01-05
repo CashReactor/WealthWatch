@@ -176,7 +176,7 @@ export default class RecExpense extends React.Component {
             onDayChange={this.onDateChange}
             placeholder="Enter Transaction Date"
           />
-          <br />
+          <br /><br />
           <button onClick={this.onSubmit} style={{ margin: '1vh' }} type="submit" id="btn" className="btn btn-primary">
             Submit
           </button>

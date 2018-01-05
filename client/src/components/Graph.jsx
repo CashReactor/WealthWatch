@@ -28,7 +28,15 @@ const styles = {
     width: '100%',
     // backgroundColor: 'rgba(144,164,174 ,0.17)',
     color: 'white',
-  }
+  },
+  border: {
+    border: 'solid',
+    borderWidth: '3px',
+    borderColor: 'lightblue',
+    width: '90%',
+    padding: '7px',
+    margin: '7px auto',
+  },
 };
 
 class Graph extends React.Component {
@@ -47,7 +55,7 @@ class Graph extends React.Component {
   render() {
     return (
       <div>
-        <div className="grid-container">
+        <div styles={styles.border} className="grid-container">
           <div className="item1">
               <BarGraph currentEmail={this.props.currentEmail} budget={this.props.budget} one={this.props.one} rec={this.props.rec} />
           </div>
