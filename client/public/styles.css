@@ -195,8 +195,8 @@ h1 {
   text-decoration: none !important;
   width: 25%;
   padding: 1.7%;
-  font-size: 2vh;
-  color: rgba(26,35,126 ,1);
+/*   font-size: 2vh;
+ */  color: rgba(26,35,126 ,1);
   background-color: rgba(187,222,251 ,0.2);
   font-weight: 500;
 }
@@ -256,7 +256,7 @@ h1 {
   border-style: none;
   border-width: 3.7px;
   border-color: #0D47A1;
-  font-size: 2.7vh;
+  font-size: 3.7vh;
   color: white;
   font-weight: 900;
   background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
