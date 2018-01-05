@@ -778,7 +778,7 @@ class App extends React.Component {
             <button
               onClick={(event) => {this.setLogoutState(event, props.history)} }
               className="btn btn-danger"
-              style={{marginTop: '10px'}}
+              style={{marginTop: '10px', float: 'right'}}
             >
               Logout
             </button>
@@ -856,14 +856,11 @@ class App extends React.Component {
             )} />
             <Route path="/expense" render={(props) => (
               <div>
-                <div className="grid">
-                  {console.log(props)}
-                  <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
-                    <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
-                    <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
-                    <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
-                    <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
-                  </div>
+                <div style={{width:'70%', margin:'0 auto', borderColor: 'grey'}} className="bar navigator">
+                  <Link onClick={this.w3Click} to="/" className="bar-item">Home</Link>
+                  <Link onClick={this.w3Click} to="/expense" className="bar-item bar-select">Expenses</Link>
+                  <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
+                  <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
                 <br /><br /><br /><br />
                 <h2 style={{display:'block', width: '70%', margin: '0 auto', fontSize:'5em'}}>You can add, delete, and view all your expenses here<span style={{color:'red'}}>.</span> <br /><br /></h2>
