@@ -26,10 +26,10 @@ class CryptoModalGraph extends React.Component {
 
   lineGraph() {
     const { timeSeries } = this.state;
-    const xLabels = Object.keys(timeSeries).slice(0, 32).reverse();
+    const xLabels = Object.keys(timeSeries).slice(0, 200).reverse();
     const prices = [];
     xLabels.forEach((element) => {
-      prices.push(timeSeries[element]['4b. close (USD)']);
+      prices.push(timeSeries[element]['1a. price (USD)']);
     });
 
     const ctx = document.getElementById('modalLine');
