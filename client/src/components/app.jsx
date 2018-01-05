@@ -714,8 +714,6 @@ class App extends React.Component {
     return (
       <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent daily on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
     );
-      <h2 style={{display: 'inline-block', padding: '7px', marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent a daily average of <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateExpensePerDay()}</span><span style={{color:'red'}}>.</span></h2>
-    )
   }
 
   welcomeUser() {
@@ -746,8 +744,6 @@ class App extends React.Component {
       return (
         <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have overspent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> this month<span style={{color:'red'}}>.</span></h2>
       );
-        <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have spent <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> over your budget this month<span style={{color:'red'}}>.</span></h2>
-      )
     }
     if (this.state.daysInMonth === this.state.currentDate.getDate()) {
       return (
@@ -796,7 +792,7 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                   <br/><br/><br/>
                 </div>
-                <br /><br />
+
                 {this.welcomeUser()}
                 <br /><br />
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
@@ -827,11 +823,9 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
-                <br/><br/><br/>
                 <br/><br/>
-                <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
                 {/*<ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>*/}
-                <br/><br/><br/>
+
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
