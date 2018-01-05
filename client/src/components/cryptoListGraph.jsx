@@ -38,9 +38,7 @@ class CryptoListGraph extends React.Component {
   render() {
     console.log('here is the data::::', this.props.pickedCurrency);
     return (
-      <div>
         <canvas id="listGraph" />
-      </div>
     );
   }
 }
