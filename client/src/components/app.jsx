@@ -822,6 +822,7 @@ class App extends React.Component {
                 <InputBalance currency={this.state.currency} updateCurrency={this.updateCurrency} currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} /><br />
                 {this.analyzeExpenditure()}
                 {this.analyzeBalance()}<br /><br />
+                <canvas id="averageExpensePie"/>
                 <br />
                 {this.toggleExpensePie()}
                 <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
@@ -837,7 +838,8 @@ class App extends React.Component {
                   <Link onClick={this.w3Click} to="/bank" className="bar-item">Bank</Link>
                   <Link onClick={this.w3Click} to="/investor" className="bar-item">Investors</Link>
                 </div>
-                <br/><br/>
+                <ExpenseGraph oneExpenses={this.state.one} recExpenses={this.state.rec}/>
+                <br/><br/><br/>
                 <Expenses currencySymbols={this.currencySymbols} updateUser={this.updateUser} currentEmail={this.state.currentEmail} />
                 <br /><br />
                 <ExpenseTable updateExpenseList={this.updateExpenseList} currentEmail={this.state.currentEmail} currencySymbols={this.currencySymbols} one={this.state.one} rec={this.state.rec} />
