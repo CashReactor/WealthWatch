@@ -12,7 +12,7 @@ import Clock from './clock.jsx';
 import Weather from './weather.jsx';
 import LoginSignup from './loginSignup.jsx';
 import Expenses from './expenses.jsx'
-import ExpenseGraph from './expenseGraph.jsx';
+// import ExpenseGraph from './expenseGraph.jsx';
 import NPVCalculator from './npvCalculator.jsx'
 import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
