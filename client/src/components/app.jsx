@@ -781,7 +781,7 @@ class App extends React.Component {
             </div>
             <ul className="nav navbar-nav">
 
-              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors - Dan, Anto, Jacob, and Mike!</a>
+              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors - Dan, Anto, Jacob, and Mike (great software engineers of HRR27)</a>
               </li>
             </ul>
             <div id="space"></div>
@@ -803,7 +803,7 @@ class App extends React.Component {
               <a className="navbar-brand" href="#top">WealthWatch</a>
             </div>
             <ul className="nav navbar-nav">
-              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors - Dan, Anto, Jacob, and Mike!</a>
+              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors - Dan, Anto, Jacob, and Mike (proud and great software engineers of HRR27)</a>
               </li>
             </ul>
           </div>
