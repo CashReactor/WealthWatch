@@ -51,8 +51,8 @@ class App extends React.Component {
       bank: false,
       loading: false,
       avatar: '',
-      totalOneExpense: '',
-      totalRecExpense: '',
+      totalOneExpense: 0,
+      totalRecExpense: 0,
       banks: {},
       graphs: {},
     };
@@ -154,16 +154,24 @@ class App extends React.Component {
         avatar: response.data.gravatar,
       });
 
-      var totalOneExpense = this.state.one.map((expense) => {
-        if (new Date(expense.date).getMonth() + 1 === this.state.currentDate.getMonth() + 1) {
+      var totalOneExpense = 0, totalRecExpense = 0;
+
+      if (this.state.one.length !== 0) {
+        console.log('this part should not be hit but is hit');
+        totalOneExpense = this.state.one.map((expense) => {
+          if (new Date(expense.date).getMonth() + 1 === this.state.currentDate.getMonth() + 1) {
+            return expense.amount;
+          } else {
+            return 0;
+          }
+        }).reduce((acc, cur) => (acc + cur));
+      }
+
+      if (this.state.rec.length !== 0) {
+        totalRecExpense = this.state.rec.map(function(expense) {
           return expense.amount;
-        } else {
-          return 0;
-        }
-      }).reduce((acc, cur) => (acc + cur));
-      var totalRecExpense = this.state.rec.map(function(expense) {
-        return expense.amount;
-      }).reduce((acc, cur) => (acc + cur));
+        }).reduce((acc, cur) => (acc + cur));
+      }
 
       this.setState({
         totalOneExpense,
@@ -711,6 +719,8 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
+    console.log('this.state.totalOneExpense', this.state.totalOneExpense);
+    console.log('this.state.totalRecExpense', this.state.totalRecExpense);
     return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
 
@@ -801,8 +811,6 @@ class App extends React.Component {
       );
     }
   }
-
-  // <h2 style={{display: 'inline-block', padding: '7px',marginLeft:'10%', width: '80%', color:'rgba(0,150,136 ,1)'}}>You have on average <span style={{color: 'rgba(48,63,159 ,1)'}}>{this.currencySymbols()}{this.calculateBalanceLeft()}</span> to spend daily for the rest of the month<span style={{color:'red'}}>.</span></h2>
 
   render() {
     if (!this.state.loggedIn) {
@@ -906,7 +914,6 @@ class App extends React.Component {
                 <br/><br/><br/>
                 <Plaid renderSelectGraph={this.renderSelectGraph} banks={this.state.banks} updateBanks={this.updateBanks} loading={this.loading} renderBankGraph={this.renderBankGraph} updateBankInfo={this.updateBankInfo} email={ this.state.currentEmail }/>
                 <br /><br /><br /><br />
-                {/*<a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>*/}
                 <a href="#widget" style={{margin:'7px'}} onClick={props.resetUser} className="btn btn-default">Reset Expenses</a>
                 {this.filterNavbar(props)}
               </div>

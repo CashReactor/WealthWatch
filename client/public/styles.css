@@ -106,6 +106,10 @@ h1 {
   padding: 7px;
 }
 
+.autosuggest {
+  width: 100px !important;
+}
+
 .grid-container {
   /* display: grid;
   grid-template-columns: 50% 50%; */
@@ -256,7 +260,7 @@ h1 {
   border-style: none;
   border-width: 3.7px;
   border-color: #0D47A1;
-  font-size: 3.7vh;
+  font-size: 2.7vh;
   color: white;
   font-weight: 900;
   background-image: linear-gradient(rgba(0,0,0, 0.27), rgba(0,0,0, 0.27)), url('https://images.unsplash.com/photo-1462556791646-c201b8241a94?auto=format&fit=crop&w=2545&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D');
@@ -523,8 +527,8 @@ cryptoContainer
 */
 
 .cryptoContainer {
-  display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
+/*   display: grid;
+  grid-template-columns: 25% 25% 25% 25%; */
 }
 
 .cryptoHeader {
@@ -535,13 +539,18 @@ cryptoContainer
   grid-column: 1/2;
 }
 
+.crypto-grid {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
 .cryptoSearchBtn {
-  grid-column: 3/4;
   height: 2.5em;
-  width: 5em;
+  width: 70px;
   margin-bottom: 1em !important;
-  margin-left: 2em;
-  margin-top: 0.9em;
+/*   margin-left: 2em;
+ */  margin-top: 1em;
+ display: inline-block;
 }
 
 #cryptoListLabel {
@@ -561,6 +570,10 @@ cryptoContainer
   right: 1em;
   top: 1em;
 }
+
+/* #cryptoListGraph {
+  display: none !important;
+} */
 
 #listGraph {
   grid-column:1/5;
@@ -601,4 +614,5 @@ cryptoContainer
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
+
 

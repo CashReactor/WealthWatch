@@ -6,6 +6,7 @@ import SentimentSummary from './sentimentSummary.jsx';
 import Autosuggest from 'react-autosuggest';
 import CryptoModalGraph from './cryptoModalGraph.jsx';
 import CryptoListGraph from './cryptoListGraph.jsx';
+import $ from 'jquery';
 
 const theme = {
   input: {
@@ -132,6 +133,10 @@ class CryptoCurrency extends React.Component {
   }
 
   toggleModal() {
+    if (!this.state.search) {
+      alert('Search a bitcoin currency');
+      return;
+    }
     this.setState({
       showModal: !this.state.showModal,
     });
@@ -221,7 +226,7 @@ class CryptoCurrency extends React.Component {
       : this.state.cryptoCurrencyList
         .filter(currency => currency.name.toLowerCase().slice(0, inputLength) === inputValue);
   }
-  
+
   getSuggestionValue(suggestion) {
     this.setState({
       cryptoCurrencyCode: suggestion.code,
@@ -239,6 +244,9 @@ class CryptoCurrency extends React.Component {
     });
   }
   renderGraph(e) {
+    if (!this.state.renderGraph) {
+      $('#cryptoListGraph').toggle();
+    }
     const currentCurrency = e.target.id;
     // console.log('target: ', currentCurrency);
     let currentData = this.state.savedCurrencyLists.filter((element) => {
@@ -256,24 +264,33 @@ class CryptoCurrency extends React.Component {
       placeholder: 'Type Bitcoin Currency Name',
       value: this.state.search,
       onChange: this.onChange,
-    };
-    const cryptoGraph = this.state.renderGraph ? <CryptoListGraph pickedCurrency={this.state.filteredGraphData} /> : null;
+      style: { width: '70%',
+        height: '2.5em',
+        marginTop: '1em',
+        marginLeft: '7%',
+        marginBottom: '1em',
+        display: 'inline-block',
+      }
+    }
+    const cryptoGraph = <CryptoListGraph id='cryptoListGraph' pickedCurrency={this.state.filteredGraphData} />
     // console.log('check filtered Data::::', this.state.renderGraph, this.state.filteredGraphData);
     return (
       <div style={styles.border} className="cryptoContainer">
-        <h1 className="header cryptoHeader">Track the Price of Your Favorite Cryptocurrency</h1>
+        <h1 className="header cryptoHeader">Track the Price of Your Favorite Cryptocurrency</h1><br /><br />
         {cryptoGraph}
-        <Autosuggest
-          theme={theme}
-          suggestions={this.state.suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          inputProps={inputProps}
-        />
-        <br/><br/>
-        <button className="cryptoSearchBtn btn btn-primary" onClick={this.toggleModal}>Search</button>
+        <div className="crypto-grid">
+          <Autosuggest
+            className="autosuggest"
+            theme={theme}
+            suggestions={this.state.suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputProps}
+          />
+          <button style={{float: 'left'}} className="cryptoSearchBtn btn btn-primary" onClick={this.toggleModal}>Search</button>
+        </div>
         <label id="cryptoListLabel">Crypto Currency Lists</label>
         <ListGroup className="listGroup">
           {this.state.savedCurrencyLists.map((currency) => {
