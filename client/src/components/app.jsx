@@ -144,7 +144,7 @@ class App extends React.Component {
   updateUser() {
     axios.post('/user', { email: this.state.currentEmail }).then((response) => {
       if (!response.data.budget) {
-        response.data.budget = '7777';
+        response.data.budget = '0';
       }
       this.setState({
         budget: Number(response.data.budget),
@@ -505,7 +505,7 @@ class App extends React.Component {
     let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
     let color = updatedBudgets.map((budget, index) => {
-      if (budget > 0) {
+      if (budget >= 0) {
         if (index <= this.state.currentDate.getDate()) {
           return positiveColor;
         } else {

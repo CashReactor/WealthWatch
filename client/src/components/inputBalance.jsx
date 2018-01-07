@@ -123,7 +123,7 @@ class InputBalance extends React.Component {
           </select>
           <a
             id="btn"
-            href="#widget"
+            href="#balanceChart"
             onClick={this.onSubmit}
             style={{ margin: '1vh' }}
             type="submit"
