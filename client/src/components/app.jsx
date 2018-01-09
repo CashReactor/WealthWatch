@@ -12,7 +12,7 @@ import Clock from './clock.jsx';
 import Weather from './weather.jsx';
 import LoginSignup from './loginSignup.jsx';
 import Expenses from './expenses.jsx'
-import ExpenseGraph from './expenseGraph.jsx';
+// import ExpenseGraph from './expenseGraph.jsx';
 import NPVCalculator from './npvCalculator.jsx'
 import ForgotPassword from './forgotPassword.jsx';
 import ResetPassword from './resetPassword.jsx';
@@ -144,7 +144,7 @@ class App extends React.Component {
   updateUser() {
     axios.post('/user', { email: this.state.currentEmail }).then((response) => {
       if (!response.data.budget) {
-        response.data.budget = '7777';
+        response.data.budget = '0';
       }
       this.setState({
         budget: Number(response.data.budget),
@@ -505,7 +505,7 @@ class App extends React.Component {
     let positiveColor = 'rgba(54, 162, 235, 0.7)';
 
     let color = updatedBudgets.map((budget, index) => {
-      if (budget > 0) {
+      if (budget >= 0) {
         if (index <= this.state.currentDate.getDate()) {
           return positiveColor;
         } else {
@@ -781,7 +781,7 @@ class App extends React.Component {
             </div>
             <ul className="nav navbar-nav">
 
-              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors - the team that strives hard to make it rain</a>
+              <li><a href="#top">Made with <Ionicon icon="md-heart" fontSize="17px" color="red" beat={true} /> by Cash Reactors - Dan, Mike, Anto, and Jacob (proud software engineers of HRR27)</a>
               </li>
             </ul>
             <div id="space"></div>
@@ -803,7 +803,7 @@ class App extends React.Component {
               <a className="navbar-brand" href="#top">WealthWatch</a>
             </div>
             <ul className="nav navbar-nav">
-              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors - the team that strives hard to make it rain</a>
+              <li><a href="#top">Made with<i className="ion-android-favorite icon-medium"></i>by Cash Reactors - Dan, Mike, Anto, and Jacob (proud software engineers of HRR27)</a>
               </li>
             </ul>
           </div>
