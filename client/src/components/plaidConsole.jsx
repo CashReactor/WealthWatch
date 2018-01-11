@@ -47,6 +47,7 @@ class Plaid extends React.Component {
           email: that.props.email
         }, function() {
           $('.loader').toggle();
+          $('#temporary').toggle();
           that.getBankInfo()
         });
       },
@@ -345,7 +346,7 @@ class Plaid extends React.Component {
           <div className="loader"></div>
           <br /><br /><br />
         </div>
-        <h2 style={{size:'1em', width:'70%', marginLeft:'15%', textAlign: 'center'}}>Temporary access id and password: user_good, pass_good<span style={{color:'red'}}>.</span></h2>
+        <h2 id="temporary" style={{size:'1em', width:'70%', marginLeft:'15%', textAlign: 'center'}}>Temporary access id and password: user_good, pass_good<span style={{color:'red'}}>.</span></h2>
         <br /><br /><br />
         {this.renderBankLogo()}
         <canvas style={{display: 'none'}} id='bankChart'/>

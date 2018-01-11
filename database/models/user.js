@@ -43,6 +43,7 @@ userSchema.virtual('gravatar').get(function () {
 });
 
 userSchema.methods.comparePassword = function (password, callback) {
+  console.log('this is the password', password, 'this is the password from the database', this.password);
   bcrypt.compare(password, this.password, (error, isMatch) => {
     if (error) {
       return callback(error);

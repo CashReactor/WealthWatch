@@ -153,6 +153,8 @@ class App extends React.Component {
         currency: response.data.currency,
         avatar: response.data.gravatar,
       });
+      console.log('this is the onetime expense', this.state.one);
+      console.log('this is the rec expense', this.state.rec);
 
       var totalOneExpense = 0, totalRecExpense = 0;
 
@@ -577,6 +579,23 @@ class App extends React.Component {
   }
 
   renderAverageExpensePie() {
+    // var category = {};
+    // var oneLength = this.state.one.length;
+    // var recLength = this.state.rec.length;
+    // for (var i = 0; i < oneLength; i++) {
+    //   var one = this.state.one[i];
+    //   var month = new Date(one.date).getMonth() + 1;
+    //   var year = new Date(one.date).getFullYear();
+    //   var currentMonth = this.state.currentDate.getMonth() + 1;
+    //   var currentYear = this.state.currentDate.getFullYear();
+    //   if (month === currentMonth && year === currentYear) {
+    //     var category = one.category ||
+    //     if (category[one.expense]) {
+    //       category[one.expense] += one.amount;
+    //     }
+    //   }
+    // }
+
     var data = {
       datasets: [{
         label: 'Average US expenditure composition (Single)',
@@ -719,8 +738,6 @@ class App extends React.Component {
   }
 
   calculateBalanceLeft() {
-    console.log('this.state.totalOneExpense', this.state.totalOneExpense);
-    console.log('this.state.totalRecExpense', this.state.totalRecExpense);
     return Math.round((this.state.budget - this.state.totalOneExpense - this.state.totalRecExpense) / (Math.max(this.state.daysInMonth - (new Date()).getDate()), 1));
   }
 
@@ -771,6 +788,7 @@ class App extends React.Component {
   }
 
   filterNavbar(props) {
+    $('body').css({paddingBottom: '50px'});
     var scope = this;
     if (this.state.loggedIn) {
       return (
@@ -815,7 +833,7 @@ class App extends React.Component {
   render() {
     if (!this.state.loggedIn) {
       return (
-        <div>
+        <div style={{height:'100%', width:'100%', padding:'0px', margin:'0px'}}>
           <MuiThemeProvider>
             <div>
               <Switch>

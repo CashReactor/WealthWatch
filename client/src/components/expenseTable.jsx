@@ -24,14 +24,22 @@ const styles = {
       marginLeft: '-1.8em',
     },
   },
-  border: {
-    border: 'solid',
-    borderWidth: '3px',
-    borderColor: 'lightblue',
-    width: '90%',
-    padding: '7px',
-    margin: '7px auto',
-  },
+  // border1: {
+  //   border: 'solid',
+  //   borderWidth: '3px',
+  //   borderColor: 'lightblue',
+  //   width: '91%',
+  //   padding: '7px',
+  //   margin: '0.7vw 2% 7px 7%',
+  // },
+  // border2: {
+  //   border: 'solid',
+  //   borderWidth: '3px',
+  //   borderColor: 'lightblue',
+  //   width: '91%',
+  //   padding: '7px',
+  //   margin: '0.7vw 7% 7px 2%',
+  // }
 };
 
 class ExpenseTable extends React.Component {
@@ -162,7 +170,7 @@ class ExpenseTable extends React.Component {
   render() {
     return (
       <div className="expenseTable">
-        <div style={styles.border} className="expenseOneTable">
+        <div style={styles.border1} className="expenseOneTable">
           <Table
             style={{ width: '100%', margin: 'auto' }}
             height={this.state.height}
@@ -254,7 +262,7 @@ class ExpenseTable extends React.Component {
           </Table>
         </div>
 
-        <div style={styles.border} className="expenseRecTable">
+        <div style={styles.border2} className="expenseRecTable">
           <Table
             style={{ width: '100%', margin: 'auto' }}
             height={this.state.height}

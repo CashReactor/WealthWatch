@@ -8,7 +8,7 @@ const { createGoogleUser, googleUserLogin } = require('../handlers/googleUtility
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:1337/auth/google/callback',
+  callbackURL: 'https://wealthwatch.herokuapp.com/auth/google/callback',
 }, createGoogleUser));
 
 googleRouter.route('/')
