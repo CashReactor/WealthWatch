@@ -10,6 +10,7 @@ expenseRouter.post('/oneExpense', (req, res) => {
   const {
     email, expense, amount, transactionDate, category,
   } = req.body;
+  console.log('this is the transaction date of the created onetime expense', transactionDate);
   User.findOne({ email }, (err, user) => {
     if (err) throw err;
     const oneExpenses = user.oneTime;
@@ -91,7 +92,8 @@ expenseRouter.delete('/recExpense', (req, res) => {
       for (let i = 0; i < recurring.length; i++) {
         if (recurring[i]._id.toString() === expenseId) {
           const deletedRecurring = recurring.splice(i, 1);
-          user.save();
+          User.update({ email: user.email }, { $set: { recurring }}, function() {
+          })
           return deletedRecurring;
         }
       }

@@ -10,9 +10,9 @@ const styles = {
     border: 'solid',
     borderWidth: '3px',
     borderColor: 'lightblue',
-    width: '90%',
+    width: '91%',
     padding: '7px',
-    margin: '7px auto',
+    margin: '7px 7% 0 2%',
   },
 };
 

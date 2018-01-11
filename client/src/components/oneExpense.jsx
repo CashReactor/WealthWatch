@@ -9,9 +9,9 @@ const styles = {
     border: 'solid',
     borderWidth: '3px',
     borderColor: 'lightblue',
-    width: '90%',
+    width: '91%',
     padding: '7px',
-    margin: '7px auto',
+    margin: '7px 2% 0 7%',
   },
 };
 
@@ -57,7 +57,7 @@ export default class OneExpense extends React.Component {
       expense: this.state.expense,
       category: this.state.category,
       amount: this.state.amount,
-      transactionDate: this.state.transactionDate,
+      transactionDate: this.state.transactionDate || new Date,
     };
     this.setState({
       expense: '',

@@ -37,6 +37,7 @@ const localOptions = { usernameField: 'email' };
 
 // Local Strategy
 passport.use(new LocalStrategy(localOptions, (email, password, done) => {
+  console.log('email', email, 'password', password);
   User.findOne({ email }, (err, user) => {
     if (err) {
       return done(err);
@@ -50,6 +51,7 @@ passport.use(new LocalStrategy(localOptions, (email, password, done) => {
         return done(error);
       }
       if (!isMatch) {
+        console.log('PAJQLKETJKLEJTLKWEJTLKWJE');
         return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
       }
 

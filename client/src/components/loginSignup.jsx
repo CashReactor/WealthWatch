@@ -352,7 +352,8 @@ export default class LoginSignup extends React.Component {
     console.log(this.props.location);
     return (
       <div className="login-container">
-        <h1 id="until"style={{display:'block', fontSize:'12em', color: 'white'}}>Until debt tears us <span style={{width: '10%'}}></span>apart.</h1>
+        <h1 id="until" style={{display:'block', width: '100%', fontSize:'12em', color: 'white'}}>{/*Until debt tears us <span style={{width: '10%'}}></span>apart.</h1>*/}Welcome to WealthWatch<span style={{color:'red'}}>.</span></h1>
+      {/*<h2 style={{color:'#B0BEC5', fontSize:'2em', width:'90%', textAlign:'right'}}>The financial application you need and want</h2>*/}
         <Paper style={style.paper}>
           <Tabs tabItemContainerStyle={style.headline}>
             <Tab style={style.tab} label="Login">
